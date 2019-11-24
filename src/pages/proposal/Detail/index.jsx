@@ -17,7 +17,7 @@ const Cover = () => (
 
 const CommentWrapper = ({ children }) => (
   <Comment
-    actions={[<span key="comment-nested-reply-to">Reply to</span>]}
+    // actions={[<span key="comment-nested-reply-to">Reply to</span>]}
     author={<a>Han Solo</a>}
     avatar={
       <Avatar

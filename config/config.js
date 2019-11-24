@@ -114,6 +114,11 @@ export default {
           name: 'proposal',
           component: './proposal/Detail',
         },
+        {
+          path: '/proposal/create',
+          name: 'create-proposal',
+          component: './proposal/Create',
+        },
       ],
     },
     {
