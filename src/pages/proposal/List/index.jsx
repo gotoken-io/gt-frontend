@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Item from './components/Item';
+import Item from '@/components/Proposal/Item';
 import { Pagination } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import Filter from './components/Filter';

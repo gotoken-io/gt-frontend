@@ -1,0 +1,18 @@
+@card-width: 300px;
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: @card-width * 2 + 40;
+    margin: 0 auto;
+
+    :global {
+        .antd-pro-components-proposal-item-style-container {
+            width: @card-width;
+            // margin: 10px auto;
+            .antd-pro-components-proposal-item-style-titleNo {
+                width: @card-width;
+            }
+        }
+    }
+}

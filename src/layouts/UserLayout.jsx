@@ -48,7 +48,7 @@ const UserLayout = props => {
                 <span className={styles.title}>Go Token</span>
               </Link>
             </div>
-            <div className={styles.desc}>Go Token</div>
+            {/* <div className={styles.desc}>Go Token</div> */}
           </div>
           {children}
         </div>
