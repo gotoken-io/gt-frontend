@@ -101,6 +101,22 @@ export default {
       ],
     },
     {
+      path: '/proposal',
+      component: '../layouts/BasicLayout',
+      routes: [
+        {
+          path: '/proposal/list',
+          name: 'proposals',
+          component: './proposal/List',
+        },
+        {
+          path: '/proposal/detail',
+          name: 'proposal',
+          component: './proposal/Detail',
+        },
+      ],
+    },
+    {
       path: '/',
       component: '../layouts/SecurityLayout',
       routes: [

@@ -95,16 +95,16 @@ const BasicLayout = props => {
 
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
-      breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: formatMessage({
-            id: 'menu.home',
-            defaultMessage: 'Home',
-          }),
-        },
-        ...routers,
-      ]}
+      // breadcrumbRender={(routers = []) => [
+      //   {
+      //     path: '/',
+      //     breadcrumbName: formatMessage({
+      //       id: 'menu.home',
+      //       defaultMessage: 'Home',
+      //     }),
+      //   },
+      //   ...routers,
+      // ]}
       itemRender={(route, params, routes, paths) => {
         const first = routes.indexOf(route) === 0;
         return first ? (
