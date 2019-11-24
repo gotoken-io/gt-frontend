@@ -18,7 +18,6 @@ class AvatarDropdown extends React.Component {
           type: 'login/logout',
         });
       }
-
       return;
     }
 
@@ -31,23 +30,20 @@ class AvatarDropdown extends React.Component {
         avatar: '',
         name: '',
       },
-      menu,
     } = this.props;
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        {menu && (
-          <Menu.Item key="center">
-            <Icon type="user" />
-            <FormattedMessage id="menu.account.center" defaultMessage="account center" />
-          </Menu.Item>
-        )}
-        {menu && (
-          <Menu.Item key="settings">
-            <Icon type="setting" />
-            <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
-          </Menu.Item>
-        )}
-        {menu && <Menu.Divider />}
+        <Menu.Item key="center">
+          <Icon type="user" />
+          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
+        </Menu.Item>
+
+        <Menu.Item key="settings">
+          <Icon type="setting" />
+          <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
+        </Menu.Item>
+
+        <Menu.Divider />
 
         <Menu.Item key="logout">
           <Icon type="logout" />

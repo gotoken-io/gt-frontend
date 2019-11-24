@@ -78,29 +78,6 @@ export default {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
-      path: '/user',
-      component: '../layouts/UserLayout',
-      routes: [
-        {
-          name: 'login',
-          path: '/user/login',
-          component: './user/Login',
-        },
-        {
-          name: 'register',
-          icon: 'smile',
-          path: '/user/register',
-          component: './user/Register',
-        },
-        {
-          name: 'reset-pwd',
-          icon: 'smile',
-          path: '/user/reset-pwd',
-          component: './user/ResetPwd',
-        },
-      ],
-    },
-    {
       path: '/proposal',
       component: '../layouts/BasicLayout',
       routes: [
@@ -122,7 +99,7 @@ export default {
       ],
     },
     {
-      path: '/',
+      path: '/account',
       component: '../layouts/SecurityLayout',
       routes: [
         {
@@ -130,16 +107,6 @@ export default {
           component: '../layouts/BasicLayout',
           authority: ['admin', 'user'],
           routes: [
-            {
-              path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
             {
               path: '/admin',
               name: 'admin',
@@ -150,13 +117,13 @@ export default {
             {
               name: '个人中心',
               icon: 'smile',
-              path: '/accountcenter',
+              path: '/account/center',
               component: './user/AccountCenter',
             },
             {
               name: '个人设置',
               icon: 'smile',
-              path: '/accountsettings',
+              path: '/account/settings',
               component: './user/AccountSettings',
             },
             {
@@ -169,6 +136,34 @@ export default {
         },
       ],
     },
+    {
+      path: '/',
+      component: '../layouts/UserLayout',
+      routes: [
+        {
+          path: '/',
+          redirect: '/proposal/list',
+        },
+        {
+          name: 'login',
+          path: '/login',
+          component: './user/Login',
+        },
+        {
+          name: 'register',
+          icon: 'smile',
+          path: '/register',
+          component: './user/Register',
+        },
+        {
+          name: 'reset-pwd',
+          icon: 'smile',
+          path: '/reset-pwd',
+          component: './user/ResetPwd',
+        },
+      ],
+    },
+
     {
       component: './404',
     },
