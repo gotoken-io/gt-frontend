@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
 import styles from './index.less';
 import layoutStyles from '@/layouts/style.less';
@@ -37,13 +37,13 @@ class NormalLoginForm extends React.Component {
                 size="large"
                 prefix={
                   <Icon
-                    type="user"
+                    type="mail"
                     style={{
                       color: 'rgba(0,0,0,.25)',
                     }}
                   />
                 }
-                placeholder="Username"
+                placeholder="email"
               />,
             )}
           </Form.Item>
@@ -67,7 +67,7 @@ class NormalLoginForm extends React.Component {
                   />
                 }
                 type="password"
-                placeholder="Password"
+                placeholder="密码"
               />,
             )}
           </Form.Item>
@@ -77,7 +77,7 @@ class NormalLoginForm extends React.Component {
             {getFieldDecorator('remember', {
               valuePropName: 'checked',
               initialValue: true,
-            })(<Checkbox>Remember me</Checkbox>)}
+            })(<Checkbox>记住密码</Checkbox>)}
           </Form.Item>
 
           <Form.Item>
@@ -88,14 +88,14 @@ class NormalLoginForm extends React.Component {
               className="login-form-button"
               block
             >
-              Log in
+              登录
             </Button>
           </Form.Item>
 
           <Form.Item>
             <div className={styles.links}>
-              <Link to="/user/reset-pwd">Forgot password</Link>
-              <Link to="/user/register">Register</Link>
+              <Link to="/reset-pwd">忘记密码</Link>
+              <Link to="/register">注册</Link>
             </div>
           </Form.Item>
         </Form>
@@ -105,5 +105,5 @@ class NormalLoginForm extends React.Component {
 }
 
 export default Form.create({
-  name: 'normal_login',
+  name: 'login',
 })(NormalLoginForm);

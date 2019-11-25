@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Input, Select, Radio, Button } from 'antd';
-import styles from './style.less';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
+import styles from './style.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -11,19 +11,7 @@ const { Option } = Select;
 class Create extends Component {
   state = {
     editorState: null,
-  };
-
-  handleChange = value => {
-    console.log(`selected ${value}`);
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
+    form: {},
   };
 
   async componentDidMount() {
@@ -34,6 +22,22 @@ class Create extends Component {
       editorState: BraftEditor.createEditorState(htmlContent),
     });
   }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  };
+
+  handleChange = e => {
+    console.log(e);
+    this.setState({
+      form: { ...this.state.form, [e.target.name]: e.target.value },
+    });
+  };
 
   submitContent = async () => {
     // 在编辑器获得焦点时按下ctrl+s会执行此方法
@@ -88,8 +92,10 @@ class Create extends Component {
       children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
     }
 
+    const { form } = this.state;
+
     return (
-      <PageHeaderWrapper>
+      <PageHeaderWrapper title="创建提案">
         <div className={styles.container}>
           <Form className={styles.formContainer} {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="提案专区">
@@ -101,9 +107,9 @@ class Create extends Component {
                   },
                 ],
               })(
-                <Select style={{ width: 120 }} onChange={this.handleChange}>
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
+                <Select style={{ width: 120 }} name="proposal-zone">
+                  <Option value="gt">GT</Option>
+                  <Option value="hbp">HBP</Option>
                 </Select>,
               )}
             </Form.Item>
@@ -139,39 +145,37 @@ class Create extends Component {
                   },
                 ],
               })(
-                <Radio.Group onChange={this.handleChange}>
-                  <Radio value={1}>A</Radio>
-                  <Radio value={4}>D</Radio>
+                <Radio.Group name="has-budget" onChange={this.handleChange}>
+                  <Radio value={0}>无预算</Radio>
+                  <Radio value={1}>有预算</Radio>
                 </Radio.Group>,
               )}
 
-              <div className={styles.budget}>
-                {getFieldDecorator('budget', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入提案预算!',
-                    },
-                  ],
-                })(<Input style={{ width: 200 }} />)}
+              {/* 选择了 有预算 */}
+              {form['has-budget'] === 1 && (
+                <div className={styles.budget}>
+                  {getFieldDecorator('budget', {
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入提案预算!',
+                      },
+                    ],
+                  })(<Input style={{ width: 200 }} placeholder="请输入预算金额" />)}
 
-                <Select style={{ width: 120, marginLeft: 10 }} onChange={this.handleChange}>
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                </Select>
-              </div>
+                  <Select name="budget-unit" style={{ width: 120, marginLeft: 10 }}>
+                    <Option value="GT">GT</Option>
+                    <Option value="HBP">HBP</Option>
+                  </Select>
+                </div>
+              )}
             </Form.Item>
 
             <Form.Item label="提案标签">
               {getFieldDecorator('tag', {
                 rules: [],
               })(
-                <Select
-                  mode="tags"
-                  style={{ width: '100%' }}
-                  placeholder="Tags Mode"
-                  onChange={this.handleChange}
-                >
+                <Select mode="tags" style={{ width: '100%' }} placeholder="提案标签">
                   {children}
                 </Select>,
               )}

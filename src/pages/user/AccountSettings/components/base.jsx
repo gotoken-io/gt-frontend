@@ -128,6 +128,18 @@ class BaseView extends Component {
                 ],
               })(<Input />)}
             </FormItem>
+
+            <FormItem label="ETH 地址">
+              {getFieldDecorator('eth-wallet', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'ETH 地址',
+                  },
+                ],
+              })(<Input />)}
+            </FormItem>
+
             <FormItem
               label={formatMessage({
                 id: 'userandaccountsettings.basic.profile',

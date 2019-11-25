@@ -70,7 +70,8 @@ export default {
     // defaultGitUrl: 'https://gitee.com/ant-design/pro-blocks',
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
   },
-  hash: true,
+  history: 'hash',
+  // hash: true,
   targets: {
     ie: 11,
   },
@@ -88,12 +89,12 @@ export default {
         },
         {
           path: '/proposal/detail',
-          name: 'proposal',
+          name: '提案详情',
           component: './proposal/Detail',
         },
         {
           path: '/proposal/create',
-          name: 'create-proposal',
+          name: '创建提案',
           component: './proposal/Create',
         },
       ],
@@ -108,7 +109,7 @@ export default {
           authority: ['admin', 'user'],
           routes: [
             {
-              path: '/admin',
+              path: '/account/admin',
               name: 'admin',
               icon: 'crown',
               component: './Admin',

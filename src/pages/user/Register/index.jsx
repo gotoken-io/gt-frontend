@@ -8,8 +8,6 @@ import styles from './style.less';
 import layoutStyles from '@/layouts/style.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
-const InputGroup = Input.Group;
 const passwordStatusMap = {
   ok: (
     <div className={styles.success}>
@@ -66,23 +64,6 @@ class Register extends Component {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-
-  onGetCaptcha = () => {
-    let count = 59;
-    this.setState({
-      count,
-    });
-    this.interval = window.setInterval(() => {
-      count -= 1;
-      this.setState({
-        count,
-      });
-
-      if (count === 0) {
-        clearInterval(this.interval);
-      }
-    }, 1000);
-  };
 
   getPasswordStatus = () => {
     const { form } = this.props;
@@ -223,7 +204,7 @@ class Register extends Component {
               <Input
                 size="large"
                 placeholder={formatMessage({
-                  id: 'userandregister.email.placeholder',
+                  id: 'email',
                 })}
               />,
             )}
@@ -310,7 +291,8 @@ class Register extends Component {
             >
               <FormattedMessage id="userandregister.register.register" />
             </Button>
-            <Link className={styles.login} to="/user/login">
+
+            <Link className={styles.login} to="/login">
               <FormattedMessage id="userandregister.register.sign-in" />
             </Link>
           </FormItem>

@@ -3,6 +3,7 @@ import { Card, Typography, Tag } from 'antd';
 import btc_cover from '@/assets/card/btc.png';
 import styles from './style.less';
 import Avatar from '@/components/User/Avatar';
+import Link from 'umi/link';
 
 const { Title, Text } = Typography;
 
@@ -16,26 +17,28 @@ const Cover = () => (
 
 const Item = props => (
   <div className={styles.container}>
-    <Card className={styles.card} hoverable cover={<Cover />}>
-      <Typography>
-        <div className={styles.cardHead}>
-          <div className="left">
-            <Text>Token Name No.111</Text>
+    <Link to="/proposal/detail">
+      <Card className={styles.card} hoverable cover={<Cover />}>
+        <Typography>
+          <div className={styles.cardHead}>
+            <div className="left">
+              <Text>Token Name No.111</Text>
+            </div>
+            <div className="right">
+              <Tag color="#2db7f5">1000 ETH</Tag>
+            </div>
           </div>
-          <div className="right">
-            <Tag color="#2db7f5">1000 ETH</Tag>
+          <h3 className={styles.proposalTitle}>proposal title ......</h3>
+          <Text>
+            proposal summary proposal summaryproposal summaryproposal summaryproposal summary ...
+          </Text>
+          <div className={styles.creator}>
+            <Avatar />
+            <Text className={styles.byCreator}>By username</Text>
           </div>
-        </div>
-        <h3 className={styles.proposalTitle}>proposal title ......</h3>
-        <Text>
-          proposal summary proposal summaryproposal summaryproposal summaryproposal summary ...
-        </Text>
-        <div className={styles.creator}>
-          <Avatar />
-          <Text className={styles.byCreator}>By username</Text>
-        </div>
-      </Typography>
-    </Card>
+        </Typography>
+      </Card>
+    </Link>
   </div>
 );
 

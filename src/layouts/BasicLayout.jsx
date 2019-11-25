@@ -12,7 +12,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getAuthorityFromRouter } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/gt-logo.png';
 import Footer from './components/Footer';
 
 const noMatch = (
@@ -22,7 +22,7 @@ const noMatch = (
     subTitle="Sorry, you are not authorized to access this page."
     extra={
       <Button type="primary">
-        <Link to="/user/login">Go Login</Link>
+        <Link to="/login">登录</Link>
       </Button>
     }
   />
@@ -86,7 +86,7 @@ const BasicLayout = props => {
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
-          {titleDom}
+          {/* {titleDom} */}
         </Link>
       )}
       onCollapse={handleMenuCollapse}

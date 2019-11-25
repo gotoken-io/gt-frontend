@@ -3,7 +3,7 @@ import { Comment, Typography, Tag } from 'antd';
 import styles from './style.less';
 import btc_cover from '@/assets/card/btc.png';
 import Avatar from '@/components/User/Avatar';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -38,7 +38,7 @@ const CommentWrapper = ({ children }) => (
 
 const Detail = props => {
   return (
-    <PageHeaderWrapper>
+    <GridContent>
       <div className={styles.container}>
         <Typography>
           <div className={styles.summaryCard}>
@@ -90,7 +90,7 @@ const Detail = props => {
           </div>
         </Typography>
       </div>
-    </PageHeaderWrapper>
+    </GridContent>
   );
 };
 
