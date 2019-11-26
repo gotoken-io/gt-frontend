@@ -162,9 +162,14 @@ export default {
           path: '/reset-pwd',
           component: './user/ResetPwd',
         },
+        {
+          name: '登录页',
+          icon: 'smile',
+          path: '/userlogin',
+          component: './user/UserLogin',
+        },
       ],
     },
-
     {
       component: './404',
     },
@@ -211,13 +216,13 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-  /*
   proxy: {
-    '/server/api/': {
-      target: 'https://preview.pro.ant.design/',
+    '/server/': {
+      target: 'http://localhost:5000',
       changeOrigin: true,
-      pathRewrite: { '^/server': '' },
+      pathRewrite: {
+        '^/server': '',
+      },
     },
   },
-  */
 };

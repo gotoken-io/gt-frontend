@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
-export async function register(params) {
-  return request('/server/user/', {
+export async function login(params) {
+  return request('/server/auth/login', {
     method: 'POST',
     data: params,
   });

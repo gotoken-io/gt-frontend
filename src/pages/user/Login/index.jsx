@@ -1,16 +1,25 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
+import { connect } from 'dva';
 import styles from './index.less';
 import layoutStyles from '@/layouts/style.less';
 
-class NormalLoginForm extends React.Component {
+@connect(({ userLogin, loading }) => ({
+  userLogin,
+  submitting: loading.effects['userLogin/login'],
+}))
+class Login extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const { dispatch } = this.props;
+        dispatch({
+          type: 'userLogin/login',
+          payload: { ...values },
+        });
       }
     });
   };
@@ -25,11 +34,13 @@ class NormalLoginForm extends React.Component {
 
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
-            {getFieldDecorator('username', {
+            {getFieldDecorator('email', {
               rules: [
                 {
                   required: true,
-                  message: 'Please input your username!',
+                  message: formatMessage({
+                    id: 'userandregister.email.required',
+                  }),
                 },
               ],
             })(
@@ -52,7 +63,9 @@ class NormalLoginForm extends React.Component {
               rules: [
                 {
                   required: true,
-                  message: 'Please input your Password!',
+                  message: formatMessage({
+                    id: 'userandregister.password.required',
+                  }),
                 },
               ],
             })(
@@ -106,4 +119,4 @@ class NormalLoginForm extends React.Component {
 
 export default Form.create({
   name: 'login',
-})(NormalLoginForm);
+})(Login);

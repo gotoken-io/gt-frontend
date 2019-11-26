@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Popover, Progress, Row, Select, message } from 'antd';
+import { Button, Form, Input, Popover, Progress, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import Link from 'umi/link';
@@ -31,26 +31,24 @@ const passwordProgressMap = {
   poor: 'exception',
 };
 
-@connect(({ userAndRegister, loading }) => ({
-  userAndRegister,
-  submitting: loading.effects['userAndRegister/submit'],
+@connect(({ userRegister, loading }) => ({
+  userRegister,
+  submitting: loading.effects['userRegister/submit'],
 }))
 class Register extends Component {
   state = {
-    count: 0,
     confirmDirty: false,
     visible: false,
     help: '',
-    prefix: '86',
   };
 
   interval = undefined;
 
   componentDidUpdate() {
-    const { userAndRegister, form } = this.props;
+    const { userRegister, form } = this.props;
     const account = form.getFieldValue('mail');
 
-    if (userAndRegister.status === 'ok') {
+    if (userRegister.status === 'ok') {
       message.success('注册成功！');
       router.push({
         pathname: '/user/register-result',
@@ -89,10 +87,9 @@ class Register extends Component {
       },
       (err, values) => {
         if (!err) {
-          const { prefix } = this.state;
           dispatch({
-            type: 'userAndRegister/submit',
-            payload: { ...values, prefix },
+            type: 'userRegister/submit',
+            payload: { ...values },
           });
         }
       },
@@ -151,12 +148,6 @@ class Register extends Component {
     }
   };
 
-  changePrefix = value => {
-    this.setState({
-      prefix: value,
-    });
-  };
-
   renderPasswordProgress = () => {
     const { form } = this.props;
     const value = form.getFieldValue('password');
@@ -177,7 +168,7 @@ class Register extends Component {
   render() {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
-    const { count, prefix, help, visible } = this.state;
+    const { help, visible } = this.state;
     return (
       <div className={layoutStyles.userMain}>
         <h3>
@@ -185,7 +176,7 @@ class Register extends Component {
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('mail', {
+            {getFieldDecorator('email', {
               rules: [
                 {
                   required: true,
@@ -204,11 +195,32 @@ class Register extends Component {
               <Input
                 size="large"
                 placeholder={formatMessage({
-                  id: 'email',
+                  id: 'userandregister.email.placeholder',
                 })}
               />,
             )}
           </FormItem>
+
+          <FormItem>
+            {getFieldDecorator('username', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({
+                    id: 'userandregister.userName.required',
+                  }),
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={formatMessage({
+                  id: 'userandregister.login.userName',
+                })}
+              />,
+            )}
+          </FormItem>
+
           <FormItem help={help}>
             <Popover
               getPopupContainer={node => {
