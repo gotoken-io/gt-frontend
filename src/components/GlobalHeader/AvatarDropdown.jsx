@@ -3,8 +3,17 @@ import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
+import Link from 'umi/link';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+
+const LoginAndRegister = () => (
+  <div>
+    <Link to="/login">登录</Link>
+    <em>|</em>
+    <Link to="/register">注册</Link>
+  </div>
+);
 
 class AvatarDropdown extends React.Component {
   onMenuClick = event => {
@@ -25,12 +34,8 @@ class AvatarDropdown extends React.Component {
   };
 
   render() {
-    const {
-      currentUser = {
-        avatar: '',
-        name: '',
-      },
-    } = this.props;
+    const { currentUser } = this.props;
+    console.log(currentUser);
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         <Menu.Item key="center">
@@ -51,21 +56,15 @@ class AvatarDropdown extends React.Component {
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.name ? (
+    return currentUser && currentUser.username ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{currentUser.name}</span>
+          <span className={styles.name}>{currentUser.username}</span>
         </span>
       </HeaderDropdown>
     ) : (
-      <Spin
-        size="small"
-        style={{
-          marginLeft: 8,
-          marginRight: 8,
-        }}
-      />
+      <LoginAndRegister />
     );
   }
 }

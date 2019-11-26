@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { login } from './service';
-import { getPageQuery, setAuthority } from './utils/utils';
+import { getPageQuery, setAuthorization } from './utils';
 
 const Model = {
   namespace: 'userLogin',
@@ -15,7 +15,7 @@ const Model = {
         payload: response,
       }); // Login successfully
 
-      if (response.status === 'ok') {
+      if (response.status === 'success') {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
@@ -41,8 +41,8 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return { ...state, status: payload.status, type: payload.type };
+      setAuthorization(payload.Authorization);
+      return { ...state, status: payload.status, token: payload.Authorization };
     },
   },
 };

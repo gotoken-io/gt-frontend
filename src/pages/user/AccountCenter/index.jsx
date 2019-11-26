@@ -22,9 +22,9 @@ const operationTabList = [
   },
 ];
 
-@connect(({ loading, userAndAccountCenter }) => ({
-  currentUser: userAndAccountCenter.currentUser,
-  currentUserLoading: loading.effects['userAndAccountCenter/fetchCurrent'],
+@connect(({ loading, user }) => ({
+  currentUser: user.currentUser,
+  currentUserLoading: loading.effects['user/fetchCurrent'],
 }))
 class AccountCenter extends PureComponent {
   // static getDerivedStateFromProps(
@@ -54,10 +54,10 @@ class AccountCenter extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'userAndAccountCenter/fetchCurrent',
+      type: 'user/fetchCurrent',
     });
     dispatch({
-      type: 'userAndAccountCenter/fetch',
+      type: 'user/fetch',
     });
   }
 

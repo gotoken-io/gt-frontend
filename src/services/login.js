@@ -1,17 +1,17 @@
 import request from '@/utils/request';
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+
+export async function login(params) {
+  return request('/server/auth/login', {
     method: 'POST',
     data: params,
   });
 }
-export async function getFakeCaptcha(mobile) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
-}
 
-export async function Login(params) {
-  return request('/server/api/auth/login', {
+export async function logout() {
+  return request('/server/auth/logout', {
     method: 'POST',
-    data: params,
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
   });
 }

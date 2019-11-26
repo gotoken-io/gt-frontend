@@ -8,8 +8,8 @@ import styles from './style.less';
 
 const { Item } = Menu;
 
-@connect(({ userAndAccountSettings }) => ({
-  currentUser: userAndAccountSettings.currentUser,
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
 }))
 class AccountSettings extends Component {
   main = undefined;
@@ -29,7 +29,7 @@ class AccountSettings extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'userAndAccountSettings/fetchCurrent',
+      type: 'user/fetchCurrent',
     });
     window.addEventListener('resize', this.resize);
     this.resize();
@@ -99,7 +99,7 @@ class AccountSettings extends Component {
   render() {
     const { currentUser } = this.props;
 
-    if (!currentUser.userid) {
+    if (!currentUser.user_id) {
       return '';
     }
 
