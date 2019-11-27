@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Comment, Typography, Tag } from 'antd';
 import styles from './style.less';
 import btc_cover from '@/assets/card/btc.png';
 import Avatar from '@/components/User/Avatar';
 import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
+import { connect } from 'dva';
 
 const { Title, Paragraph, Text } = Typography;
 
-const Cover = () => (
+const Cover = ({ id }) => (
   <div className={styles.cardCover} style={{ backgroundImage: `url(${btc_cover})` }}>
     <Typography>
-      <Title className={styles.titleNo}>No.101</Title>
+      <Title className={styles.titleNo}>No.{id}</Title>
     </Typography>
   </div>
 );
@@ -37,28 +38,43 @@ const CommentWrapper = ({ children }) => (
 );
 
 const Detail = props => {
+  const { dispatch, detail, match } = props;
+
+  // console.log(match.params);
+
+  const proposalAmount = parseInt(detail.amount);
+
+  useEffect(() => {
+    if (dispatch) {
+      dispatch({
+        type: 'proposal/fetchProposal',
+        payload: match.params,
+      });
+    }
+  }, []);
+
   return (
     <GridContent>
       <div className={styles.container}>
         <Typography>
           <div className={styles.summaryCard}>
-            <Cover />
+            <Cover {...detail} />
 
             <div className={styles.summaryContent}>
               <div className={styles.cardHead}>
                 <div className="left">
-                  <Text>Token Name No.111</Text>
+                  <Text>
+                    {detail.zone && detail.zone.name} No.{detail.id}
+                  </Text>
                 </div>
                 <div className="right">
-                  <Tag color="#2db7f5">1000 ETH</Tag>
+                  <Tag color="#2db7f5">
+                    {proposalAmount} {detail.currency_unit && detail.currency_unit.unit}
+                  </Tag>
                 </div>
               </div>
-              <h3 className={styles.proposalTitle}>proposal title ......</h3>
-              <Paragraph>
-                proposal summary proposal summaryproposal summaryproposal summaryproposal summary
-                ... proposal summary proposal summaryproposal summaryproposal summaryproposal
-                summary ...
-              </Paragraph>
+              <h3 className={styles.proposalTitle}>{detail.title}</h3>
+              <Paragraph>{detail.summary}</Paragraph>
             </div>
           </div>
 
@@ -66,7 +82,7 @@ const Detail = props => {
             <div className={styles.user}>
               <Avatar />
               <div className={styles.userContent}>
-                <h3>username</h3>
+                <h3>{detail.creator && detail.creator.username}</h3>
                 <Text>Creator</Text>
               </div>
             </div>
@@ -75,9 +91,7 @@ const Detail = props => {
           <div className={styles.detail}>
             <Title level={2}>项目详情</Title>
             <Paragraph>
-              In the process of internal desktop applications development, many different design
-              specs and implementations would be involved, which might cause designers and
-              developers difficulties and duplication and reduce the efficiency of development.
+              <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
             </Paragraph>
           </div>
 
@@ -94,4 +108,6 @@ const Detail = props => {
   );
 };
 
-export default Detail;
+export default connect(({ proposal }) => ({
+  detail: proposal.detail,
+}))(Detail);

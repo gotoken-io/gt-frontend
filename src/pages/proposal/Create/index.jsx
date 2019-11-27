@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { Form, Input, Select, Radio, Button } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
+import { connect } from 'dva';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
+@connect(({ proposal, loading }) => ({
+  zone_list: proposal.zone_list,
+  currency_list: proposal.currency_list,
+  submitting: loading.effects['proposal/createProposal'],
+}))
 class Create extends Component {
   state = {
     editorState: null,
@@ -15,6 +21,15 @@ class Create extends Component {
   };
 
   async componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'proposal/fetchAllProposalZone',
+    });
+
+    dispatch({
+      type: 'proposal/fetchAllCurrency',
+    });
+
     // 假设此处从服务端获取html格式的编辑器内容
     const htmlContent = '';
     // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorState数据
@@ -28,6 +43,28 @@ class Create extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        const { dispatch } = this.props;
+
+        // filter some form value
+        let submitData = {
+          ...values,
+          tag: values.tag instanceof Array && values.tag.join(','), // convert array to string
+          detail: values.detail.toHTML(), // or values.content.toHTML()
+        };
+
+        // 无预算
+        if (values['has-budget'] === 0) {
+          submitData = {
+            ...submitData,
+            amount: '0',
+            currency_id: null,
+          };
+        }
+
+        dispatch({
+          type: 'proposal/createProposal',
+          payload: { ...submitData },
+        });
       }
     });
   };
@@ -93,13 +130,14 @@ class Create extends Component {
     }
 
     const { form } = this.state;
+    const { zone_list, currency_list } = this.props;
 
     return (
       <PageHeaderWrapper title="创建提案">
         <div className={styles.container}>
           <Form className={styles.formContainer} {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="提案专区">
-              {getFieldDecorator('zone', {
+              {getFieldDecorator('zone_id', {
                 rules: [
                   {
                     required: true,
@@ -108,14 +146,15 @@ class Create extends Component {
                 ],
               })(
                 <Select style={{ width: 120 }} name="proposal-zone">
-                  <Option value="gt">GT</Option>
-                  <Option value="hbp">HBP</Option>
+                  {zone_list.map(zone => (
+                    <Option value={zone.id}>{zone.name}</Option>
+                  ))}
                 </Select>,
               )}
             </Form.Item>
 
             <Form.Item label="提案名称">
-              {getFieldDecorator('name', {
+              {getFieldDecorator('title', {
                 rules: [
                   {
                     required: true,
@@ -154,7 +193,7 @@ class Create extends Component {
               {/* 选择了 有预算 */}
               {form['has-budget'] === 1 && (
                 <div className={styles.budget}>
-                  {getFieldDecorator('budget', {
+                  {getFieldDecorator('amount', {
                     rules: [
                       {
                         required: true,
@@ -163,10 +202,16 @@ class Create extends Component {
                     ],
                   })(<Input style={{ width: 200 }} placeholder="请输入预算金额" />)}
 
-                  <Select name="budget-unit" style={{ width: 120, marginLeft: 10 }}>
-                    <Option value="GT">GT</Option>
-                    <Option value="HBP">HBP</Option>
-                  </Select>
+                  {getFieldDecorator('currency_id', {
+                    rules: [],
+                  })(
+                    <Select name="budget-unit" style={{ width: 120, marginLeft: 10 }}>
+                      {currency_list &&
+                        currency_list.map(currency => (
+                          <Option value={currency.id}>{currency.unit}</Option>
+                        ))}
+                    </Select>,
+                  )}
                 </div>
               )}
             </Form.Item>
@@ -176,13 +221,13 @@ class Create extends Component {
                 rules: [],
               })(
                 <Select mode="tags" style={{ width: '100%' }} placeholder="提案标签">
-                  {children}
+                  {/* {children} */}
                 </Select>,
               )}
             </Form.Item>
 
             <Form.Item label="提案详情">
-              {getFieldDecorator('content', {
+              {getFieldDecorator('detail', {
                 validateTrigger: 'onBlur',
                 rules: [
                   {

@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'umi/link';
 import { Pagination, Button } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import Item from '@/components/Proposal/Item';
 import Filter from './components/Filter';
 import styles from './style.less';
+import { connect } from 'dva';
 
 const List = props => {
+  const { dispatch, list, zone_list } = props;
+
+  useEffect(() => {
+    if (dispatch) {
+      dispatch({
+        type: 'proposal/fetchAllProposalZone',
+      });
+
+      dispatch({
+        type: 'proposal/fetchAllProposal',
+      });
+    }
+  }, []);
+
   return (
     <GridContent>
       <div className={styles.filter}>
-        <Filter />
+        <Filter zone_list={zone_list} />
       </div>
 
       <div className={styles.actions}>
@@ -20,18 +35,19 @@ const List = props => {
       </div>
 
       <div className={styles.list}>
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
+        {list.map(item => (
+          <Item {...item} />
+        ))}
       </div>
 
-      <div className={styles.pagination}>
+      {/* <div className={styles.pagination}>
         <Pagination defaultCurrent={1} total={50} />
-      </div>
+      </div> */}
     </GridContent>
   );
 };
 
-export default List;
+export default connect(({ proposal }) => ({
+  list: proposal.list,
+  zone_list: proposal.zone_list,
+}))(List);
