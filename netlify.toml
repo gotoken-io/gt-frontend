@@ -2,6 +2,11 @@
   functions = "./functions"
 
 [[redirects]]
-  /server/*  http://47.103.15.202:8000/:splat  200
-  /*   /index.html   200
-  
+  from = "/server/*"  
+  to = "http://47.103.15.202:8000/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"  
+  to = "/index.html"
+  status = 200
