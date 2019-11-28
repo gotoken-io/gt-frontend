@@ -14,6 +14,7 @@ export async function queryCurrent() {
     },
   });
 }
-export async function queryNotices() {
-  return request('/api/notices');
+
+export async function queryUserDetail({ id }) {
+  return request('/server/user/' + id);
 }

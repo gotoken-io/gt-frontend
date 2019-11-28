@@ -1,9 +1,10 @@
-import { queryCurrent, queryUsers } from '@/services/user';
+import { queryCurrent, queryUsers, queryUserDetail } from '@/services/user';
 
 const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
+    userDetail: {},
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -24,10 +25,22 @@ const UserModel = {
         });
       }
     },
+
+    *fetchUserDetail({ payload }, { call, put }) {
+      const response = yield call(queryUserDetail, payload);
+      yield put({
+        type: 'saveUserDetail',
+        payload: response.data,
+      });
+    },
   },
   reducers: {
     saveCurrentUser(state, action) {
       return { ...state, currentUser: action.payload || {} };
+    },
+
+    saveUserDetail(state, action) {
+      return { ...state, userDetail: action.payload || {} };
     },
 
     // changeNotifyCount(

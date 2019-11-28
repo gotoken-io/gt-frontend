@@ -7,24 +7,11 @@ import Projects from './components/Projects';
 import styles from './Center.less';
 import ProposalList from './components/ProposalList';
 
-const operationTabList = [
-  {
-    key: 'create',
-    tab: `创建的提案(10)`,
-  },
-  {
-    key: 'claim',
-    tab: `申领的提案(0)`,
-  },
-  {
-    key: 'vote',
-    tab: `投票的提案(0)`,
-  },
-];
-
 @connect(({ loading, user }) => ({
-  currentUser: user.currentUser,
-  currentUserLoading: loading.effects['user/fetchCurrent'],
+  userDetail: user.userDetail,
+  userDetailLoading: loading.effects['user/fetchUserDetail'],
+  // currentUser: user.currentUser,
+  // currentUserLoading: loading.effects['user/fetchCurrent'],
 }))
 class AccountCenter extends PureComponent {
   // static getDerivedStateFromProps(
@@ -43,21 +30,16 @@ class AccountCenter extends PureComponent {
   //   return null;
   // }
   state = {
-    newTags: [],
-    inputVisible: false,
-    inputValue: '',
     tabKey: 'create',
   };
 
   input = undefined;
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, match } = this.props;
     dispatch({
-      type: 'user/fetchCurrent',
-    });
-    dispatch({
-      type: 'user/fetch',
+      type: 'user/fetchUserDetail',
+      payload: match.params,
     });
   }
 
@@ -70,49 +52,36 @@ class AccountCenter extends PureComponent {
     });
   };
 
-  saveInputRef = input => {
-    this.input = input;
-  };
-
-  handleInputChange = e => {
-    this.setState({
-      inputValue: e.target.value,
-    });
-  };
-
-  handleInputConfirm = () => {
-    const { state } = this;
-    const { inputValue } = state;
-    let { newTags } = state;
-
-    if (inputValue && newTags.filter(tag => tag.label === inputValue).length === 0) {
-      newTags = [
-        ...newTags,
-        {
-          key: `new-${newTags.length}`,
-          label: inputValue,
-        },
-      ];
-    }
-
-    this.setState({
-      newTags,
-      inputValue: '',
-    });
-  };
-
   renderChildrenByTabKey = tabKey => {
+    const { userDetail, userDetailLoading } = this.props;
+    let list;
     if (tabKey === 'create') {
-      return <ProposalList />;
+      list = userDetail.proposals_created;
     }
 
-    return null;
+    return <ProposalList list={list} />;
   };
 
   render() {
     const { tabKey } = this.state;
-    const { currentUser, currentUserLoading } = this.props;
-    const dataLoading = currentUserLoading || !(currentUser && Object.keys(currentUser).length);
+    const { userDetail, userDetailLoading } = this.props;
+    const dataLoading = userDetailLoading || !(userDetail && Object.keys(userDetail).length);
+
+    const operationTabList = () => [
+      {
+        key: 'create',
+        tab: `创建的提案(${userDetail.proposals_created && userDetail.proposals_created.length})`,
+      },
+      {
+        key: 'claim',
+        tab: `申领的提案(0)`,
+      },
+      {
+        key: 'vote',
+        tab: `投票的提案(0)`,
+      },
+    ];
+
     return (
       <GridContent>
         <Row gutter={24}>
@@ -127,9 +96,9 @@ class AccountCenter extends PureComponent {
               {!dataLoading && (
                 <div>
                   <div className={styles.avatarHolder}>
-                    <img alt="" src={currentUser.avatar} />
-                    <div className={styles.name}>{currentUser.name}</div>
-                    <div>{currentUser.signature}</div>
+                    <img alt="" src={userDetail.avatar} />
+                    <div className={styles.name}>{userDetail.username}</div>
+                    <div>{userDetail.signature}</div>
                   </div>
                   <div className={styles.detail}>
                     <p>
@@ -145,7 +114,7 @@ class AccountCenter extends PureComponent {
             <Card
               className={styles.tabsCard}
               bordered={false}
-              tabList={operationTabList}
+              tabList={operationTabList()}
               activeTabKey={tabKey}
               onTabChange={this.onTabChange}
             >

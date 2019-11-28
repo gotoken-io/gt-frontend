@@ -16,7 +16,7 @@ const LoginAndRegister = () => (
 );
 
 class AvatarDropdown extends React.Component {
-  onMenuClick = event => {
+  onMenuClick = (event, currentUser) => {
     const { key } = event;
 
     if (key === 'logout') {
@@ -30,15 +30,23 @@ class AvatarDropdown extends React.Component {
       return;
     }
 
-    router.push(`/account/${key}`);
+    if (key === 'account') {
+      router.push(`/user/${currentUser.id}`);
+    } else {
+      router.push(`/account/${key}`);
+    }
   };
 
   render() {
     const { currentUser } = this.props;
     // console.log(currentUser);
     const menuHeaderDropdown = (
-      <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        <Menu.Item key="center">
+      <Menu
+        className={styles.menu}
+        selectedKeys={[]}
+        onClick={e => this.onMenuClick(e, currentUser)}
+      >
+        <Menu.Item key="account">
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>

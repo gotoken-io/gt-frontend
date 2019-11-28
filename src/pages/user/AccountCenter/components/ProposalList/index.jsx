@@ -3,15 +3,8 @@ import Item from '@/components/Proposal/Item';
 import styles from './style.less';
 
 const ProposalList = props => {
-  return (
-    <div className={styles.container}>
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-    </div>
-  );
+  const { list } = props;
+  return <div className={styles.container}>{list && list.map(item => <Item {...item} />)}</div>;
 };
 
 export default ProposalList;

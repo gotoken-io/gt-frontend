@@ -30,10 +30,12 @@ const Item = props => {
             </div>
             <h3 className={styles.proposalTitle}>{title}</h3>
             <Text>{summary}</Text>
-            <div className={styles.creator}>
-              <Avatar />
-              <Text className={styles.byCreator}>By {creator.username}</Text>
-            </div>
+            {creator && (
+              <div className={styles.creator}>
+                <Avatar />
+                <Text className={styles.byCreator}>By {creator.username}</Text>
+              </div>
+            )}
           </Typography>
         </Card>
       </Link>

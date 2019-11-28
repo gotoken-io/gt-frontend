@@ -100,6 +100,18 @@ export default {
       ],
     },
     {
+      path: '/user',
+      component: '../layouts/BasicLayout',
+      routes: [
+        {
+          name: '个人中心',
+          icon: 'smile',
+          path: '/user/:id',
+          component: './user/AccountCenter',
+        },
+      ],
+    },
+    {
       path: '/account',
       component: '../layouts/SecurityLayout',
       routes: [
@@ -115,12 +127,12 @@ export default {
               component: './Admin',
               authority: ['admin'],
             },
-            {
-              name: '个人中心',
-              icon: 'smile',
-              path: '/account/center',
-              component: './user/AccountCenter',
-            },
+            // {
+            //   name: '个人中心',
+            //   icon: 'smile',
+            //   path: '/account/center/:id',
+            //   component: './user/AccountCenter',
+            // },
             {
               name: '个人设置',
               icon: 'smile',

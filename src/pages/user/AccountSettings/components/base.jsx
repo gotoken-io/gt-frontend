@@ -27,8 +27,8 @@ const AvatarView = ({ avatar }) => (
   </Fragment>
 );
 
-@connect(({ userAndAccountSettings }) => ({
-  currentUser: userAndAccountSettings.currentUser,
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
 }))
 class BaseView extends Component {
   view = undefined;
