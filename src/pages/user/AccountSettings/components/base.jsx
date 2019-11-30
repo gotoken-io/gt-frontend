@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Upload, message } from 'antd';
+import { Button, Form, Input, Upload, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';

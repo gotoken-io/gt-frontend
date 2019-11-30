@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Comment, Typography, Tag } from 'antd';
+import { Typography, Tag } from 'antd';
 import styles from './style.less';
 import btc_cover from '@/assets/card/btc.png';
 import Avatar from '@/components/User/Avatar';
 import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
+import Comments from './components/Comments';
 import { connect } from 'dva';
 
 const { Title, Paragraph, Text } = Typography;
@@ -16,33 +17,12 @@ const Cover = ({ id }) => (
   </div>
 );
 
-const CommentWrapper = ({ children }) => (
-  <Comment
-    // actions={[<span key="comment-nested-reply-to">Reply to</span>]}
-    author={<a>Han Solo</a>}
-    avatar={
-      <Avatar
-        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        alt="Han Solo"
-      />
-    }
-    content={
-      <p>
-        We supply a series of design principles, practical patterns and high quality design
-        resources (Sketch and Axure).
-      </p>
-    }
-  >
-    {children}
-  </Comment>
-);
-
 const Detail = props => {
   const { dispatch, detail, match } = props;
 
   // console.log(match.params);
 
-  const proposalAmount = parseInt(detail.amount);
+  const proposalAmount = parseInt(detail.amount, 10);
 
   useEffect(() => {
     if (dispatch) {
@@ -97,10 +77,7 @@ const Detail = props => {
 
           <div className={styles.comments}>
             <Title level={2}>评论</Title>
-            <CommentWrapper>
-              <CommentWrapper></CommentWrapper>
-              <CommentWrapper></CommentWrapper>
-            </CommentWrapper>
+            <Comments list={detail.comments} />
           </div>
         </Typography>
       </div>

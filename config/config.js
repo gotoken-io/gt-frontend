@@ -230,8 +230,8 @@ export default {
   chainWebpack: webpackPlugin,
   proxy: {
     '/server/': {
-      target: 'http://47.103.15.202:8000',
-      // target: 'http://127.0.0.1:5000',
+      // target: 'http://47.103.15.202:8000',
+      target: 'http://127.0.0.1:5000',
       changeOrigin: true,
       pathRewrite: {
         '^/server': '',
