@@ -14,6 +14,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/gt-logo.png';
 import Footer from './components/Footer';
+import { getAuthority } from '@/utils/authority';
 
 const noMatch = (
   <Result
@@ -56,9 +57,12 @@ const BasicLayout = props => {
 
   useEffect(() => {
     if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
+      // if login, get current user detail
+      if (getAuthority()) {
+        dispatch({
+          type: 'user/fetchCurrent',
+        });
+      }
 
       dispatch({
         type: 'settings/getSetting',

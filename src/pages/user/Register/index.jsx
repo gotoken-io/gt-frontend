@@ -3,7 +3,6 @@ import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
-import router from 'umi/router';
 import styles from './style.less';
 import layoutStyles from '@/layouts/style.less';
 
@@ -31,9 +30,8 @@ const passwordProgressMap = {
   poor: 'exception',
 };
 
-@connect(({ userRegister, loading }) => ({
-  userRegister,
-  submitting: loading.effects['userRegister/submit'],
+@connect(({ loading }) => ({
+  submittingRegister: loading.effects['login/register'],
 }))
 class Register extends Component {
   state = {
@@ -41,27 +39,6 @@ class Register extends Component {
     visible: false,
     help: '',
   };
-
-  interval = undefined;
-
-  componentDidUpdate() {
-    const { userRegister, form } = this.props;
-    const account = form.getFieldValue('mail');
-
-    if (userRegister.status === 'success') {
-      message.success('注册成功！');
-      router.push({
-        pathname: '/',
-        state: {
-          account,
-        },
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
 
   getPasswordStatus = () => {
     const { form } = this.props;
@@ -88,7 +65,7 @@ class Register extends Component {
       (err, values) => {
         if (!err) {
           dispatch({
-            type: 'userRegister/submit',
+            type: 'login/register',
             payload: { ...values },
           });
         }

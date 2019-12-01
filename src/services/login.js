@@ -15,3 +15,10 @@ export async function logout() {
     },
   });
 }
+
+export async function register(params) {
+  return request('/server/user/', {
+    method: 'POST',
+    data: params,
+  });
+}

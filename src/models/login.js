@@ -1,8 +1,9 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
-import { logout } from '@/services/login';
+import { logout, login, register } from '@/services/login';
 import { setAuthority, removeAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import { message } from 'antd';
 
 const Model = {
   namespace: 'login',
@@ -10,48 +11,81 @@ const Model = {
     status: undefined,
   },
   effects: {
-    // *login({ payload }, { call, put }) {
-    //   const response = yield call(fakeAccountLogin, payload);
-    //   yield put({
-    //     type: 'changeLoginStatus',
-    //     payload: response,
-    //   }); // Login successfully
+    *register({ payload }, { call, put }) {
+      const response = yield call(register, payload);
+      if (response.status === 'success') {
+        message.success('注册成功');
 
-    //   if (response.status === 'ok') {
-    //     const urlParams = new URL(window.location.href);
-    //     const params = getPageQuery();
-    //     let { redirect } = params;
+        yield put({
+          type: 'setLoginStatus',
+          payload: response,
+        });
 
-    //     if (redirect) {
-    //       const redirectUrlParams = new URL(redirect);
+        const urlParams = new URL(window.location.href);
+        const params = getPageQuery();
+        let { redirect } = params;
 
-    //       if (redirectUrlParams.origin === urlParams.origin) {
-    //         redirect = redirect.substr(urlParams.origin.length);
+        if (redirect) {
+          const redirectUrlParams = new URL(redirect);
 
-    //         if (redirect.match(/^\/.*#/)) {
-    //           redirect = redirect.substr(redirect.indexOf('#') + 1);
-    //         }
-    //       } else {
-    //         window.location.href = '/';
-    //         return;
-    //       }
-    //     }
+          if (redirectUrlParams.origin === urlParams.origin) {
+            redirect = redirect.substr(urlParams.origin.length);
 
-    //     yield put(routerRedux.replace(redirect || '/'));
-    //   }
-    // },
+            if (redirect.match(/^\/.*#/)) {
+              redirect = redirect.substr(redirect.indexOf('#') + 1);
+            }
+          } else {
+            window.location.href = redirect;
+            return;
+          }
+        }
 
-    // *getCaptcha({ payload }, { call }) {
-    //   yield call(getFakeCaptcha, payload);
-    // },
+        yield put(routerRedux.replace(redirect || '/'));
+      }
+    },
+
+    *login({ payload }, { call, put }) {
+      const response = yield call(login, payload);
+      if (response.status === 'success') {
+        message.success('登陆成功');
+
+        yield put({
+          type: 'setLoginStatus',
+          payload: response,
+        }); // Login successfully
+
+        const urlParams = new URL(window.location.href);
+        const params = getPageQuery();
+        let { redirect } = params;
+
+        if (redirect) {
+          const redirectUrlParams = new URL(redirect);
+
+          if (redirectUrlParams.origin === urlParams.origin) {
+            redirect = redirect.substr(urlParams.origin.length);
+
+            if (redirect.match(/^\/.*#/)) {
+              redirect = redirect.substr(redirect.indexOf('#') + 1);
+            }
+          } else {
+            window.location.href = redirect;
+            return;
+          }
+        }
+
+        yield put(routerRedux.replace(redirect || '/'));
+      }
+    },
 
     *logout({ payload }, { call, put }) {
       const response = yield call(logout, payload);
       yield put({
-        type: 'changeLoginStatus',
+        type: 'removeLoginStatus',
       }); // Logout successfully
 
       if (response.status === 'success') {
+        message.success('注销登陆');
+
         const { redirect } = getPageQuery(); // redirect
 
         if (window.location.pathname !== '/login' && !redirect) {
@@ -68,7 +102,11 @@ const Model = {
     },
   },
   reducers: {
-    changeLoginStatus(state) {
+    setLoginStatus(state, { payload }) {
+      setAuthority(payload.Authorization);
+      return { ...state, status: payload.status, token: payload.Authorization };
+    },
+    removeLoginStatus(state) {
       removeAuthority();
       return { ...state, currentUser: {} };
     },

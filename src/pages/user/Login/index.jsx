@@ -6,9 +6,9 @@ import { connect } from 'dva';
 import styles from './index.less';
 import layoutStyles from '@/layouts/style.less';
 
-@connect(({ userLogin, loading }) => ({
-  userLogin,
-  submitting: loading.effects['userLogin/login'],
+@connect(({ login, loading }) => ({
+  login,
+  submitting: loading.effects['login/login'],
 }))
 class Login extends React.Component {
   handleSubmit = e => {
@@ -17,7 +17,7 @@ class Login extends React.Component {
       if (!err) {
         const { dispatch } = this.props;
         dispatch({
-          type: 'userLogin/login',
+          type: 'login/login',
           payload: { ...values },
         });
       }
