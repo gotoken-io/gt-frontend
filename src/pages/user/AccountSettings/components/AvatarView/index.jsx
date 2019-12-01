@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Upload, message, Avatar } from 'antd';
+import { Button, Upload, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { getFielUrl } from '@/utils/user';
+import UserAvatar from '@/components/User/UserAvatar';
 import { connect } from 'dva';
 import styles from './style.less';
 
@@ -29,7 +30,9 @@ const AvatarView = props => {
   //   console.log(currentUser);
 
   useEffect(() => {
-    setUserAvatar(getFielUrl(currentUser.avatar));
+    if (currentUser.avatar) {
+      setUserAvatar(getFielUrl(currentUser.avatar));
+    }
   }, []);
 
   function handleChange(info) {
@@ -41,7 +44,7 @@ const AvatarView = props => {
     }
 
     if (status === 'done') {
-      console.log(response.data.key);
+      //   console.log(response.data.key);
       // post update avatar request
       if (dispatch) {
         dispatch({
@@ -65,7 +68,7 @@ const AvatarView = props => {
         <FormattedMessage id="userandaccountsettings.basic.avatar" defaultMessage="Avatar" />
       </div>
       <div className={styles.avatar}>
-        {userAvatar ? <Avatar size={144} src={userAvatar} /> : <Avatar size={144} icon="user" />}
+        <UserAvatar size={144} src={userAvatar} username={currentUser.username} />
       </div>
       <Upload
         action="/server/upload/image/"

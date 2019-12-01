@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tooltip, Comment, Avatar, Spin } from 'antd';
+import { Tooltip, Comment, Spin } from 'antd';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import CommentForm from '../CommnetForm';
@@ -41,7 +41,7 @@ const CommentWrapper = props => {
           </span>,
         ]}
         author={<Link to={`/user/${creator.id}`}>{creator.username}</Link>}
-        avatar={<Avatar icon="user" alt={creator.username} />}
+        avatar={<UserAvatar {...creator} />}
         content={<p>{text}</p>}
         datetime={
           <Tooltip title={moment.datetime(created)}>
