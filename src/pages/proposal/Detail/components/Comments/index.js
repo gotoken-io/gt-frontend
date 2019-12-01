@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import CommentForm from '../CommnetForm';
 import ReplyForm from '../ReplyForm';
 import moment from '@/utils/moment';
+import UserAvatar from '@/components/User/UserAvatar';
 import styles from './style.less';
 
 const CommentItem = ({ id, text, created, updated, creator }) => (
@@ -12,7 +13,7 @@ const CommentItem = ({ id, text, created, updated, creator }) => (
     <Comment
       className={styles.comment}
       author={<Link to={`/user/${creator.id}`}>{creator.username}</Link>}
-      avatar={<Avatar icon="user" alt={creator.username} />}
+      avatar={<UserAvatar {...creator} />}
       content={<p>{text}</p>}
       datetime={
         <Tooltip title={moment.datetime(created)}>

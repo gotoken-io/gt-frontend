@@ -1,4 +1,4 @@
-import { Avatar, Card, Col, Divider, Icon, Input, Row, Tag } from 'antd';
+import { Card, Col, Divider, Icon, Input, Row, Tag } from 'antd';
 import React, { PureComponent } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import Link from 'umi/link';
@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import Projects from './components/Projects';
 import styles from './Center.less';
 import ProposalList from './components/ProposalList';
+import UserAvatar from '@/components/User/UserAvatar';
 
 @connect(({ loading, user }) => ({
   userDetail: user.userDetail,
@@ -96,7 +97,7 @@ class AccountCenter extends PureComponent {
               {!dataLoading && (
                 <div>
                   <div className={styles.avatarHolder}>
-                    <img alt="" src={userDetail.avatar} />
+                    <UserAvatar size={100} {...userDetail} />
                     <div className={styles.name}>{userDetail.username}</div>
                     <div>{userDetail.signature}</div>
                   </div>

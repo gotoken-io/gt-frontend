@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Typography, Tag } from 'antd';
 import Link from 'umi/link';
 import styles from './style.less';
-import Avatar from '@/components/User/Avatar';
+import UserAvatar from '@/components/User/UserAvatar';
 
 const { Title, Text } = Typography;
 
@@ -32,7 +32,7 @@ const Item = props => {
             <Text>{summary}</Text>
             {creator && (
               <div className={styles.creator}>
-                <Avatar />
+                <UserAvatar {...creator} />
                 <Text className={styles.byCreator}>By {creator.username}</Text>
               </div>
             )}

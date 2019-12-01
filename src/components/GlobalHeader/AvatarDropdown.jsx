@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import Link from 'umi/link';
 import HeaderDropdown from '../HeaderDropdown';
+import UserAvatar from '@/components/User/UserAvatar';
 import styles from './index.less';
 
 const LoginAndRegister = () => (
@@ -67,7 +68,7 @@ class AvatarDropdown extends React.Component {
     return currentUser && currentUser.username ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+          <UserAvatar {...currentUser} />
           <span className={styles.name}>{currentUser.username}</span>
         </span>
       </HeaderDropdown>

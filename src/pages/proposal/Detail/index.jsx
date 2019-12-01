@@ -4,7 +4,7 @@ import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import styles from './style.less';
 import btc_cover from '@/assets/card/btc.png';
-import Avatar from '@/components/User/Avatar';
+import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
 
 const { Title, Paragraph, Text } = Typography;
@@ -61,7 +61,7 @@ const Detail = props => {
 
           <div className={styles.userList}>
             <div className={styles.user}>
-              <Avatar />
+              <UserAvatar {...detail.creator} />
               <div className={styles.userContent}>
                 <h3>{detail.creator && detail.creator.username}</h3>
                 <Text>Creator</Text>
