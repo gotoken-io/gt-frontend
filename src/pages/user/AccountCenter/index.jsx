@@ -74,11 +74,11 @@ class AccountCenter extends PureComponent {
       },
       {
         key: 'claim',
-        tab: `申领的提案(0)`,
+        tab: '申领的提案(0)',
       },
       {
         key: 'vote',
-        tab: `投票的提案(0)`,
+        tab: '投票的提案(0)',
       },
     ];
 

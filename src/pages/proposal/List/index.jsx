@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import Link from 'umi/link';
 import { Pagination, Button } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
+import { connect } from 'dva';
 import Item from '@/components/Proposal/Item';
 import Filter from './components/Filter';
 import styles from './style.less';
-import { connect } from 'dva';
 
 const List = props => {
   const { dispatch, list, zone_list } = props;

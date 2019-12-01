@@ -1,11 +1,11 @@
-import React from 'react';
-import { Form, Input, Button } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Avatar, Input, Button } from 'antd';
 import { connect } from 'dva';
 import styles from './style.less';
 
 const { TextArea } = Input;
 
-const CommentForm = props => {
+const ReplyForm = props => {
   const { getFieldDecorator, getFieldsError, resetFields } = props.form;
   const { submittingCreate } = props;
 
@@ -15,22 +15,21 @@ const CommentForm = props => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        // console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values);
 
-        const { dispatch, proposalDetail } = props;
+        const { dispatch, proposalDetail, parent_id } = props;
         dispatch({
           type: 'comment/createComment',
-          payload: { ...values, proposal_id: proposalDetail.id },
+          payload: { text: values.text, proposal_id: proposalDetail.id, parent_id },
         });
 
-        // clear input value
         resetFields();
       }
     });
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.replyForm}>
       <Form onSubmit={handleSubmit}>
         <Form.Item>
           {getFieldDecorator('text', {
@@ -44,7 +43,7 @@ const CommentForm = props => {
             htmlType="submit"
             disabled={hasErrors(getFieldsError()) || submittingCreate}
           >
-            发表评论
+            回复
           </Button>
         </Form.Item>
       </Form>
@@ -52,9 +51,10 @@ const CommentForm = props => {
   );
 };
 
-const CommentFormWrapper = Form.create({ name: 'comment_form' })(CommentForm);
+const ReplyFormWrapper = Form.create({ name: 'reply_form' })(ReplyForm);
+
 export default connect(({ proposal, loading }) => ({
   proposalDetail: proposal.detail,
   submittingCreate: loading.effects['comment/createComment'],
   submittingUpdate: loading.effects['comment/updateComment'],
-}))(CommentFormWrapper);
+}))(ReplyFormWrapper);

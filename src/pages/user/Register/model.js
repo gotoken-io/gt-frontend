@@ -1,5 +1,5 @@
-import { register } from './service';
 import { routerRedux } from 'dva/router';
+import { register } from './service';
 import { getPageQuery, setAuthorization } from '@/pages/user/Login/utils';
 
 const Model = {

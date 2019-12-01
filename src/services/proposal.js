@@ -11,7 +11,7 @@ export async function createProposal(params) {
 }
 
 export async function queryProposal({ id }) {
-  return request('/server/proposal/' + id);
+  return request(`/server/proposal/${id}`);
 }
 
 export async function queryProposalList() {

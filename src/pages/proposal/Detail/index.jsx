@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Tag } from 'antd';
+import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
+import { connect } from 'dva';
 import styles from './style.less';
 import btc_cover from '@/assets/card/btc.png';
 import Avatar from '@/components/User/Avatar';
-import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 import Comments from './components/Comments';
-import { connect } from 'dva';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -20,7 +20,8 @@ const Cover = ({ id }) => (
 const Detail = props => {
   const { dispatch, detail, match } = props;
 
-  // console.log(match.params);
+  // get proposal id from url params
+  const { id } = match.params;
 
   const proposalAmount = parseInt(detail.amount, 10);
 
@@ -28,7 +29,7 @@ const Detail = props => {
     if (dispatch) {
       dispatch({
         type: 'proposal/fetchProposal',
-        payload: match.params,
+        payload: { id },
       });
     }
   }, []);
@@ -77,7 +78,7 @@ const Detail = props => {
 
           <div className={styles.comments}>
             <Title level={2}>评论</Title>
-            <Comments list={detail.comments} />
+            {detail && <Comments id={id} />}
           </div>
         </Typography>
       </div>

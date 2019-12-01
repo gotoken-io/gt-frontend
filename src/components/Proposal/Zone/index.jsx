@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, Typography, Tag } from 'antd';
+import Link from 'umi/link';
 import btc_cover from '@/assets/card/btc.png';
 import styles from './style.less';
 import Avatar from '@/components/User/Avatar';
-import Link from 'umi/link';
 
 const { Title, Text } = Typography;
 

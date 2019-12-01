@@ -1,4 +1,5 @@
 import { queryCurrent, queryUsers, queryUserDetail } from '@/services/user';
+import { setCurrentUser } from '@/utils/user';
 
 const UserModel = {
   namespace: 'user',
@@ -36,6 +37,7 @@ const UserModel = {
   },
   reducers: {
     saveCurrentUser(state, action) {
+      setCurrentUser(action.payload);
       return { ...state, currentUser: action.payload || {} };
     },
 

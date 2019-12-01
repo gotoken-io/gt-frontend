@@ -19,3 +19,8 @@ export async function putComment(params) {
     data: params,
   });
 }
+
+// id=proposal id
+export async function queryProposalComment({ id }) {
+  return request(`/server/proposal/comment/${id}`);
+}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, Typography, Tag } from 'antd';
+import Link from 'umi/link';
 import styles from './style.less';
 import Avatar from '@/components/User/Avatar';
-import Link from 'umi/link';
 
 const { Title, Text } = Typography;
 

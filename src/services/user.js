@@ -16,5 +16,5 @@ export async function queryCurrent() {
 }
 
 export async function queryUserDetail({ id }) {
-  return request('/server/user/' + id);
+  return request(`/server/user/${id}`);
 }
