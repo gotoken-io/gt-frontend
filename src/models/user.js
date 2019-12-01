@@ -1,5 +1,6 @@
-import { queryCurrent, queryUsers, queryUserDetail } from '@/services/user';
+import { queryCurrent, queryUsers, queryUserDetail, updateUserAvatar } from '@/services/user';
 import { setCurrentUser } from '@/utils/user';
+import { message } from 'antd';
 
 const UserModel = {
   namespace: 'user',
@@ -34,11 +35,28 @@ const UserModel = {
         payload: response.data,
       });
     },
+
+    *postUserAvatar({ payload }, { call, put }) {
+      const response = yield call(updateUserAvatar, payload);
+      if (response.status === 'success') {
+        message.success('用户头像更新成功');
+        yield put({
+          type: 'changeUserAvatar',
+          payload,
+        });
+      }
+    },
   },
   reducers: {
     saveCurrentUser(state, action) {
       setCurrentUser(action.payload);
       return { ...state, currentUser: action.payload || {} };
+    },
+
+    changeUserAvatar(state, action) {
+      const newCurrentUserDetail = { ...state.currentUser, avatar: action.payload };
+      setCurrentUser(newCurrentUserDetail);
+      return { ...state, currentUser: newCurrentUserDetail };
     },
 
     saveUserDetail(state, action) {

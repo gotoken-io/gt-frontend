@@ -15,6 +15,16 @@ export async function queryCurrent() {
   });
 }
 
+export async function updateUserAvatar(params) {
+  return request('/server/user/avatar', {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+    data: params,
+  });
+}
+
 export async function queryUserDetail({ id }) {
   return request(`/server/user/${id}`);
 }
