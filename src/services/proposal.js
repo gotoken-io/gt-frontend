@@ -10,6 +10,17 @@ export async function createProposal(params) {
   });
 }
 
+// only admin can create proposal zone
+export async function createProposalZone(params) {
+  return request('/server/proposal_zone/', {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+    data: params,
+  });
+}
+
 export async function queryProposal({ id }) {
   return request(`/server/proposal/${id}`);
 }

@@ -1,6 +1,8 @@
 import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 import {
   createProposal,
+  createProposalZone,
   queryProposalList,
   queryProposal,
   queryProposalZoneList,
@@ -54,6 +56,19 @@ const ProposalModel = {
     *createProposal({ payload }, { call, put }) {
       const response = yield call(createProposal, payload);
       if (response.status === 'success') {
+        message.success('提案创建成功');
+        yield put(
+          routerRedux.replace({
+            pathname: '/',
+          }),
+        );
+      }
+    },
+
+    *createProposalZone({ payload }, { call, put }) {
+      const response = yield call(createProposalZone, payload);
+      if (response.status === 'success') {
+        message.success('提案专区创建成功');
         yield put(
           routerRedux.replace({
             pathname: '/',

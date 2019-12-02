@@ -1,28 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Upload, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import { connect } from 'dva';
 import { getFielUrl } from '@/utils/user';
 import UserAvatar from '@/components/User/UserAvatar';
-import { connect } from 'dva';
+import { beforeUpload, getBase64 } from '@/utils/upload';
 import styles from './style.less';
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-}
 
 const AvatarView = props => {
   const { currentUser, dispatch } = props;

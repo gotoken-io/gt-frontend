@@ -32,6 +32,10 @@ const List = props => {
         <Link to="/proposal/create">
           <Button type="primary">创建提案</Button>
         </Link>
+
+        <Link to="/proposal/zone/create">
+          <Button type="primary">创建提案专区</Button>
+        </Link>
       </div>
 
       <div className={styles.list}>

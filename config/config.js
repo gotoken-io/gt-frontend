@@ -97,6 +97,11 @@ export default {
           name: '创建提案',
           component: './proposal/Create',
         },
+        {
+          path: '/proposal/zone/create',
+          name: '创建提案',
+          component: './proposal_zone/Create',
+        },
       ],
     },
     {

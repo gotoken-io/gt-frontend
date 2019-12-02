@@ -28,8 +28,7 @@
     "ui": "umi ui"
   },
   "husky": {
-    "hooks": {
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
@@ -50,6 +49,7 @@
     "@ant-design/pro-layout": "^4.5.16",
     "@antv/data-set": "^0.10.2",
     "antd": "^3.23.6",
+    "antd-img-crop": "^2.1.2",
     "braft-editor": "^2.3.8",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
