@@ -3,7 +3,7 @@
 
 [[redirects]]
   from = "/server/*"  
-  to = "http://206.189.81.146:8000/:splat"
+  to = "http://47.103.15.202:8000/:splat"
   status = 200
 
 [[redirects]]
