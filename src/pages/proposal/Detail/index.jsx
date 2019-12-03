@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Tag } from 'antd';
-import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
+import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import styles from './style.less';
 import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
+import moment from '@/utils/moment';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -42,6 +43,19 @@ const Detail = props => {
     }
   }, []);
 
+  const Tags = ({ tag }) => {
+    if (tag) {
+      const tags = tag.split(',');
+      const tagCount = tags.length;
+
+      if (tagCount) {
+        return tags.map(t => <Tag>{t}</Tag>);
+      }
+    }
+
+    return null;
+  };
+
   return (
     <GridContent>
       <div className={styles.container}>
@@ -51,20 +65,22 @@ const Detail = props => {
 
             <div className={styles.summaryContent}>
               <div className={styles.cardHead}>
-                <div className="left">
-                  <Text>No.{detail.id}</Text>
+                <div className={styles.left}>
+                  {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
                 </div>
-                <div className="right">
+                <div className={styles.right}>
                   {proposalAmount > 0 && (
-                    <Tag color="#2db7f5">
-                      {proposalAmount}
+                    <span className={styles.proposalAmount}>
+                      {proposalAmount}&nbsp;
                       {detail.currency_unit && detail.currency_unit.unit}
-                    </Tag>
+                    </span>
                   )}
                 </div>
               </div>
               <h3 className={styles.proposalTitle}>{detail.title}</h3>
+              <Paragraph>创建时间: {moment.datetime(detail.created)}</Paragraph>
               <Paragraph>{detail.summary}</Paragraph>
+              <Tags tag={detail.tag} />
             </div>
           </div>
 

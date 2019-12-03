@@ -27,8 +27,24 @@
 }
 
 .cardHead {
-    display: flex;
-    justify-content: space-between;
+    // display: flex;
+    // justify-content: space-between;
+    position: relative;
+
+    .right {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        .proposalAmount {
+            height: 40px;
+            line-height: 1;
+            padding: 6px 12px;
+            background-color: #29CC7A;
+            color: #fff;
+            border-radius: 6px;
+        }
+    }
 }
 
 .proposalTitle {

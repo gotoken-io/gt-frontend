@@ -45,10 +45,12 @@ class Create extends Component {
         console.log('Received values of form: ', values);
         const { dispatch } = this.props;
 
+        let tag = values.tag instanceof Array && values.tag.join(','); // convert array to string
+
         // filter some form value
         let submitData = {
           ...values,
-          tag: values.tag instanceof Array && values.tag.join(','), // convert array to string
+          tag: tag === false ? '' : tag, // 如果 tag=false, 传空字符串
           detail: values.detail.toHTML(), // or values.content.toHTML()
         };
 
@@ -123,11 +125,6 @@ class Create extends Component {
         },
       },
     };
-
-    const children = [];
-    for (let i = 10; i < 36; i++) {
-      children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-    }
 
     const { form } = this.state;
     const { zone_list, currency_list } = this.props;
