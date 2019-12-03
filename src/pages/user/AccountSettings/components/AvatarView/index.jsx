@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Upload, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { connect } from 'dva';
-import { getFielUrl } from '@/utils/user';
+import { getFielUrl } from '@/utils/upload';
 import UserAvatar from '@/components/User/UserAvatar';
 import { beforeUpload, getBase64 } from '@/utils/upload';
 import styles from './style.less';

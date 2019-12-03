@@ -98,8 +98,18 @@ export default {
           component: './proposal/Create',
         },
         {
+          path: '/proposal/zone/list',
+          name: '提案专区列表',
+          component: './proposal_zone/List',
+        },
+        {
+          path: '/proposal/zone/detail/:id',
+          name: '提案专区详情',
+          component: './proposal_zone/Detail',
+        },
+        {
           path: '/proposal/zone/create',
-          name: '创建提案',
+          name: '创建提案专区',
           component: './proposal_zone/Create',
         },
       ],

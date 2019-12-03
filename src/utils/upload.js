@@ -17,3 +17,8 @@ export function getBase64(img, callback) {
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
+
+export function getFielUrl(filename) {
+  const bucketBaseUrl = 'http://q1tvwz2mb.bkt.clouddn.com/';
+  return bucketBaseUrl + filename;
+}

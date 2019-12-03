@@ -29,6 +29,13 @@ ol {
   list-style: none;
 }
 
+:global {
+  main>.ant-pro-grid-content {
+    // set footer sticky to bottom
+    min-height: calc(100vh - 234px);
+  }
+}
+
 @media (max-width: @screen-xs) {
   .ant-table {
     width: 100%;

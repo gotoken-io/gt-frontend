@@ -3,19 +3,27 @@ import { Typography, Tag } from 'antd';
 import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import styles from './style.less';
-import btc_cover from '@/assets/card/btc.png';
+import { getFielUrl } from '@/utils/upload';
+import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
 
 const { Title, Paragraph, Text } = Typography;
 
-const Cover = ({ id }) => (
-  <div className={styles.cardCover} style={{ backgroundImage: `url(${btc_cover})` }}>
-    <Typography>
-      <Title className={styles.titleNo}>No.{id}</Title>
-    </Typography>
-  </div>
-);
+const ZoneCover = ({ name, cover }) => {
+  let cardCoverSrc = defaultCover;
+  if (cover) {
+    cardCoverSrc = getFielUrl(cover);
+  }
+
+  return (
+    <div className={styles.cardCover} style={{ backgroundImage: `url(${cardCoverSrc})` }}>
+      <Typography>
+        <Title className={styles.titleNo}>{name}</Title>
+      </Typography>
+    </div>
+  );
+};
 
 const Detail = props => {
   const { dispatch, detail, match } = props;
@@ -39,19 +47,20 @@ const Detail = props => {
       <div className={styles.container}>
         <Typography>
           <div className={styles.summaryCard}>
-            <Cover {...detail} />
+            <ZoneCover {...detail.zone} />
 
             <div className={styles.summaryContent}>
               <div className={styles.cardHead}>
                 <div className="left">
-                  <Text>
-                    {detail.zone && detail.zone.name} No.{detail.id}
-                  </Text>
+                  <Text>No.{detail.id}</Text>
                 </div>
                 <div className="right">
-                  <Tag color="#2db7f5">
-                    {proposalAmount} {detail.currency_unit && detail.currency_unit.unit}
-                  </Tag>
+                  {proposalAmount > 0 && (
+                    <Tag color="#2db7f5">
+                      {proposalAmount}
+                      {detail.currency_unit && detail.currency_unit.unit}
+                    </Tag>
+                  )}
                 </div>
               </div>
               <h3 className={styles.proposalTitle}>{detail.title}</h3>

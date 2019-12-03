@@ -33,6 +33,10 @@ export async function queryProposalZoneList() {
   return request('/server/proposal_zone/');
 }
 
+export async function queryProposalZone({ id }) {
+  return request(`/server/proposal_zone/${id}`);
+}
+
 export async function queryCurrencylList() {
   return request('/server/currency/');
 }

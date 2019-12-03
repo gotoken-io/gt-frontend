@@ -1,5 +1,6 @@
 import { queryCurrent, queryUsers, queryUserDetail, updateUserAvatar } from '@/services/user';
-import { setCurrentUser } from '@/utils/user';
+import { setCurrentUser, removeCurrentUser } from '@/utils/user';
+import { setAuthority, removeAuthority } from '@/utils/authority';
 import { message } from 'antd';
 
 const UserModel = {
@@ -24,6 +25,10 @@ const UserModel = {
         yield put({
           type: 'saveCurrentUser',
           payload: response.data,
+        });
+      } else {
+        yield put({
+          type: 'removeCurrentUser',
         });
       }
     },
@@ -51,6 +56,12 @@ const UserModel = {
     saveCurrentUser(state, action) {
       setCurrentUser(action.payload);
       return { ...state, currentUser: action.payload || {} };
+    },
+
+    removeCurrentUser(state) {
+      removeCurrentUser();
+      removeAuthority();
+      return { ...state, currentUser: {} };
     },
 
     changeUserAvatar(state, action) {

@@ -9,8 +9,3 @@ export function setCurrentUser(currentUser) {
 export function removeCurrentUser() {
   localStorage.removeItem('currentUser');
 }
-
-export function getFielUrl(filename) {
-  const bucketBaseUrl = 'http://q1tvwz2mb.bkt.clouddn.com/';
-  return bucketBaseUrl + filename;
-}

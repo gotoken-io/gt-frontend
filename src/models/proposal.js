@@ -7,12 +7,14 @@ import {
   queryProposal,
   queryProposalZoneList,
   queryCurrencylList,
+  queryProposalZone,
 } from '@/services/proposal';
 
 const ProposalModel = {
   namespace: 'proposal',
   state: {
     zone_list: [],
+    zone_detail: {},
     currency_ist: [],
     list: [],
     detail: {},
@@ -53,6 +55,14 @@ const ProposalModel = {
       });
     },
 
+    *fetchProposalZone({ payload }, { call, put }) {
+      const response = yield call(queryProposalZone, payload);
+      yield put({
+        type: 'saveProposalZone',
+        payload: response.data,
+      });
+    },
+
     *createProposal({ payload }, { call, put }) {
       const response = yield call(createProposal, payload);
       if (response.status === 'success') {
@@ -81,6 +91,10 @@ const ProposalModel = {
     saveProposalZoneList(state, action) {
       return { ...state, zone_list: action.payload || [] };
     },
+    saveProposalZone(state, action) {
+      return { ...state, zone_detail: action.payload || {} };
+    },
+
     saveProposalList(state, action) {
       return { ...state, list: action.payload || [] };
     },

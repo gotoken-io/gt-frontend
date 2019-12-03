@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar } from 'antd';
 import Link from 'umi/link';
-import { getFielUrl } from '@/utils/user';
+import { getFielUrl } from '@/utils/upload';
 
 const UserAvatar = ({ id, src, avatar, username, size = 'default' }) => {
   let avatarComponent = <Avatar size={size} icon="user" alt={username} />;

@@ -12,7 +12,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getAuthorityFromRouter } from '@/utils/utils';
-import logo from '../assets/gt-logo.png';
+import logo from '../assets/gt-logo-white.png';
 import Footer from './components/Footer';
 import { getAuthority } from '@/utils/authority';
 
@@ -34,6 +34,10 @@ const noMatch = (
  */
 
 const menuData = [
+  {
+    path: '/proposal/zone/list',
+    name: '提案专区',
+  },
   {
     path: '/proposal/list',
     name: '提案列表',
