@@ -45,6 +45,9 @@ class Create extends Component {
         const submitData = {
           ...values,
           cover,
+          theme_style: values.theme_style ? values.theme_style : '',
+          vote_addr_weight_json: values.vote_addr_weight_json ? values.vote_addr_weight_json : '',
+          vote_rule: values.vote_rule ? values.vote_rule : '',
           detail: values.detail.toHTML(), // or values.content.toHTML()
         };
 
