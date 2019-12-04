@@ -6,8 +6,8 @@ const Footer = () => (
     copyright="2019"
     links={[
       {
-        key: 'Go Token',
-        title: 'Go Token',
+        key: 'GoToken',
+        title: 'GoToken',
         href: 'https://gotoken.io',
         blankTarget: true,
       },

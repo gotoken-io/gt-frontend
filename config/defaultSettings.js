@@ -9,7 +9,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Go Token',
+  title: 'GoToken',
   pwa: false,
   iconfontUrl: '',
   collapse: true,
