@@ -35,20 +35,21 @@ class BaseView extends Component {
 
   handlerSubmit = event => {
     event.preventDefault();
-    const { form } = this.props;
-    form.validateFields(err => {
+    const { form, dispatch } = this.props;
+
+    form.validateFields((err, values) => {
       if (!err) {
-        message.success(
-          formatMessage({
-            id: 'userandaccountsettings.basic.update.success',
-          }),
-        );
+        // 发起 修改个人信息 POST API
+        dispatch({
+          type: 'user/postUserInfo',
+          payload: { ...values },
+        });
       }
     });
   };
 
   render() {
-    const { currentUser } = this.props;
+    // const { currentUser } = this.props;
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -72,14 +73,14 @@ class BaseView extends Component {
                     ),
                   },
                 ],
-              })(<Input />)}
+              })(<Input disabled={true} />)}
             </FormItem>
             <FormItem
               label={formatMessage({
                 id: 'userandaccountsettings.basic.nickname',
               })}
             >
-              {getFieldDecorator('name', {
+              {getFieldDecorator('nickname', {
                 rules: [
                   {
                     required: true,
@@ -94,23 +95,12 @@ class BaseView extends Component {
               })(<Input />)}
             </FormItem>
 
-            <FormItem label="ETH 地址">
-              {getFieldDecorator('eth-wallet', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'ETH 地址',
-                  },
-                ],
-              })(<Input />)}
-            </FormItem>
-
             <FormItem
               label={formatMessage({
                 id: 'userandaccountsettings.basic.profile',
               })}
             >
-              {getFieldDecorator('profile', {
+              {getFieldDecorator('sign', {
                 rules: [
                   {
                     required: true,

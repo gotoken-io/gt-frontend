@@ -4,7 +4,7 @@ import { GridContent } from '@ant-design/pro-layout';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import Projects from './components/Projects';
-import styles from './Center.less';
+import styles from './style.less';
 import ProposalList from './components/ProposalList';
 import UserAvatar from '@/components/User/UserAvatar';
 
@@ -71,15 +71,9 @@ class AccountCenter extends PureComponent {
     const operationTabList = () => [
       {
         key: 'create',
-        tab: `创建的提案(${userDetail.proposals_created && userDetail.proposals_created.length})`,
-      },
-      {
-        key: 'claim',
-        tab: '申领的提案(0)',
-      },
-      {
-        key: 'vote',
-        tab: '投票的提案(0)',
+        tab: `创建的提案(${
+          userDetail.proposals_created ? userDetail.proposals_created.length : ''
+        })`,
       },
     ];
 
@@ -98,15 +92,18 @@ class AccountCenter extends PureComponent {
                 <div>
                   <div className={styles.avatarHolder}>
                     <UserAvatar size={100} {...userDetail} />
-                    <div className={styles.name}>{userDetail.username}</div>
-                    <div>{userDetail.signature}</div>
+                    <div className={styles.name}>用户名：{userDetail.username}</div>
+                    {userDetail.nickname && (
+                      <div className={styles.nickname}>昵称：{userDetail.nickname}</div>
+                    )}
+                    {userDetail.sign && (
+                      <div className={styles.sign}>
+                        <p>{userDetail.sign}</p>
+                      </div>
+                    )}
                   </div>
-                  <div className={styles.detail}>
-                    <p>
-                      <Icon type="wallet" />
-                      ETH 地址: 0x1234...
-                    </p>
-                  </div>
+                  {/* <div className={styles.detail}>
+                  </div> */}
                 </div>
               )}
             </Card>

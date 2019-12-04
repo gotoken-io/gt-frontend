@@ -1,4 +1,10 @@
-import { queryCurrent, queryUsers, queryUserDetail, updateUserAvatar } from '@/services/user';
+import {
+  queryCurrent,
+  queryUsers,
+  queryUserDetail,
+  updateUserAvatar,
+  updateUserInfo,
+} from '@/services/user';
 import { setCurrentUser, removeCurrentUser } from '@/utils/user';
 import { setAuthority, removeAuthority } from '@/utils/authority';
 import { message } from 'antd';
@@ -51,11 +57,23 @@ const UserModel = {
         });
       }
     },
+
+    *postUserInfo({ payload }, { call, put }) {
+      const response = yield call(updateUserInfo, payload);
+      if (response.status === 'success') {
+        message.success('更新个人信息成功');
+
+        yield put({
+          type: 'saveCurrentUser',
+          payload,
+        });
+      }
+    },
   },
   reducers: {
     saveCurrentUser(state, action) {
       setCurrentUser(action.payload);
-      return { ...state, currentUser: action.payload || {} };
+      return { ...state, currentUser: { ...state.currentUser, ...action.payload } || {} };
     },
 
     removeCurrentUser(state) {

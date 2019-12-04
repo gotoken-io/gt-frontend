@@ -89,7 +89,7 @@ const Detail = props => {
               <UserAvatar {...detail.creator} />
               <div className={styles.userContent}>
                 <h3>{detail.creator && detail.creator.username}</h3>
-                <Text>Creator</Text>
+                <Text>创建人</Text>
               </div>
             </div>
           </div>
