@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { Button } from 'antd';
 import { connect } from 'dva';
-import ZoneItem from './components/ZoneItem';
 import { GridContent } from '@ant-design/pro-layout';
+import Link from 'umi/link';
+import ZoneItem from './components/ZoneItem';
 import styles from './style.less';
 
 const List = props => {
-  const { zone_list } = props;
+  const { zone_list, currentUser } = props;
 
   useEffect(() => {
     const { dispatch } = props;
@@ -19,6 +20,12 @@ const List = props => {
 
   return (
     <GridContent>
+      {currentUser.admin && (
+        <Link to="/proposal/zone/create">
+          <Button type="primary">创建提案专区</Button>
+        </Link>
+      )}
+
       <div className={styles.container}>
         {zone_list.map(zone => (
           <ZoneItem {...zone} />
@@ -28,6 +35,7 @@ const List = props => {
   );
 };
 
-export default connect(({ proposal }) => ({
+export default connect(({ user, proposal }) => ({
+  currentUser: user.currentUser,
   zone_list: proposal.zone_list,
 }))(List);

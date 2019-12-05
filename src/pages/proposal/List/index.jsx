@@ -8,7 +8,8 @@ import Filter from './components/Filter';
 import styles from './style.less';
 
 const List = props => {
-  const { dispatch, list, zone_list } = props;
+  const { dispatch, list, zone_list, match } = props;
+  const { id } = match.params;
 
   useEffect(() => {
     if (dispatch) {
@@ -18,9 +19,10 @@ const List = props => {
 
       dispatch({
         type: 'proposal/fetchAllProposal',
+        payload: match.params,
       });
     }
-  }, []);
+  }, [match.params]);
 
   return (
     <GridContent>
@@ -31,10 +33,6 @@ const List = props => {
       <div className={styles.actions}>
         <Link to="/proposal/create">
           <Button type="primary">创建提案</Button>
-        </Link>
-
-        <Link to="/proposal/zone/create">
-          <Button type="primary">创建提案专区</Button>
         </Link>
       </div>
 

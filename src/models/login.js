@@ -2,6 +2,7 @@ import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
 import { logout, login, register } from '@/services/login';
 import { setAuthority, removeAuthority } from '@/utils/authority';
+import { removeCurrentUser } from '@/utils/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 
@@ -108,6 +109,8 @@ const Model = {
     },
     removeLoginStatus(state) {
       removeAuthority();
+      removeCurrentUser();
+
       return { ...state, currentUser: {} };
     },
   },

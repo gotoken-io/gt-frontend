@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag } from 'antd';
+import { Typography, Tag, Button } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import Link from 'umi/link';
 import styles from './style.less';
 import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
 import moment from '@/utils/moment';
+import { isCreatorOrAdmin } from '@/utils/user';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -27,7 +29,7 @@ const ZoneCover = ({ name, cover }) => {
 };
 
 const Detail = props => {
-  const { dispatch, detail, match } = props;
+  const { dispatch, detail, match, currentUser } = props;
 
   // get proposal id from url params
   const { id } = match.params;
@@ -58,6 +60,12 @@ const Detail = props => {
 
   return (
     <GridContent>
+      {isCreatorOrAdmin({ currentUser, detail }) && (
+        <Link to={`/proposal/update/${id}`}>
+          <Button className={styles.edit}>修改提案</Button>
+        </Link>
+      )}
+
       <div className={styles.container}>
         <Typography>
           <div className={styles.summaryCard}>
@@ -111,6 +119,7 @@ const Detail = props => {
   );
 };
 
-export default connect(({ proposal }) => ({
+export default connect(({ user, proposal }) => ({
+  currentUser: user.currentUser,
   detail: proposal.detail,
 }))(Detail);

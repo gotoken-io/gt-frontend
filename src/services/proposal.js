@@ -10,6 +10,16 @@ export async function createProposal(params) {
   });
 }
 
+export async function updateProposal(params) {
+  return request('/server/proposal/', {
+    method: 'PUT',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+    data: params,
+  });
+}
+
 // only admin can create proposal zone
 export async function createProposalZone(params) {
   return request('/server/proposal_zone/', {
@@ -27,6 +37,10 @@ export async function queryProposal({ id }) {
 
 export async function queryProposalList() {
   return request('/server/proposal/');
+}
+
+export async function queryProposalListByZoneID({ id }) {
+  return request('/server/proposal/?zone_id=' + id);
 }
 
 export async function queryProposalZoneList() {

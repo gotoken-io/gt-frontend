@@ -2,8 +2,10 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import {
   createProposal,
+  updateProposal,
   createProposalZone,
   queryProposalList,
+  queryProposalListByZoneID,
   queryProposal,
   queryProposalZoneList,
   queryCurrencylList,
@@ -30,8 +32,15 @@ const ProposalModel = {
     },
 
     // proposal
-    *fetchAllProposal(_, { call, put }) {
-      const response = yield call(queryProposalList);
+    *fetchAllProposal({ payload }, { call, put }) {
+      let response;
+
+      if (payload.id) {
+        response = yield call(queryProposalListByZoneID, payload);
+      } else {
+        response = yield call(queryProposalList);
+      }
+
       yield put({
         type: 'saveProposalList',
         payload: response.data,
@@ -53,6 +62,8 @@ const ProposalModel = {
         type: 'saveProposal',
         payload: response.data,
       });
+
+      return response.data;
     },
 
     *fetchProposalZone({ payload }, { call, put }) {
@@ -72,6 +83,18 @@ const ProposalModel = {
             pathname: '/',
           }),
         );
+      }
+    },
+
+    *updateProposal({ payload }, { call, put }) {
+      const response = yield call(updateProposal, payload);
+      if (response.status === 'success') {
+        message.success('提案修改成功');
+        // yield put(
+        //   routerRedux.replace({
+        //     pathname: '/',
+        //   }),
+        // );
       }
     },
 

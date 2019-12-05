@@ -88,9 +88,19 @@ export default {
           component: './proposal/List',
         },
         {
+          path: '/proposal/list/:id',
+          name: 'proposals',
+          component: './proposal/List',
+        },
+        {
           path: '/proposal/detail/:id',
           name: '提案详情',
           component: './proposal/Detail',
+        },
+        {
+          path: '/proposal/update/:id',
+          name: '编辑提案',
+          component: './proposal/Update',
         },
         {
           path: '/proposal/create',

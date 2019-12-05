@@ -19,6 +19,7 @@ const Item = props => {
             <div className={styles.cardHead}>
               <div className={styles.left}>
                 <Text>{zone.name}</Text>
+                &nbsp;&nbsp;
                 {/* 如果存在 zone_proposal_id 才会显示 ID */}
                 {zone_proposal_id && <Text>No.{zone_proposal_id}</Text>}
               </div>

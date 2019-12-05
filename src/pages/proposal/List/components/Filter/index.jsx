@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import Link from 'umi/link';
 import styles from './style.less';
 
 const Filter = props => {
@@ -10,7 +11,9 @@ const Filter = props => {
 
       <div className={styles.filters}>
         {zone_list.map(zone => (
-          <Button type="link">{zone.name}</Button>
+          <Link to={`/proposal/list/${zone.id}`}>
+            <Button type="link">{zone.name}</Button>
+          </Link>
         ))}
       </div>
     </div>
