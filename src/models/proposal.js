@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
+import router from 'umi/router';
 import {
   createProposal,
   updateProposal,
@@ -90,11 +91,7 @@ const ProposalModel = {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
         message.success('提案修改成功');
-        // yield put(
-        //   routerRedux.replace({
-        //     pathname: '/',
-        //   }),
-        // );
+        router.go(-1); // 回到上一页
       }
     },
 

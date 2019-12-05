@@ -11,7 +11,7 @@ const Filter = props => {
 
       <div className={styles.filters}>
         {zone_list.map(zone => (
-          <Link to={`/proposal/list/${zone.id}`}>
+          <Link key={zone.id} to={`/proposal/list/${zone.id}`}>
             <Button type="link">{zone.name}</Button>
           </Link>
         ))}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { connect } from 'dva';
+import { message } from 'antd';
 import styles from './style.less';
 
 const { TextArea } = Input;
@@ -17,14 +18,18 @@ const CommentForm = props => {
       if (!err) {
         // console.log('Received values of form: ', values);
 
-        const { dispatch, proposalDetail } = props;
-        dispatch({
-          type: 'comment/createComment',
-          payload: { ...values, proposal_id: proposalDetail.id },
-        });
+        const { dispatch, proposalDetail, currentUser } = props;
+        if (currentUser.id) {
+          dispatch({
+            type: 'comment/createComment',
+            payload: { ...values, proposal_id: proposalDetail.id },
+          });
 
-        // clear input value
-        resetFields();
+          // clear input value
+          resetFields();
+        } else {
+          message.error('请先登陆');
+        }
       }
     });
   };
@@ -53,7 +58,8 @@ const CommentForm = props => {
 };
 
 const CommentFormWrapper = Form.create({ name: 'comment_form' })(CommentForm);
-export default connect(({ proposal, loading }) => ({
+export default connect(({ user, proposal, loading }) => ({
+  currentUser: user.currentUser,
   proposalDetail: proposal.detail,
   submittingCreate: loading.effects['comment/createComment'],
   submittingUpdate: loading.effects['comment/updateComment'],

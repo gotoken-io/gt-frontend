@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Avatar, Input, Button } from 'antd';
+import { Form, message, Input, Button } from 'antd';
 import { connect } from 'dva';
 import styles from './style.less';
 
@@ -17,13 +17,18 @@ const ReplyForm = props => {
       if (!err) {
         console.log('Received values of form: ', values);
 
-        const { dispatch, proposalDetail, parent_id } = props;
-        dispatch({
-          type: 'comment/createComment',
-          payload: { text: values.text, proposal_id: proposalDetail.id, parent_id },
-        });
+        const { dispatch, proposalDetail, parent_id, currentUser } = props;
 
-        resetFields();
+        if (currentUser.id) {
+          dispatch({
+            type: 'comment/createComment',
+            payload: { text: values.text, proposal_id: proposalDetail.id, parent_id },
+          });
+
+          resetFields();
+        } else {
+          message.error('请先登陆');
+        }
       }
     });
   };
@@ -53,7 +58,8 @@ const ReplyForm = props => {
 
 const ReplyFormWrapper = Form.create({ name: 'reply_form' })(ReplyForm);
 
-export default connect(({ proposal, loading }) => ({
+export default connect(({ user, proposal, loading }) => ({
+  currentUser: user.currentUser,
   proposalDetail: proposal.detail,
   submittingCreate: loading.effects['comment/createComment'],
   submittingUpdate: loading.effects['comment/updateComment'],

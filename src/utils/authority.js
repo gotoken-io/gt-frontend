@@ -15,7 +15,6 @@ export function setAuthority(Authorization, noExpire) {
   if (noExpire) {
     localStorage.setItem('Authorization', Authorization);
   } else {
-    console.log('session');
     sessionStorage.setItem('Authorization', Authorization);
   }
   reloadAuthorized(); // auto reload

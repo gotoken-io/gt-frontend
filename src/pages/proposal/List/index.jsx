@@ -38,7 +38,7 @@ const List = props => {
 
       <div className={styles.list}>
         {list.map(item => (
-          <Item {...item} />
+          <Item key={item.id} {...item} />
         ))}
       </div>
 

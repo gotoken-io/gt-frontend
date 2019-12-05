@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Input, Select, Radio, Button } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
+import router from 'umi/router';
 import { connect } from 'dva';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
@@ -33,7 +34,6 @@ class Create extends Component {
           type: 'proposal/fetchProposal',
           payload: { id },
         }).then(data => {
-          console.log('data', data);
           this.setFormValues(data);
         });
         // 回填表单内容
@@ -87,6 +87,13 @@ class Create extends Component {
             break;
           case 'detail':
             form.setFieldsValue({ detail: BraftEditor.createEditorState(detail['detail']) });
+            break;
+          case 'tag':
+            if (detail.tag === '') {
+              form.setFieldsValue({ tag: [] });
+            } else {
+              form.setFieldsValue({ tag: detail.tag.split(',') });
+            }
             break;
           default:
             form.setFieldsValue(obj);
@@ -284,7 +291,9 @@ class Create extends Component {
                     <Select name="budget-unit" style={{ width: 120, marginLeft: 10 }}>
                       {currency_list &&
                         currency_list.map(currency => (
-                          <Option value={currency.id}>{currency.unit}</Option>
+                          <Option key={currency.id} value={currency.id}>
+                            {currency.unit}
+                          </Option>
                         ))}
                     </Select>,
                   )}
@@ -293,9 +302,7 @@ class Create extends Component {
             </Form.Item>
 
             <Form.Item label="提案标签">
-              {getFieldDecorator('tag', {
-                rules: [],
-              })(
+              {getFieldDecorator('tag')(
                 <Select mode="tags" style={{ width: '100%' }} placeholder="提案标签">
                   {/* {children} */}
                 </Select>,
@@ -331,7 +338,9 @@ class Create extends Component {
                 提交
               </Button>
 
-              <Button size="large">取消</Button>
+              <Button onClick={() => router.go(-1)} size="large">
+                取消
+              </Button>
             </Form.Item>
           </Form>
         </div>

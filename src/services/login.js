@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { getAuthority } from '@/utils/authority';
 
 export async function login(params) {
   return request('/server/auth/login', {
