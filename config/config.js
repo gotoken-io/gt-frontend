@@ -84,12 +84,12 @@ export default {
       routes: [
         {
           path: '/proposal/list',
-          name: 'proposals',
+          name: '提案列表',
           component: './proposal/List',
         },
         {
           path: '/proposal/list/:id',
-          name: 'proposals',
+          name: '提案列表',
           component: './proposal/List',
         },
         {
@@ -122,6 +122,11 @@ export default {
           name: '创建提案专区',
           component: './proposal_zone/Create',
         },
+        {
+          path: '/proposal/zone/update/:id',
+          name: '编辑提案专区',
+          component: './proposal_zone/Update',
+        },
       ],
     },
     {
@@ -130,7 +135,6 @@ export default {
       routes: [
         {
           name: '个人中心',
-          icon: 'smile',
           path: '/user/:id',
           component: './user/AccountCenter',
         },
@@ -152,15 +156,8 @@ export default {
               component: './Admin',
               authority: ['admin'],
             },
-            // {
-            //   name: '个人中心',
-            //   icon: 'smile',
-            //   path: '/account/center/:id',
-            //   component: './user/AccountCenter',
-            // },
             {
               name: '个人设置',
-              icon: 'smile',
               path: '/account/settings',
               component: './user/AccountSettings',
             },
@@ -199,12 +196,12 @@ export default {
           path: '/reset-pwd',
           component: './user/ResetPwd',
         },
-        {
-          name: '登录页',
-          icon: 'smile',
-          path: '/userlogin',
-          component: './user/UserLogin',
-        },
+        // {
+        //   name: '登录页',
+        //   icon: 'smile',
+        //   path: '/userlogin',
+        //   component: './user/UserLogin',
+        // },
       ],
     },
     {

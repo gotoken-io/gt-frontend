@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from 'antd';
+import { Typography, Button } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import Link from 'umi/link';
 import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
@@ -16,15 +17,15 @@ const ZoneCover = ({ name, cover }) => {
 
   return (
     <div className={styles.cardCover} style={{ backgroundImage: `url(${cardCoverSrc})` }}>
-      <Typography>
+      {/* <Typography>
         <Title className={styles.titleNo}>{name}</Title>
-      </Typography>
+      </Typography> */}
     </div>
   );
 };
 
 const Detail = props => {
-  const { dispatch, zone_detail, match } = props;
+  const { dispatch, zone_detail, match, currentUser } = props;
 
   // get proposal id from url params
 
@@ -41,6 +42,14 @@ const Detail = props => {
 
   return (
     <GridContent>
+      {currentUser.admin && (
+        <Link to={`/proposal/zone/update/${id}`}>
+          <Button className={styles.edit} type="primary">
+            编辑
+          </Button>
+        </Link>
+      )}
+
       <div className={styles.container}>
         <Typography>
           <div className={styles.summaryCard}>
@@ -69,6 +78,7 @@ const Detail = props => {
   );
 };
 
-export default connect(({ proposal }) => ({
+export default connect(({ user, proposal }) => ({
+  currentUser: user.currentUser,
   zone_detail: proposal.zone_detail,
 }))(Detail);

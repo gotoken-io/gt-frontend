@@ -12,7 +12,7 @@ export async function createProposal(params) {
 }
 
 export async function updateProposal(params) {
-  return request('/server/proposal/', {
+  return request(`/server/proposal/${params.id}`, {
     method: 'PUT',
     headers: {
       Authorization: getAuthority(),
@@ -25,6 +25,17 @@ export async function updateProposal(params) {
 export async function createProposalZone(params) {
   return request('/server/proposal_zone/', {
     method: 'POST',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
+// only admin can update proposal zone
+export async function updateProposalZone(params) {
+  return request(`/server/proposal_zone/${params.id}`, {
+    method: 'PUT',
     headers: {
       Authorization: getAuthority(),
     },

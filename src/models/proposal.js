@@ -5,6 +5,7 @@ import {
   createProposal,
   updateProposal,
   createProposalZone,
+  updateProposalZone,
   queryProposalList,
   queryProposalListByZoneID,
   queryProposal,
@@ -69,10 +70,13 @@ const ProposalModel = {
 
     *fetchProposalZone({ payload }, { call, put }) {
       const response = yield call(queryProposalZone, payload);
+
       yield put({
         type: 'saveProposalZone',
         payload: response.data,
       });
+
+      return response.data;
     },
 
     *createProposal({ payload }, { call, put }) {
@@ -91,7 +95,7 @@ const ProposalModel = {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
         message.success('提案修改成功');
-        router.go(-1); // 回到上一页
+        // router.go(-1); // 回到上一页
       }
     },
 
@@ -104,6 +108,18 @@ const ProposalModel = {
             pathname: '/',
           }),
         );
+      }
+    },
+
+    *updateProposalZone({ payload }, { call, put }) {
+      const response = yield call(updateProposalZone, payload);
+      if (response.status === 'success') {
+        message.success('提案专区修改成功');
+        // yield put(
+        //   routerRedux.replace({
+        //     pathname: '/',
+        //   }),
+        // );
       }
     },
   },

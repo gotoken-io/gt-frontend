@@ -21,9 +21,9 @@ const ZoneCover = ({ name, cover }) => {
 
   return (
     <div className={styles.cardCover} style={{ backgroundImage: `url(${cardCoverSrc})` }}>
-      <Typography>
+      {/* <Typography>
         <Title className={styles.titleNo}>{name}</Title>
-      </Typography>
+      </Typography> */}
     </div>
   );
 };
@@ -62,7 +62,9 @@ const Detail = props => {
     <GridContent>
       {isCreatorOrAdmin({ currentUser, detail }) && (
         <Link to={`/proposal/update/${id}`}>
-          <Button className={styles.edit}>修改提案</Button>
+          <Button type="primary" className={styles.edit}>
+            修改提案
+          </Button>
         </Link>
       )}
 
