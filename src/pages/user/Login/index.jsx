@@ -15,6 +15,7 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        console.log(values);
         const { dispatch } = this.props;
         dispatch({
           type: 'login/login',
@@ -86,7 +87,6 @@ class Login extends React.Component {
           </Form.Item>
 
           <Form.Item>
-            {' '}
             {getFieldDecorator('remember', {
               valuePropName: 'checked',
               initialValue: true,

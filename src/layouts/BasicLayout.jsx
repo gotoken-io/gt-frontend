@@ -66,6 +66,10 @@ const BasicLayout = props => {
         dispatch({
           type: 'user/fetchCurrent',
         });
+      } else {
+        dispatch({
+          type: 'user/removeCurrentUser',
+        });
       }
 
       dispatch({

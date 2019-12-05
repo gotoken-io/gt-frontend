@@ -1,10 +1,11 @@
 import request from '@/utils/request';
+import { getAuthority } from '@/utils/authority';
 
 export async function createProposal(params) {
   return request('/server/proposal/', {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: getAuthority(),
     },
     data: params,
   });
@@ -14,7 +15,7 @@ export async function updateProposal(params) {
   return request('/server/proposal/', {
     method: 'PUT',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: getAuthority(),
     },
     data: params,
   });
@@ -25,7 +26,7 @@ export async function createProposalZone(params) {
   return request('/server/proposal_zone/', {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: getAuthority(),
     },
     data: params,
   });

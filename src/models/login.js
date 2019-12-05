@@ -9,17 +9,19 @@ import { message } from 'antd';
 const Model = {
   namespace: 'login',
   state: {
-    status: undefined,
+    // status: undefined,
   },
   effects: {
     *register({ payload }, { call, put }) {
       const response = yield call(register, payload);
-      if (response.status === 'success') {
+      const { status } = response;
+
+      if (status === 'success') {
         message.success('注册成功');
 
         yield put({
           type: 'setLoginStatus',
-          payload: response,
+          payload: { ...response, noExpire: true },
         });
 
         const urlParams = new URL(window.location.href);
@@ -42,17 +44,21 @@ const Model = {
         }
 
         yield put(routerRedux.replace(redirect || '/'));
+      } else if (status === 409) {
+        message.error('注册邮箱或用户名已经存在，请直接登陆');
       }
     },
 
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      if (response.status === 'success') {
+      const { status } = response;
+
+      if (status === 'success') {
         message.success('登陆成功');
 
         yield put({
           type: 'setLoginStatus',
-          payload: response,
+          payload: { ...response, noExpire: payload.remember }, // 默认保存账号
         }); // Login successfully
 
         const urlParams = new URL(window.location.href);
@@ -75,6 +81,8 @@ const Model = {
         }
 
         yield put(routerRedux.replace(redirect || '/'));
+      } else if (status === 401) {
+        message.error('邮箱或密码错误！');
       }
     },
 
@@ -104,8 +112,9 @@ const Model = {
   },
   reducers: {
     setLoginStatus(state, { payload }) {
-      setAuthority(payload.Authorization);
-      return { ...state, status: payload.status, token: payload.Authorization };
+      console.log(payload);
+      setAuthority(payload.Authorization, payload.noExpire);
+      return state;
     },
     removeLoginStatus(state) {
       removeAuthority();
