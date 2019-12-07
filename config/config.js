@@ -70,8 +70,8 @@ export default {
     // defaultGitUrl: 'https://gitee.com/ant-design/pro-blocks',
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
   },
-  history: 'hash',
-  // hash: true,
+  history: 'browser',
+  hash: true,
   targets: {
     ie: 11,
   },
@@ -212,6 +212,7 @@ export default {
   theme: {
     'primary-color': primaryColor,
   },
+  treeShaking: true, //gzip 后的尺寸能减少 10K
   define: {
     ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
       ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
