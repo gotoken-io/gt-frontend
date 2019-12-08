@@ -19,6 +19,6 @@ export function getBase64(img, callback) {
 }
 
 export function getFielUrl(filename) {
-  const bucketBaseUrl = 'http://q1tvwz2mb.bkt.clouddn.com/';
+  const bucketBaseUrl = 'http://q27c8thto.bkt.clouddn.com/';
   return bucketBaseUrl + filename;
 }
