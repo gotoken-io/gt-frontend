@@ -127,6 +127,9 @@ export default {
           name: '编辑提案专区',
           component: './proposal_zone/Update',
         },
+        {
+          component: './404',
+        },
       ],
     },
     {
@@ -137,6 +140,9 @@ export default {
           name: '个人中心',
           path: '/user/:id',
           component: './user/AccountCenter',
+        },
+        {
+          component: './404',
         },
       ],
     },
@@ -166,9 +172,6 @@ export default {
             },
           ],
         },
-        {
-          component: './404',
-        },
       ],
     },
     {
@@ -196,12 +199,9 @@ export default {
           path: '/reset-pwd',
           component: './user/ResetPwd',
         },
-        // {
-        //   name: '登录页',
-        //   icon: 'smile',
-        //   path: '/userlogin',
-        //   component: './user/UserLogin',
-        // },
+        {
+          component: './404',
+        },
       ],
     },
     {
@@ -212,7 +212,8 @@ export default {
   theme: {
     'primary-color': primaryColor,
   },
-  treeShaking: true, //gzip 后的尺寸能减少 10K
+  treeShaking: true,
+  //gzip 后的尺寸能减少 10K
   define: {
     ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
       ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。

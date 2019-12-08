@@ -13,6 +13,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/gt-logo-white.png';
+import site_logo from '@/assets/gt_logo_transparent.png';
 import Footer from './components/Footer';
 import { getAuthority } from '@/utils/authority';
 
@@ -96,6 +97,7 @@ const BasicLayout = props => {
   return (
     <ProLayout
       logo={logo}
+      title="GoToken"
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
