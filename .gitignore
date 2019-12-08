@@ -40,3 +40,5 @@ screenshot
 build
 
 /node_modules
+
+mock/
