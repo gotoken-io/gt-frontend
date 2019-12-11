@@ -3,11 +3,11 @@ import { message } from 'antd';
 export function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只支持上传 JPG/PNG 文件!');
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 0.512;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('文件大小不能超过 512KB!');
   }
   return isJpgOrPng && isLt2M;
 }

@@ -23,6 +23,8 @@ const plugins = [
         // default true, when it is true, will use `navigator.language` overwrite default
         baseNavigator: true,
       },
+      // build 后拆分成多个静态资源文件
+      dynamicImport: true,
       // dynamicImport: {
       //   loadingComponent: './components/PageLoading/index',
       //   webpackChunkName: true,
