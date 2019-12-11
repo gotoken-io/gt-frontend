@@ -126,7 +126,7 @@ const Create = props => {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
 
         // filter some form value
         const submitData = {
@@ -138,7 +138,7 @@ const Create = props => {
           detail: values.detail.toHTML(), // or values.content.toHTML()
         };
 
-        console.log(submitData);
+        // console.log(submitData);
 
         if (dispatch) {
           if (match.params.id) {

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Card, Typography, Tag } from 'antd';
+import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
 import styles from './style.less';
 import UserAvatar from '@/components/User/UserAvatar';
 
-const { Title, Text } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const Item = props => {
   const { title, id, zone_proposal_id, zone, summary, amount, creator, currency_unit } = props;
@@ -31,8 +32,12 @@ const Item = props => {
                 )}
               </div>
             </div>
-            <h3 className={styles.proposalTitle}>{title}</h3>
-            <Text>{summary}</Text>
+            <Title level={3} className={styles.title}>
+              <LinesEllipsis text={title} maxLine="2" />
+            </Title>
+            <Paragraph className={styles.summary}>
+              <LinesEllipsis text={summary} maxLine="2" />
+            </Paragraph>
             {creator && (
               <div className={styles.creator}>
                 <UserAvatar {...creator} />

@@ -38,7 +38,7 @@ const Detail = props => {
     }
   }, []);
 
-  const { id, name, title, token, summary, vote_rule, vote_addr_weight_json } = zone_detail;
+  const { id, name, title, token, summary, detail, vote_rule, vote_addr_weight_json } = zone_detail;
 
   return (
     <GridContent>
@@ -56,20 +56,27 @@ const Detail = props => {
             <ZoneCover {...zone_detail} />
 
             <div className={styles.summaryContent}>
-              <h3 className={styles.proposalTitle}>{title}</h3>
-              <h3 className={styles.proposalTitle}>{name}</h3>
-              <h3 className={styles.proposalTitle}>{token}</h3>
+              <Title level={1}>{title}</Title>
+              <h3 className={styles.proposalTitle}>简称: {name}</h3>
+              <h3 className={styles.proposalTitle}>Token: {token}</h3>
               <Paragraph>{summary}</Paragraph>
             </div>
           </div>
 
           <div className={styles.detail}>
-            <Title level={2}>投票规则</Title>
+            <Title level={3}>专区详情</Title>
+            <Paragraph>
+              <div dangerouslySetInnerHTML={{ __html: detail }} />
+            </Paragraph>
+          </div>
+
+          <div className={styles.detail}>
+            <Title level={3}>投票规则</Title>
             <Paragraph>{vote_rule}</Paragraph>
           </div>
 
           <div className={styles.detail}>
-            <Title level={2}>投票地址与权重</Title>
+            <Title level={3}>投票地址与权重</Title>
             <Paragraph>{vote_addr_weight_json}</Paragraph>
           </div>
         </Typography>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button } from 'antd';
+import { Typography, Tag, Button, Modal } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import Link from 'umi/link';
@@ -9,9 +9,10 @@ import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
 import moment from '@/utils/moment';
-import { isCreatorOrAdmin } from '@/utils/user';
+import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 
 const { Title, Paragraph, Text } = Typography;
+const { confirm } = Modal;
 
 const ZoneCover = ({ name, cover }) => {
   let cardCoverSrc = defaultCover;
@@ -58,14 +59,38 @@ const Detail = props => {
     return null;
   };
 
+  function showDelConfirm() {
+    confirm({
+      title: `确定删除提案 ${detail.zone.name} No.${detail.zone_proposal_id}?`,
+      content: '点击确定后，提案将删除',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        if (dispatch) {
+          dispatch({
+            type: 'proposal/deleteProposal',
+            payload: { id },
+          });
+        }
+      },
+      onCancel() {},
+    });
+  }
+
   return (
     <GridContent>
       {isCreatorOrAdmin({ currentUser, detail }) && (
         <Link to={`/proposal/update/${id}`}>
-          <Button type="primary" className={styles.edit}>
+          <Button type="primary" className={styles.actionsBtn}>
             修改提案
           </Button>
         </Link>
+      )}
+
+      {isAdmin({ currentUser }) && (
+        <Button type="danger" className={styles.actionsBtn} onClick={showDelConfirm}>
+          删除提案
+        </Button>
       )}
 
       <div className={styles.container}>
@@ -76,6 +101,8 @@ const Detail = props => {
             <div className={styles.summaryContent}>
               <div className={styles.cardHead}>
                 <div className={styles.left}>
+                  <Text>{detail.zone && detail.zone.name}</Text>
+                  &nbsp;&nbsp;
                   {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
                 </div>
                 <div className={styles.right}>
@@ -87,7 +114,9 @@ const Detail = props => {
                   )}
                 </div>
               </div>
-              <h3 className={styles.proposalTitle}>{detail.title}</h3>
+              <Title level={2} className={styles.proposalTitle}>
+                {detail.title}
+              </Title>
               <Paragraph>创建时间: {moment.datetime(detail.created)}</Paragraph>
               <Paragraph>{detail.summary}</Paragraph>
               <Tags tag={detail.tag} />
@@ -98,21 +127,21 @@ const Detail = props => {
             <div className={styles.user}>
               <UserAvatar {...detail.creator} />
               <div className={styles.userContent}>
-                <h3>{detail.creator && detail.creator.username}</h3>
+                <Title level={3}>{detail.creator && detail.creator.username}</Title>
                 <Text>创建人</Text>
               </div>
             </div>
           </div>
 
           <div className={styles.detail}>
-            <Title level={2}>项目详情</Title>
+            <Title level={3}>项目详情</Title>
             <Paragraph>
               <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
             </Paragraph>
           </div>
 
           <div className={styles.comments}>
-            <Title level={2}>评论</Title>
+            <Title level={3}>评论</Title>
             {detail && <Comments id={id} />}
           </div>
         </Typography>
