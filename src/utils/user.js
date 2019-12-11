@@ -14,10 +14,9 @@ export function isCreatorOrAdmin({ currentUser, detail }) {
   if (currentUser && currentUser.admin === true) {
     return true;
   }
-  if (currentUser && detail) {
-    if (detail.creator && detail.creator.id === currentUser.id.toString()) {
-      return true;
-    }
+
+  if (detail.creator && detail.creator.id === currentUser.id && currentUser.id.toString()) {
+    return true;
   }
 
   return false;
