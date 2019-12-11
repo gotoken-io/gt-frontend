@@ -1,4 +1,5 @@
 import { message } from 'antd';
+// import defaultCover from '@/assets/default_cover.png';
 
 export function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -19,6 +20,22 @@ export function getBase64(img, callback) {
 }
 
 export function getFielUrl(filename) {
-  const bucketBaseUrl = 'http://q27c8thto.bkt.clouddn.com/';
-  return bucketBaseUrl + filename;
+  const config = getUploadConfig();
+  if (config.qiniu_bucket_domain) {
+    return config.qiniu_bucket_domain + '/' + filename;
+  } else {
+    return '/default.png';
+  }
+}
+
+export function getUploadConfig() {
+  return JSON.parse(localStorage.getItem('UploadConfig'));
+}
+
+export function setUploadConfig(UploadConfig) {
+  localStorage.setItem('UploadConfig', JSON.stringify(UploadConfig));
+}
+
+export function removeUploadConfig() {
+  localStorage.removeItem('UploadConfig');
 }

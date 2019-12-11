@@ -68,10 +68,15 @@ const BasicLayout = props => {
           type: 'user/fetchCurrent',
         });
       } else {
+        // if not login, remove current user cache from localstorage
         dispatch({
           type: 'user/removeCurrentUser',
         });
       }
+
+      dispatch({
+        type: 'global/queryUploadConfig',
+      });
 
       dispatch({
         type: 'settings/getSetting',

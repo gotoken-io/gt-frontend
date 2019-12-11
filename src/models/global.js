@@ -1,29 +1,25 @@
 // import { queryNotices } from '@/services/user';
+import { queryUploadConfig } from '@/services/upload';
+import { setUploadConfig } from '@/utils/upload';
+// import { message } from 'antd';
 
 const GlobalModel = {
   namespace: 'global',
   state: {
     collapsed: false,
-    notices: [],
+    uploadConfig: {},
   },
   effects: {
-    // *fetchNotices(_, { call, put, select }) {
-    //   const data = yield call(queryNotices);
-    //   yield put({
-    //     type: 'saveNotices',
-    //     payload: data,
-    //   });
-    //   const unreadCount = yield select(
-    //     state => state.global.notices.filter(item => !item.read).length,
-    //   );
-    //   yield put({
-    //     type: 'user/changeNotifyCount',
-    //     payload: {
-    //       totalCount: data.length,
-    //       unreadCount,
-    //     },
-    //   });
-    // },
+    *queryUploadConfig(_, { call, put }) {
+      const resp = yield call(queryUploadConfig);
+
+      if (resp.status === 'success') {
+        yield put({
+          type: 'saveUploadConfig',
+          payload: resp.data,
+        });
+      }
+    },
     // *clearNotices({ payload }, { put, select }) {
     //   yield put({
     //     type: 'saveClearedNotices',
@@ -65,6 +61,10 @@ const GlobalModel = {
     // },
   },
   reducers: {
+    saveUploadConfig(state, { payload }) {
+      setUploadConfig(payload);
+      return { ...state, uploadConfig: payload };
+    },
     changeLayoutCollapsed(
       state = {
         notices: [],

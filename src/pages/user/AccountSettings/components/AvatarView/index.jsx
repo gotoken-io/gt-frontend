@@ -4,6 +4,7 @@ import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { connect } from 'dva';
 import { getFielUrl } from '@/utils/upload';
 import UserAvatar from '@/components/User/UserAvatar';
+import ImgCrop from 'antd-img-crop';
 import { beforeUpload, getBase64 } from '@/utils/upload';
 import styles from './style.less';
 
@@ -53,21 +54,23 @@ const AvatarView = props => {
       <div className={styles.avatar}>
         <UserAvatar size={144} src={userAvatar} username={currentUser.username} />
       </div>
-      <Upload
-        action="/server/upload/image/"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-        showUploadList={false}
-      >
-        <div className={styles.button_view}>
-          <Button icon="upload">
-            <FormattedMessage
-              id="userandaccountsettings.basic.change-avatar"
-              defaultMessage="Change avatar"
-            />
-          </Button>
-        </div>
-      </Upload>
+      <ImgCrop>
+        <Upload
+          action="/server/upload/image/"
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+          showUploadList={false}
+        >
+          <div className={styles.button_view}>
+            <Button icon="upload">
+              <FormattedMessage
+                id="userandaccountsettings.basic.change-avatar"
+                defaultMessage="Change avatar"
+              />
+            </Button>
+          </div>
+        </Upload>
+      </ImgCrop>
     </div>
   );
 };

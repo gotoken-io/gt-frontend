@@ -28,7 +28,7 @@ const List = props => {
 
       <div className={styles.container}>
         {zone_list.map(zone => (
-          <ZoneItem {...zone} />
+          <ZoneItem key={zone.id} {...zone} />
         ))}
       </div>
     </GridContent>

@@ -157,13 +157,13 @@ export default {
           component: '../layouts/BasicLayout',
           authority: ['admin', 'user'],
           routes: [
-            {
-              path: '/account/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
-            },
+            // {
+            //   path: '/account/admin',
+            //   name: 'admin',
+            //   icon: 'crown',
+            //   component: './Admin',
+            //   authority: ['admin'],
+            // },
             {
               name: '个人设置',
               path: '/account/settings',
