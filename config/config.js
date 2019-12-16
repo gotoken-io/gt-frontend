@@ -191,13 +191,11 @@ export default {
         },
         {
           name: 'register',
-          icon: 'smile',
           path: '/register',
           component: './user/Register',
         },
         {
           name: 'reset-pwd',
-          icon: 'smile',
           path: '/reset-pwd',
           component: './user/ResetPwd',
         },

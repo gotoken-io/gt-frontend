@@ -48,15 +48,17 @@ const Create = props => {
     const { form } = props;
 
     if (detail) {
-      setCover(detail.cover);
-      setFileList([
-        {
-          uid: '1',
-          name: detail.cover,
-          status: 'done',
-          url: getFielUrl(detail.cover),
-        },
-      ]);
+      if (detail.cover) {
+        setCover(detail.cover);
+        setFileList([
+          {
+            uid: '1',
+            name: detail.cover,
+            status: 'done',
+            url: getFielUrl(detail.cover),
+          },
+        ]);
+      }
 
       Object.keys(form.getFieldsValue()).forEach(key => {
         const obj = {};
@@ -231,20 +233,18 @@ const Create = props => {
           </Form.Item>
 
           <Form.Item label="上传提案专区封面">
-            {cover && (
-              <ImgCrop>
-                <Upload
-                  action="/server/upload/image/"
-                  beforeUpload={beforeUpload}
-                  fileList={fileList}
-                  onChange={handleUploadChange}
-                >
-                  <Button>
-                    <Icon type="upload" /> 选择封面
-                  </Button>
-                </Upload>
-              </ImgCrop>
-            )}
+            <ImgCrop>
+              <Upload
+                action="/server/upload/image/"
+                beforeUpload={beforeUpload}
+                fileList={fileList}
+                onChange={handleUploadChange}
+              >
+                <Button>
+                  <Icon type="upload" /> 选择封面
+                </Button>
+              </Upload>
+            </ImgCrop>
           </Form.Item>
 
           <Divider />
