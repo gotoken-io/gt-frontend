@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button } from 'antd';
+import { Typography, Button, Spin } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import Link from 'umi/link';
@@ -39,6 +39,7 @@ const Detail = props => {
   }, []);
 
   const { id, name, title, token, summary, detail, vote_rule, vote_addr_weight_json } = zone_detail;
+  const { fetchProposalZoneLoading } = props;
 
   return (
     <GridContent>
@@ -50,42 +51,45 @@ const Detail = props => {
         </Link>
       )}
 
-      <div className={styles.container}>
-        <Typography>
-          <div className={styles.summaryCard}>
-            <ZoneCover {...zone_detail} />
+      <Spin spinning={fetchProposalZoneLoading}>
+        <div className={styles.container}>
+          <Typography>
+            <div className={styles.summaryCard}>
+              <ZoneCover {...zone_detail} />
 
-            <div className={styles.summaryContent}>
-              <Title level={1}>{title}</Title>
-              <h3 className={styles.proposalTitle}>简称: {name}</h3>
-              <h3 className={styles.proposalTitle}>Token: {token}</h3>
-              <Paragraph>{summary}</Paragraph>
+              <div className={styles.summaryContent}>
+                <Title level={1}>{title}</Title>
+                <h3 className={styles.proposalTitle}>简称: {name}</h3>
+                <h3 className={styles.proposalTitle}>Token: {token}</h3>
+                <Paragraph>{summary}</Paragraph>
+              </div>
             </div>
-          </div>
 
-          <div className={styles.detail}>
-            <Title level={3}>专区详情</Title>
-            <Paragraph>
-              <div dangerouslySetInnerHTML={{ __html: detail }} />
-            </Paragraph>
-          </div>
+            <div className={styles.detail}>
+              <Title level={3}>专区详情</Title>
+              <Paragraph>
+                <div dangerouslySetInnerHTML={{ __html: detail }} />
+              </Paragraph>
+            </div>
 
-          <div className={styles.detail}>
-            <Title level={3}>投票规则</Title>
-            <Paragraph>{vote_rule}</Paragraph>
-          </div>
+            <div className={styles.detail}>
+              <Title level={3}>投票规则</Title>
+              <Paragraph>{vote_rule}</Paragraph>
+            </div>
 
-          <div className={styles.detail}>
-            <Title level={3}>投票地址与权重</Title>
-            <Paragraph>{vote_addr_weight_json}</Paragraph>
-          </div>
-        </Typography>
-      </div>
+            <div className={styles.detail}>
+              <Title level={3}>投票地址与权重</Title>
+              <Paragraph>{vote_addr_weight_json}</Paragraph>
+            </div>
+          </Typography>
+        </div>
+      </Spin>
     </GridContent>
   );
 };
 
-export default connect(({ user, proposal }) => ({
+export default connect(({ user, proposal, loading }) => ({
   currentUser: user.currentUser,
   zone_detail: proposal.zone_detail,
+  fetchProposalZoneLoading: loading.effects['proposal/fetchProposalZone'],
 }))(Detail);

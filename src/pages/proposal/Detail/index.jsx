@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button, Modal } from 'antd';
+import { Typography, Tag, Button, Modal, Spin } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import Link from 'umi/link';
@@ -77,6 +77,8 @@ const Detail = props => {
     });
   }
 
+  const { fetchDetailLoading } = props;
+
   return (
     <GridContent>
       {isCreatorOrAdmin({ currentUser, detail }) && (
@@ -94,63 +96,66 @@ const Detail = props => {
       )}
 
       <div className={styles.container}>
-        <Typography>
-          <div className={styles.summaryCard}>
-            <ZoneCover {...detail.zone} />
+        <Spin spinning={fetchDetailLoading}>
+          <Typography>
+            <div className={styles.summaryCard}>
+              <ZoneCover {...detail.zone} />
 
-            <div className={styles.summaryContent}>
-              <div className={styles.cardHead}>
-                <div className={styles.left}>
-                  <Text>{detail.zone && detail.zone.name}</Text>
-                  &nbsp;&nbsp;
-                  {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
+              <div className={styles.summaryContent}>
+                <div className={styles.cardHead}>
+                  <div className={styles.left}>
+                    <Text>{detail.zone && detail.zone.name}</Text>
+                    &nbsp;&nbsp;
+                    {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
+                  </div>
+                  <div className={styles.right}>
+                    {proposalAmount > 0 && (
+                      <span className={styles.proposalAmount}>
+                        {proposalAmount}&nbsp;
+                        {detail.currency_unit && detail.currency_unit.unit}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className={styles.right}>
-                  {proposalAmount > 0 && (
-                    <span className={styles.proposalAmount}>
-                      {proposalAmount}&nbsp;
-                      {detail.currency_unit && detail.currency_unit.unit}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <Title level={2} className={styles.proposalTitle}>
-                {detail.title}
-              </Title>
-              <Paragraph>创建时间: {moment.datetime(detail.created)}</Paragraph>
-              <Paragraph>{detail.summary}</Paragraph>
-              <Tags tag={detail.tag} />
-            </div>
-          </div>
-
-          <div className={styles.userList}>
-            <div className={styles.user}>
-              <UserAvatar {...detail.creator} />
-              <div className={styles.userContent}>
-                <Title level={3}>{detail.creator && detail.creator.username}</Title>
-                <Text>创建人</Text>
+                <Title level={2} className={styles.proposalTitle}>
+                  {detail.title}
+                </Title>
+                <Paragraph>创建时间: {moment.datetime(detail.created)}</Paragraph>
+                <Paragraph>{detail.summary}</Paragraph>
+                <Tags tag={detail.tag} />
               </div>
             </div>
-          </div>
 
-          <div className={styles.detail}>
-            <Title level={3}>项目详情</Title>
-            <Paragraph>
-              <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
-            </Paragraph>
-          </div>
+            <div className={styles.userList}>
+              <div className={styles.user}>
+                <UserAvatar {...detail.creator} />
+                <div className={styles.userContent}>
+                  <Title level={3}>{detail.creator && detail.creator.username}</Title>
+                  <Text>创建人</Text>
+                </div>
+              </div>
+            </div>
 
-          <div className={styles.comments}>
-            <Title level={3}>评论</Title>
-            {detail && <Comments id={id} />}
-          </div>
-        </Typography>
+            <div className={styles.detail}>
+              <Title level={3}>项目详情</Title>
+              <Paragraph>
+                <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
+              </Paragraph>
+            </div>
+
+            <div className={styles.comments}>
+              <Title level={3}>评论</Title>
+              {detail && <Comments id={id} />}
+            </div>
+          </Typography>
+        </Spin>
       </div>
     </GridContent>
   );
 };
 
-export default connect(({ user, proposal }) => ({
+export default connect(({ user, proposal, loading }) => ({
   currentUser: user.currentUser,
   detail: proposal.detail,
+  fetchDetailLoading: loading.effects['proposal/fetchProposal'],
 }))(Detail);
