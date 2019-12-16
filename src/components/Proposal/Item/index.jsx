@@ -33,7 +33,7 @@ const Item = props => {
               </div>
             </div>
             <Title level={3} className={styles.title}>
-              <LinesEllipsis text={title} maxLine="1" />
+              <LinesEllipsis text={title} maxLine="2" />
             </Title>
             <Paragraph className={styles.summary}>
               <LinesEllipsis text={summary} maxLine="3" />
