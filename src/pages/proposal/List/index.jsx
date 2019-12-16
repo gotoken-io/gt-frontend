@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Link from 'umi/link';
-import { Pagination, Button, message } from 'antd';
+import { Pagination, Button, message, Row, Col } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import router from 'umi/router';
@@ -46,9 +46,13 @@ const List = props => {
       </div>
 
       <div className={styles.list}>
-        {list.map(item => (
-          <Item key={item.id} {...item} />
-        ))}
+        <Row>
+          {list.map(item => (
+            <Col span={8}>
+              <Item key={item.id} {...item} />
+            </Col>
+          ))}
+        </Row>
       </div>
 
       {/* <div className={styles.pagination}>

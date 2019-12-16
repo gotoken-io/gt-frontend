@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import { connect } from 'dva';
 import { GridContent } from '@ant-design/pro-layout';
 import Link from 'umi/link';
@@ -27,9 +27,13 @@ const List = props => {
       )}
 
       <div className={styles.container}>
-        {zone_list.map(zone => (
-          <ZoneItem key={zone.id} {...zone} />
-        ))}
+        <Row>
+          {zone_list.map(zone => (
+            <Col md={12} sm={24}>
+              <ZoneItem key={zone.id} {...zone} />
+            </Col>
+          ))}
+        </Row>
       </div>
     </GridContent>
   );

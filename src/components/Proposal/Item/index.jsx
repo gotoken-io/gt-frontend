@@ -33,10 +33,10 @@ const Item = props => {
               </div>
             </div>
             <Title level={3} className={styles.title}>
-              <LinesEllipsis text={title} maxLine="2" />
+              <LinesEllipsis text={title} maxLine="1" />
             </Title>
             <Paragraph className={styles.summary}>
-              <LinesEllipsis text={summary} maxLine="2" />
+              <LinesEllipsis text={summary} maxLine="3" />
             </Paragraph>
             {creator && (
               <div className={styles.creator}>

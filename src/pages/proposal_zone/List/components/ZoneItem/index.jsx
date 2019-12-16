@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography } from 'antd';
+import { Card, Typography, Row, Col } from 'antd';
 import Link from 'umi/link';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { getFielUrl } from '@/utils/upload';
@@ -19,19 +19,22 @@ const ZoneItem = props => {
   return (
     <div className={styles.card}>
       <Link to={`/proposal/zone/detail/${id}`}>
-        <Card
-          hoverable
-          style={{ width: 200, height: 200 }}
-          cover={<img alt={name} src={cardCoverSrc} />}
-        >
-          <div>
-            <Title level={3}>
-              <LinesEllipsis text={title} maxLine="1" />
-            </Title>
-            <Paragraph className={styles.summary}>
-              <LinesEllipsis text={summary} maxLine="3" />
-            </Paragraph>
-          </div>
+        <Card hoverable>
+          <Row>
+            <Col md={8} sm={24}>
+              <img alt={name} src={cardCoverSrc} className={styles.zoneImg} />
+            </Col>
+            <Col md={16} sm={24}>
+              <div className={styles.zoneSummary}>
+                <Title level={3}>
+                  <LinesEllipsis text={title} maxLine="1" />
+                </Title>
+                <Paragraph className={styles.summary}>
+                  <LinesEllipsis text={summary} maxLine="3" />
+                </Paragraph>
+              </div>
+            </Col>
+          </Row>
         </Card>
       </Link>
     </div>
