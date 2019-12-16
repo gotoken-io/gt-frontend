@@ -16,6 +16,7 @@ import logo from '../assets/gt-logo-white.png';
 import site_logo from '@/assets/gt_logo_transparent.png';
 import Footer from './components/Footer';
 import { getAuthority } from '@/utils/authority';
+import styles from './style.less';
 
 const noMatch = (
   <Result
@@ -103,12 +104,7 @@ const BasicLayout = props => {
     <ProLayout
       logo={logo}
       title="GoToken"
-      menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
-          {logoDom}
-          {/* {titleDom} */}
-        </Link>
-      )}
+      menuHeaderRender={(logoDom, titleDom) => <Link to="/">{logoDom}</Link>}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || menuItemProps.children) {

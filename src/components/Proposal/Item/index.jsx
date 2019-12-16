@@ -36,7 +36,7 @@ const Item = props => {
               <LinesEllipsis text={title} maxLine="2" />
             </Title>
             <Paragraph className={styles.summary}>
-              <LinesEllipsis text={summary} maxLine="3" />
+              <LinesEllipsis text={summary} maxLine="2" />
             </Paragraph>
             {creator && (
               <div className={styles.creator}>
