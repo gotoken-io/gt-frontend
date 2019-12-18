@@ -11,6 +11,11 @@ import styles from './style.less';
 
 const { TextArea } = Input;
 
+const ImgCropConfig = {
+  width: 400,
+  height: 400,
+};
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -233,7 +238,7 @@ const Create = props => {
           </Form.Item>
 
           <Form.Item label="上传提案专区封面">
-            <ImgCrop>
+            <ImgCrop {...ImgCropConfig}>
               <Upload
                 action="/server/upload/image/"
                 beforeUpload={beforeUpload}

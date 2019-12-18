@@ -10,6 +10,11 @@ import styles from './style.less';
 
 const { TextArea } = Input;
 
+const ImgCropConfig = {
+  width: 400,
+  height: 400,
+};
+
 @connect(({ proposal, loading }) => ({
   currency_list: proposal.currency_list,
   submitting: loading.effects['proposal/createProposalZone'],
@@ -173,7 +178,7 @@ class Create extends Component {
             </Form.Item>
 
             <Form.Item label="上传提案专区封面">
-              <ImgCrop>
+              <ImgCrop {...ImgCropConfig}>
                 <Upload
                   action="/server/upload/image/"
                   beforeUpload={beforeUpload}

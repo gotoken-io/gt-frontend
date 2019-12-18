@@ -8,6 +8,11 @@ import ImgCrop from 'antd-img-crop';
 import { beforeUpload, getBase64 } from '@/utils/upload';
 import styles from './style.less';
 
+const ImgCropConfig = {
+  width: 400,
+  height: 400,
+};
+
 const AvatarView = props => {
   const { currentUser, dispatch } = props;
   const [userAvatar, setUserAvatar] = useState(null);
@@ -54,7 +59,7 @@ const AvatarView = props => {
       <div className={styles.avatar}>
         <UserAvatar size={144} src={userAvatar} username={currentUser.username} />
       </div>
-      <ImgCrop>
+      <ImgCrop {...ImgCropConfig}>
         <Upload
           action="/server/upload/image/"
           beforeUpload={beforeUpload}
