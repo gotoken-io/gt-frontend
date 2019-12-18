@@ -40,11 +40,19 @@ const UserModel = {
     },
 
     *fetchUserDetail({ payload }, { call, put }) {
-      const response = yield call(queryUserDetail, payload);
+      // 先置空，否则会把上一个用户的信息带过来
       yield put({
         type: 'saveUserDetail',
-        payload: response.data,
+        payload: {},
       });
+
+      const response = yield call(queryUserDetail, payload);
+      if (response.data) {
+        yield put({
+          type: 'saveUserDetail',
+          payload: response.data,
+        });
+      }
     },
 
     *postUserAvatar({ payload }, { call, put }) {

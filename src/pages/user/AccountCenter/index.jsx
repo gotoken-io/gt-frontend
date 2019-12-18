@@ -1,4 +1,4 @@
-import { Card, Col, Divider, Icon, Input, Row, Tag } from 'antd';
+import { Card, Col, Divider, Icon, Input, Row, Spin } from 'antd';
 import React, { PureComponent } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import Link from 'umi/link';
@@ -60,7 +60,9 @@ class AccountCenter extends PureComponent {
       list = userDetail.proposals_created;
     }
 
-    return <ProposalList list={list} />;
+    return (<Spin spinning={userDetailLoading}>
+        <ProposalList list={list} />
+    </Spin>);
   };
 
   render() {

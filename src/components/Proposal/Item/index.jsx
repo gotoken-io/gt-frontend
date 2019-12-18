@@ -5,6 +5,7 @@ import Link from 'umi/link';
 import styles from './style.less';
 import { getFielUrl } from '@/utils/upload'
 import UserAvatar from '@/components/User/UserAvatar';
+import defaultCover from '@/assets/default_cover.png';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -13,6 +14,15 @@ const Item = props => {
 
   const proposalAmount = parseInt(amount);
 
+  const zoneCover = cover => {
+    let cardCoverSrc = defaultCover;
+    if (cover) {
+      cardCoverSrc = getFielUrl(cover);
+    }
+    return cardCoverSrc;
+  }
+
+
   return (
     <div className={styles.container}>
       <Link to={`/proposal/detail/${id}`}>
@@ -20,7 +30,7 @@ const Item = props => {
           <Typography>
             <div className={styles.cardHead}>
               <div className={styles.left}>
-                <Avatar className={styles.zoneLogo} shape="square" size={32} src={getFielUrl(zone.cover)} />
+                <Avatar className={styles.zoneLogo} shape="square" size={32} src={zoneCover(zone.cover)} />
                 <Text>{zone.name}</Text>
                 &nbsp;&nbsp;
                 {/* 如果存在 zone_proposal_id 才会显示 ID */}
