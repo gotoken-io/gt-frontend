@@ -21,9 +21,19 @@ export async function updateProposal(params) {
   });
 }
 
-// only admin can delete proposal zone
+// only admin can delete proposal
 export async function deleteProposal(params) {
   return request(`/server/proposal/${params.id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: getAuthority(),
+    },
+  });
+}
+
+// only admin can delete proposal zone
+export async function deleteProposalZone(params) {
+  return request(`/server/proposal_zone/${params.id}`, {
     method: 'DELETE',
     headers: {
       Authorization: getAuthority(),

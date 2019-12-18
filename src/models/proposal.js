@@ -4,6 +4,7 @@ import router from 'umi/router';
 import {
   createProposal,
   updateProposal,
+  deleteProposalZone,
   deleteProposal,
   createProposalZone,
   updateProposalZone,
@@ -109,7 +110,24 @@ const ProposalModel = {
             pathname: '/',
           }),
         );
+        return true;
       }
+      return false;
+    },
+
+    *deleteProposalZone({ payload }, { call, put }) {
+      const response = yield call(deleteProposalZone, payload);
+      if (response.status === 'success') {
+        message.success('提案专区删除成功');
+        yield put(
+          routerRedux.replace({
+            pathname: '/',
+          }),
+        );
+        return true;
+      }
+
+      return false;
     },
 
     *createProposalZone({ payload }, { call, put }) {

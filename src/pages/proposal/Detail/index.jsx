@@ -65,13 +65,18 @@ const Detail = props => {
       content: '点击确定后，提案将删除',
       okText: '确认',
       cancelText: '取消',
+
       onOk() {
-        if (dispatch) {
-          dispatch({
-            type: 'proposal/deleteProposal',
-            payload: { id },
-          });
-        }
+        return new Promise((resolve, reject) => {
+          if (dispatch) {
+            dispatch({
+              type: 'proposal/deleteProposal',
+              payload: { id },
+            }).then(res => {
+              resolve(res);
+            });
+          }
+        });
       },
       onCancel() {},
     });
