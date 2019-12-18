@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card, Typography, Tag } from 'antd';
+import { Card, Typography, Tag, Avatar } from 'antd';
 import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
 import styles from './style.less';
+import { getFielUrl } from '@/utils/upload'
 import UserAvatar from '@/components/User/UserAvatar';
 
 const { Title, Paragraph, Text } = Typography;
@@ -19,6 +20,7 @@ const Item = props => {
           <Typography>
             <div className={styles.cardHead}>
               <div className={styles.left}>
+                <Avatar className={styles.zoneLogo} shape="square" size={32} src={getFielUrl(zone.cover)} />
                 <Text>{zone.name}</Text>
                 &nbsp;&nbsp;
                 {/* 如果存在 zone_proposal_id 才会显示 ID */}
@@ -32,6 +34,7 @@ const Item = props => {
                 )}
               </div>
             </div>
+
             <Title level={3} className={styles.title}>
               <LinesEllipsis text={title} maxLine="2" />
             </Title>
