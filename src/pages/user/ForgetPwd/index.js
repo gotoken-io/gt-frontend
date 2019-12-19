@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Icon, Input, Button } from 'antd';
 import { connect } from 'dva';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
@@ -9,6 +9,16 @@ import layoutStyles from '@/layouts/style.less';
 const ForgetPwd = props => {
   const { getFieldDecorator } = props.form;
   const { postForgetPwdLoading } = props;
+
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (count > 0) {
+        setCount(c => c - 1);
+      }
+    }, 1000);
+  }, [count]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -20,6 +30,11 @@ const ForgetPwd = props => {
           dispatch({
             type: 'user/postForgetPwd',
             payload: values,
+          }).then(res => {
+            if (res) {
+              // 设置倒计时, 使按钮禁用
+              setCount(60);
+            }
           });
         }
       }
@@ -65,6 +80,7 @@ const ForgetPwd = props => {
 
         <Form.Item>
           <Button
+            disabled={count > 0}
             loading={postForgetPwdLoading}
             size="large"
             type="primary"
@@ -72,7 +88,7 @@ const ForgetPwd = props => {
             className="login-form-button"
             block
           >
-            发送重置密码邮件
+            发送重置密码邮件{count > 0 && `(${count})`}
           </Button>
         </Form.Item>
         <Form.Item className={styles.center}>

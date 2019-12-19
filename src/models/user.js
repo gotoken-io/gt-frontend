@@ -85,6 +85,7 @@ const UserModel = {
       const response = yield call(postForgetPwd, payload);
       if (response.status === 'success') {
         message.success(`已发送邮件到${payload.email}, 请注意查收`);
+        return true;
       }
 
       if (response.status === 'fail') {
@@ -92,6 +93,8 @@ const UserModel = {
           message.error(`${payload.email} 不存在, 请再次确认`);
         }
       }
+
+      return false;
     },
 
     *postResetPwd({ payload }, { call, put }) {
