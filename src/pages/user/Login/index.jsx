@@ -55,7 +55,7 @@ class Login extends React.Component {
                     }}
                   />
                 }
-                placeholder="email"
+                placeholder="email 或 用户名"
               />,
             )}
           </Form.Item>
@@ -107,7 +107,7 @@ class Login extends React.Component {
 
           <Form.Item>
             <div className={styles.links}>
-              <Link to="/reset-pwd">忘记密码</Link>
+              <Link to="/forget-password">忘记密码</Link>
               <Link to="/register">注册</Link>
             </div>
           </Form.Item>

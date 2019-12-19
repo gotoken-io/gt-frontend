@@ -73,7 +73,7 @@ class BaseView extends Component {
                     ),
                   },
                 ],
-              })(<Input disabled={true} />)}
+              })(<Input disabled />)}
             </FormItem>
             <FormItem
               label={formatMessage({
@@ -82,15 +82,15 @@ class BaseView extends Component {
             >
               {getFieldDecorator('nickname', {
                 rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'userandaccountsettings.basic.nickname-message',
-                      },
-                      {},
-                    ),
-                  },
+                  // {
+                  //   required: true,
+                  //   message: formatMessage(
+                  //     {
+                  //       id: 'userandaccountsettings.basic.nickname-message',
+                  //     },
+                  //     {},
+                  //   ),
+                  // },
                 ],
               })(<Input />)}
             </FormItem>
@@ -102,15 +102,15 @@ class BaseView extends Component {
             >
               {getFieldDecorator('sign', {
                 rules: [
-                  {
-                    required: true,
-                    message: formatMessage(
-                      {
-                        id: 'userandaccountsettings.basic.profile-message',
-                      },
-                      {},
-                    ),
-                  },
+                  // {
+                  //   required: true,
+                  //   message: formatMessage(
+                  //     {
+                  //       id: 'userandaccountsettings.basic.profile-message',
+                  //     },
+                  //     {},
+                  //   ),
+                  // },
                 ],
               })(
                 <Input.TextArea

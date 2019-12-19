@@ -195,8 +195,13 @@ export default {
           component: './user/Register',
         },
         {
+          name: 'forget-pwd',
+          path: '/forget-password',
+          component: './user/ForgetPwd',
+        },
+        {
           name: 'reset-pwd',
-          path: '/reset-pwd',
+          path: '/reset-password/:token',
           component: './user/ResetPwd',
         },
         {

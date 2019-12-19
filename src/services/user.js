@@ -39,3 +39,17 @@ export async function updateUserInfo(params) {
 export async function queryUserDetail({ id }) {
   return request(`/server/user/${id}`);
 }
+
+export async function postForgetPwd(params) {
+  return request('/server/user/forget-password', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function postResetPwd(params) {
+  return request('/server/user/reset-password', {
+    method: 'POST',
+    data: params,
+  });
+}

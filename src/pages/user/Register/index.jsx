@@ -40,21 +40,6 @@ class Register extends Component {
     help: '',
   };
 
-  getPasswordStatus = () => {
-    const { form } = this.props;
-    const value = form.getFieldValue('password');
-
-    if (value && value.length > 9) {
-      return 'ok';
-    }
-
-    if (value && value.length > 5) {
-      return 'pass';
-    }
-
-    return 'poor';
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     const { form, dispatch } = this.props;
@@ -71,6 +56,21 @@ class Register extends Component {
         }
       },
     );
+  };
+
+  getPasswordStatus = () => {
+    const { form } = this.props;
+    const value = form.getFieldValue('password');
+
+    if (value && value.length > 9) {
+      return 'ok';
+    }
+
+    if (value && value.length > 5) {
+      return 'pass';
+    }
+
+    return 'poor';
   };
 
   checkConfirm = (rule, value, callback) => {
@@ -181,6 +181,10 @@ class Register extends Component {
           <FormItem>
             {getFieldDecorator('username', {
               rules: [
+                {
+                  pattern: /^[a-z0-9]+$/,
+                  message: '仅支持输入小写字母(a-z)和数字(0-9)',
+                },
                 {
                   required: true,
                   message: formatMessage({
