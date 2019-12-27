@@ -41,7 +41,7 @@ const CommentForm = props => {
           {getFieldDecorator('text', {
             rules: [
               { required: true, message: '请输入评论内容' },
-              { max: 200, message: '评论内容最多200字符' },
+              { max: 250, message: '评论内容最多250字符' },
             ],
           })(<TextArea rows={4} />)}
         </Form.Item>
