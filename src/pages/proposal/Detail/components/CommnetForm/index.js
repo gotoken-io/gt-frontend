@@ -1,7 +1,7 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { connect } from 'dva';
-import { message } from 'antd';
+
 import styles from './style.less';
 
 const { TextArea } = Input;
@@ -39,7 +39,10 @@ const CommentForm = props => {
       <Form onSubmit={handleSubmit}>
         <Form.Item>
           {getFieldDecorator('text', {
-            rules: [{ required: true, message: '请输入评论内容' }],
+            rules: [
+              { required: true, message: '请输入评论内容' },
+              { len: 200, message: '评论内容最多200字符' },
+            ],
           })(<TextArea rows={4} />)}
         </Form.Item>
 

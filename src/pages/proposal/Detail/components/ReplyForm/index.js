@@ -38,7 +38,10 @@ const ReplyForm = props => {
       <Form onSubmit={handleSubmit}>
         <Form.Item>
           {getFieldDecorator('text', {
-            rules: [{ required: true, message: '请输入评论内容' }],
+            rules: [
+              { required: true, message: '请输入评论内容' },
+              { len: 200, message: '评论内容最多200字符' },
+            ],
           })(<TextArea rows={4} />)}
         </Form.Item>
 

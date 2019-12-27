@@ -60,7 +60,7 @@ if (isAntDesignProPreview) {
   plugins.push([
     'umi-plugin-ga',
     {
-      code: 'UA-72788897-6',
+      code: 'UA-154979913-1',
     },
   ]);
 }
