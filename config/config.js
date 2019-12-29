@@ -5,8 +5,6 @@ import webpackPlugin from './plugin.config';
 const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
-const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
-const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 const plugins = [
   [
     'umi-plugin-react',
@@ -56,14 +54,13 @@ const plugins = [
   ],
 ]; // 针对 preview.pro.ant.design 的 GA 统计代码
 
-if (isAntDesignProPreview) {
-  plugins.push([
-    'umi-plugin-ga',
-    {
-      code: 'UA-154979913-1',
-    },
-  ]);
-}
+plugins.push([
+  'umi-plugin-ga',
+  {
+    code: 'UA-154979913-1',
+    judge: () => true,
+  },
+]);
 
 export default {
   plugins,
@@ -77,7 +74,7 @@ export default {
   targets: {
     ie: 11,
   },
-  devtool: isAntDesignProPreview ? 'source-map' : false,
+  devtool: false,
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
@@ -219,10 +216,6 @@ export default {
   },
   treeShaking: true,
   //gzip 后的尺寸能减少 10K
-  define: {
-    ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
-      ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
-  },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,
