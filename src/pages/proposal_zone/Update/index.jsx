@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Divider, Upload, Icon, message } from 'antd';
+import Image from '@/components/Image';
 import ImgCrop from 'antd-img-crop';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { beforeUpload, getFielUrl } from '@/utils/upload';
+import { getFielUrl, beforeUpload, getBase64 } from '@/utils/upload';
 import BraftEditor from 'braft-editor';
 import { connect } from 'dva';
 import router from 'umi/router';
@@ -45,9 +46,16 @@ const controls = ['bold', 'italic', 'underline', 'text-color', 'separator', 'lin
 const Create = props => {
   const [cover, setCover] = useState('');
   const [fileList, setFileList] = useState([]);
+  const [coverStream, setCoverStream] = useState(null);
 
   const { submitting, dispatch, match, zone_detail } = props;
   const { getFieldDecorator } = props.form;
+
+  useEffect(() => {
+    if (zone_detail.cover) {
+      setCoverStream(getFielUrl(zone_detail.cover));
+    }
+  }, []);
 
   const setFormValues = detail => {
     const { form } = props;
@@ -73,7 +81,7 @@ const Create = props => {
 
         switch (key) {
           case 'detail':
-            form.setFieldsValue({ detail: BraftEditor.createEditorState(detail['detail']) });
+            form.setFieldsValue({ detail: BraftEditor.createEditorState(detail.detail) });
             break;
           default:
             form.setFieldsValue(obj);
@@ -114,7 +122,7 @@ const Create = props => {
     }
     if (status === 'done') {
       // console.log(response.data.key);
-      const filename = response.data.key;
+      const filename = response.data;
 
       setCover(filename);
       // update file list
@@ -126,6 +134,11 @@ const Create = props => {
           url: getFielUrl(filename),
         },
       ]);
+
+      // change proposal zone cover
+      getBase64(info.file.originFileObj, imageUrl => {
+        setCoverStream(imageUrl);
+      });
     }
   };
 
@@ -238,11 +251,18 @@ const Create = props => {
           </Form.Item>
 
           <Form.Item label="上传提案专区封面">
+            {coverStream && (
+              <div>
+                <Image base64={coverStream} src={cover} size={200} />
+              </div>
+            )}
+
             <ImgCrop {...ImgCropConfig}>
               <Upload
                 action="/server/upload/image/"
                 beforeUpload={beforeUpload}
-                fileList={fileList}
+                // fileList={fileList}
+                showUploadList={false}
                 onChange={handleUploadChange}
               >
                 <Button>

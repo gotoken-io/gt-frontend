@@ -14,7 +14,7 @@ const { confirm } = Modal;
 const ZoneCover = ({ name, cover }) => {
   let cardCoverSrc = defaultCover;
   if (cover) {
-    cardCoverSrc = getFielUrl(cover);
+    cardCoverSrc = cover;
   }
 
   return (

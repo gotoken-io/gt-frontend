@@ -5,7 +5,6 @@ import Image from '@/components/Image';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import styles from './style.less';
-import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
@@ -18,7 +17,7 @@ const { confirm } = Modal;
 const ZoneCover = ({ name, cover }) => {
   let cardCoverSrc = defaultCover;
   if (cover) {
-    cardCoverSrc = getFielUrl(cover);
+    cardCoverSrc = cover;
   }
 
   return (

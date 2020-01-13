@@ -14,7 +14,7 @@ const ZoneItem = props => {
 
   let cardCoverSrc = defaultCover;
   if (cover) {
-    cardCoverSrc = getFielUrl(cover);
+    cardCoverSrc = cover;
   }
 
   return (

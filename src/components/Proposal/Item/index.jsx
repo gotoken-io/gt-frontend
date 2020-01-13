@@ -4,7 +4,6 @@ import Image from '@/components/Image';
 import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
 import styles from './style.less';
-import { getFielUrl } from '@/utils/upload';
 import UserAvatar from '@/components/User/UserAvatar';
 import defaultCover from '@/assets/default_cover.png';
 
@@ -18,7 +17,7 @@ const Item = props => {
   const zoneCover = cover => {
     let cardCoverSrc = defaultCover;
     if (cover) {
-      cardCoverSrc = getFielUrl(cover);
+      cardCoverSrc = cover;
     }
     return cardCoverSrc;
   };
