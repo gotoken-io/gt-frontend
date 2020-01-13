@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Tag, Button, Modal, Spin } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
+import Image from '@/components/Image';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import styles from './style.less';
@@ -21,10 +22,8 @@ const ZoneCover = ({ name, cover }) => {
   }
 
   return (
-    <div className={styles.cardCover} style={{ backgroundImage: `url(${cardCoverSrc})` }}>
-      {/* <Typography>
-        <Title className={styles.titleNo}>{name}</Title>
-      </Typography> */}
+    <div className={styles.cardCover}>
+      <Image name={name} src={cardCoverSrc} size={200} />
     </div>
   );
 };
