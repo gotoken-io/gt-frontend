@@ -62,10 +62,11 @@ const UserModel = {
       const response = yield call(updateUserAvatar, payload);
       if (response.status === 'success') {
         message.success('用户头像更新成功');
-        yield put({
-          type: 'changeUserAvatar',
-          payload,
-        });
+        window.location.reload();
+        // yield put({
+        //   type: 'changeUserAvatar',
+        //   payload,
+        // });
       }
     },
 

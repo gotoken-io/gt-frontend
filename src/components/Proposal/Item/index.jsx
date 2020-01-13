@@ -1,9 +1,10 @@
 import React from 'react';
 import { Card, Typography, Tag, Avatar } from 'antd';
+import Image from '@/components/Image';
 import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
 import styles from './style.less';
-import { getFielUrl } from '@/utils/upload'
+import { getFielUrl } from '@/utils/upload';
 import UserAvatar from '@/components/User/UserAvatar';
 import defaultCover from '@/assets/default_cover.png';
 
@@ -20,8 +21,7 @@ const Item = props => {
       cardCoverSrc = getFielUrl(cover);
     }
     return cardCoverSrc;
-  }
-
+  };
 
   return (
     <div className={styles.container}>
@@ -30,7 +30,10 @@ const Item = props => {
           <Typography>
             <div className={styles.cardHead}>
               <div className={styles.left}>
-                <Avatar className={styles.zoneLogo} shape="square" size={32} src={zoneCover(zone.cover)} />
+                {/* <Avatar className={styles.zoneLogo} shape="square" size={32} src={zoneCover(zone.cover)} /> */}
+                <span className={styles.zoneLogo}>
+                  <Image shape="square" size={32} src={zoneCover(zone.cover)} />
+                </span>
                 <Text>{zone.name}</Text>
                 &nbsp;&nbsp;
                 {/* 如果存在 zone_proposal_id 才会显示 ID */}

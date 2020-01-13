@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, Upload, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import { connect } from 'dva';
-import { getFielUrl } from '@/utils/upload';
+import { getFielUrl, beforeUpload, getBase64 } from '@/utils/upload';
 import UserAvatar from '@/components/User/UserAvatar';
 import ImgCrop from 'antd-img-crop';
-import { beforeUpload, getBase64 } from '@/utils/upload';
+
 import styles from './style.less';
 
 const ImgCropConfig = {
@@ -33,13 +33,14 @@ const AvatarView = props => {
     }
 
     if (status === 'done') {
-      //   console.log(response.data.key);
+      // console.log(response.data);
       // post update avatar request
       if (dispatch) {
         dispatch({
           type: 'user/postUserAvatar',
           payload: {
-            avatar: response.data.key,
+            avatar: response.data,
+            old_avatar: currentUser.avatar, // 现有头像 key
           },
         });
 
@@ -57,7 +58,12 @@ const AvatarView = props => {
         <FormattedMessage id="userandaccountsettings.basic.avatar" defaultMessage="Avatar" />
       </div>
       <div className={styles.avatar}>
-        <UserAvatar size={144} src={userAvatar} username={currentUser.username} />
+        <UserAvatar
+          size={144}
+          src={userAvatar} // use for preview upload image
+          avatar={currentUser.avatar}
+          username={currentUser.username}
+        />
       </div>
       <ImgCrop {...ImgCropConfig}>
         <Upload

@@ -21,21 +21,20 @@ export function getBase64(img, callback) {
 
 export function getFielUrl(filename) {
   const config = getUploadConfig();
-  if (config.qiniu_bucket_domain) {
-    return config.qiniu_bucket_domain + '/' + filename;
-  } else {
-    return '/default.png';
+  if (config) {
+    return `${config.url_prefix}/${filename}`;
   }
+  return '/default.png';
 }
 
 export function getUploadConfig() {
-  return JSON.parse(localStorage.getItem('UploadConfig'));
+  return JSON.parse(localStorage.getItem('S3UploadConfig'));
 }
 
 export function setUploadConfig(UploadConfig) {
-  localStorage.setItem('UploadConfig', JSON.stringify(UploadConfig));
+  localStorage.setItem('S3UploadConfig', JSON.stringify(UploadConfig));
 }
 
 export function removeUploadConfig() {
-  localStorage.removeItem('UploadConfig');
+  localStorage.removeItem('S3UploadConfig');
 }

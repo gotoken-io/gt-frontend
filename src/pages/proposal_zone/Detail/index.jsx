@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Modal, Spin } from 'antd';
+import Image from '@/components/Image';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import Link from 'umi/link';
@@ -17,10 +18,8 @@ const ZoneCover = ({ name, cover }) => {
   }
 
   return (
-    <div className={styles.cardCover} style={{ backgroundImage: `url(${cardCoverSrc})` }}>
-      {/* <Typography>
-        <Title className={styles.titleNo}>{name}</Title>
-      </Typography> */}
+    <div className={styles.cardCover}>
+      <Image name={name} src={cardCoverSrc} size={200} />
     </div>
   );
 };
@@ -40,28 +39,28 @@ const Detail = props => {
   }, []);
 
   const handleDelete = e => {
-      e.preventDefault();
+    e.preventDefault();
 
-      confirm({
-        title: `确定删除提案专区: ${zone_detail.name} ?`,
-        content: '点击确定后，提案专区及其下的提案将一并删除',
-        okText: '确认',
-        cancelText: '取消',
-        onOk() {
-          return new Promise((resolve, reject) => {
-            if (dispatch) {
-              dispatch({
-                type: 'proposal/deleteProposalZone',
-                payload: match.params,
-              }).then(res => {
-                resolve(res);
-              });
-            }
-          });
-        },
-        onCancel() {},
-      });
-  }
+    confirm({
+      title: `确定删除提案专区: ${zone_detail.name} ?`,
+      content: '点击确定后，提案专区及其下的提案将一并删除',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        return new Promise((resolve, reject) => {
+          if (dispatch) {
+            dispatch({
+              type: 'proposal/deleteProposalZone',
+              payload: match.params,
+            }).then(res => {
+              resolve(res);
+            });
+          }
+        });
+      },
+      onCancel() {},
+    });
+  };
 
   const { id, name, title, token, summary, detail, vote_rule, vote_addr_weight_json } = zone_detail;
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
@@ -70,15 +69,13 @@ const Detail = props => {
     <GridContent>
       {currentUser.admin && (
         <div className={styles.actionBtn}>
-        <Link to={`/proposal/zone/update/${id}`}>
-          <Button type="primary">
-            编辑
-          </Button>
-        </Link>
+          <Link to={`/proposal/zone/update/${id}`}>
+            <Button type="primary">编辑</Button>
+          </Link>
           <Button onClick={handleDelete} type="danger">
-          删除
+            删除
           </Button>
-          </div>
+        </div>
       )}
 
       <Spin spinning={fetchProposalZoneLoading}>

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card, Typography, Row, Col } from 'antd';
+import Image from '@/components/Image';
 import Link from 'umi/link';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 const ZoneItem = props => {
   const { id, cover, title, name, summary } = props;
@@ -22,7 +23,9 @@ const ZoneItem = props => {
         <Card hoverable>
           <Row>
             <Col md={8} sm={24}>
-              <img alt={name} src={cardCoverSrc} className={styles.zoneImg} />
+              <span className={styles.zoneImg}>
+                <Image name={name} src={cardCoverSrc} size={160} />
+              </span>
             </Col>
             <Col md={16} sm={24}>
               <div className={styles.zoneSummary}>
