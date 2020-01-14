@@ -1,0 +1,24 @@
+@form-width: 900px;
+
+.formContainer {
+    max-width: @form-width;
+}
+
+.buttons {
+    :global {
+        .ant-form-item-children {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    
+    button {
+        margin: 0 15px;
+    }
+}
+
+.richEditor {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background-color: #fff;
+}

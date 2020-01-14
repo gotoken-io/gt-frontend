@@ -1,0 +1,76 @@
+@import '~antd/es/style/themes/default.less';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+:global {
+  main>.ant-pro-grid-content {
+    // set footer sticky to bottom
+    min-height: calc(100vh - 234px);
+  }
+
+  .ant-spin {
+    margin: 0 auto;
+  }
+
+  // for basic layout
+  // mobile header
+  .ant-pro-global-header {
+    background-color: #001529 !important;
+
+    .ant-pro-global-header-trigger {
+      color: #fff !important;
+      &:hover {
+        background-color: #001529 !important;
+      }
+    }
+  }
+
+  .ant-pro-global-header-logo img {
+    height: 32px;
+    width: auto !important;
+  }
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}

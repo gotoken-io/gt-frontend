@@ -1,0 +1,83 @@
+@cover-width: 200px;
+@cover-height: 200px;
+
+.actionBtn {
+    button {
+        margin: 0 5px 10px 5px;
+    }
+}
+
+.container {
+    // margin: 0 auto;
+}
+
+.summaryCard {
+    display: flex;
+    // height: @cover-height;
+    background-color: #fff;
+    padding: 20px;
+    // justify-content: center;
+}
+
+.cardCover {
+    position: relative;
+    min-width: @cover-width;
+    height: @cover-height;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    
+}
+
+.summaryContent {
+    padding: 15px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.titleNo {
+    position: absolute;
+    bottom: 0;
+    width: @cover-width;
+    text-align: center;
+    color: #fff;
+}
+
+.cardHead {
+    display: flex;
+    justify-content: space-between;
+}
+
+.proposalTitle {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 16px;
+}
+
+.subContainerStyle {
+    margin: 15px 0;
+    padding: 30px;
+    background-color: #fff;
+}
+
+.userList {
+    .subContainerStyle();
+}
+
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.userContent {
+    margin-left: 10px;
+
+    h3 {
+        margin: 0;
+    }
+}
+
+.detail {
+    .subContainerStyle();
+    white-space: pre-line; // support break line
+}
