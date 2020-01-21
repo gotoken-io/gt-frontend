@@ -4,6 +4,7 @@ import { Pagination, Button, message, Row, Col, Spin } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import router from 'umi/router';
+import { getPageQuery } from '@/utils/utils';
 import Item from '@/components/Proposal/Item';
 import Filter from './components/Filter';
 import styles from './style.less';
@@ -11,16 +12,35 @@ import styles from './style.less';
 const List = props => {
   const {
     dispatch,
-    list,
+    proposal_list,
     zone_list,
     match,
     currentUser,
     fetchProposalListLoading,
     fetchProposalZoneLoading,
   } = props;
-  const { id } = match.params;
+
+  const { zone_id } = match.params;
+
+  // useEffect(() => {
+  //   if (dispatch) {
+  //     const params = getPageQuery();
+
+  //     console.log('params', params);
+
+  //     dispatch({
+  //       type: 'proposal/fetchAllProposal',
+  //       payload: { ...params },
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
+    console.log('match', match);
+
+    const params = getPageQuery();
+    console.log('params', params);
+
     if (dispatch) {
       dispatch({
         type: 'proposal/fetchAllProposalZone',
@@ -28,7 +48,7 @@ const List = props => {
 
       dispatch({
         type: 'proposal/fetchAllProposal',
-        payload: match.params,
+        payload: { ...match.params, ...params },
       });
     }
   }, [match.params]);
@@ -39,6 +59,15 @@ const List = props => {
     } else {
       message.error('请先登陆');
     }
+  };
+
+  const handleFetchProposals = page => {
+    router.push({
+      pathname: match.url,
+      query: {
+        page,
+      },
+    });
   };
 
   return (
@@ -57,7 +86,7 @@ const List = props => {
       <Spin spinning={fetchProposalListLoading}>
         <div className={styles.list}>
           <Row>
-            {list.map(item => (
+            {proposal_list.items.map(item => (
               <Col md={8} sm={24}>
                 <Item key={item.id} {...item} />
               </Col>
@@ -66,16 +95,24 @@ const List = props => {
         </div>
       </Spin>
 
-      {/* <div className={styles.pagination}>
-        <Pagination defaultCurrent={1} total={50} />
-      </div> */}
+      <Spin spinning={fetchProposalListLoading}>
+        <div className={styles.pagination}>
+          <Pagination
+            defaultCurrent={1}
+            current={proposal_list.page}
+            pageSize={proposal_list.per_page}
+            total={proposal_list.total}
+            onChange={handleFetchProposals}
+          />
+        </div>
+      </Spin>
     </GridContent>
   );
 };
 
 export default connect(({ user, proposal, loading }) => ({
   currentUser: user.currentUser,
-  list: proposal.list,
+  proposal_list: proposal.proposal_list,
   zone_list: proposal.zone_list,
   fetchProposalZoneLoading: loading.effects['proposal/fetchAllProposalZone'],
   fetchProposalListLoading: loading.effects['proposal/fetchAllProposal'],

@@ -87,7 +87,7 @@ export default {
           component: './proposal/List',
         },
         {
-          path: '/proposal/list/:id',
+          path: '/proposal/list/:zone_id',
           name: '提案列表',
           component: './proposal/List',
         },

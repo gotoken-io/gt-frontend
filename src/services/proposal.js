@@ -67,13 +67,18 @@ export async function queryProposal({ id }) {
   return request(`/server/proposal/${id}`);
 }
 
-export async function queryProposalList() {
-  return request('/server/proposal/');
+export async function queryProposalList({ page, zone_id }) {
+  return request('/server/proposal/', {
+    params: {
+      page,
+      zone_id,
+    },
+  });
 }
 
-export async function queryProposalListByZoneID({ id }) {
-  return request('/server/proposal/?zone_id=' + id);
-}
+// export async function queryProposalListByZoneID({ id, page }) {
+//   return request('/server/proposal/);
+// }
 
 export async function queryProposalZoneList() {
   return request('/server/proposal_zone/');

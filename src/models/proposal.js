@@ -22,7 +22,13 @@ const ProposalModel = {
     zone_list: [],
     zone_detail: {},
     currency_ist: [],
-    list: [],
+    proposal_list: {
+      items: [],
+      page: 1,
+      pages: 1,
+      per_page: 20,
+      total: 1,
+    },
     detail: {},
   },
   effects: {
@@ -37,13 +43,15 @@ const ProposalModel = {
 
     // proposal
     *fetchAllProposal({ payload }, { call, put }) {
-      let response;
+      // let response;
 
-      if (payload.id) {
-        response = yield call(queryProposalListByZoneID, payload);
-      } else {
-        response = yield call(queryProposalList);
-      }
+      // if (payload.id) {
+      //   response = yield call(queryProposalListByZoneID, payload);
+      // } else {
+      //   response = yield call(queryProposalList, payload);
+      // }
+
+      const response = yield call(queryProposalList, payload);
 
       yield put({
         type: 'saveProposalList',
@@ -159,7 +167,7 @@ const ProposalModel = {
     },
 
     saveProposalList(state, action) {
-      return { ...state, list: action.payload || [] };
+      return { ...state, proposal_list: action.payload };
     },
     saveCurrencyList(state, action) {
       return { ...state, currency_list: action.payload || [] };
