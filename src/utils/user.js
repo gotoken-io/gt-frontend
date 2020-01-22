@@ -10,12 +10,12 @@ export function removeCurrentUser() {
   localStorage.removeItem('currentUser');
 }
 
-export function isCreatorOrAdmin({ currentUser, detail }) {
+export function isCreatorOrAdmin({ currentUser, creator }) {
   if (currentUser && currentUser.admin === true) {
     return true;
   }
 
-  if (detail.creator && detail.creator.id === currentUser.id && currentUser.id.toString()) {
+  if (creator && creator.id.toString() === currentUser.id.toString() && currentUser.id.toString()) {
     return true;
   }
 

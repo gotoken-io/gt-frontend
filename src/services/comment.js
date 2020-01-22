@@ -21,6 +21,16 @@ export async function putComment(params) {
   });
 }
 
+export async function deleteComment(params) {
+  return request('/server/comment/', {
+    method: 'DELETE',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
 // id=proposal id
 export async function queryProposalComment({ id }) {
   return request(`/server/proposal/comment/${id}`);

@@ -1,5 +1,6 @@
-import { postComment, putComment, queryProposalComment } from '@/services/comment';
+import { postComment, putComment, deleteComment, queryProposalComment } from '@/services/comment';
 import { getCurrentUser } from '@/utils/user';
+import { message } from 'antd';
 
 const Model = {
   namespace: 'comment',
@@ -29,6 +30,16 @@ const Model = {
       if (response.status === 'success') {
         yield put({
           type: 'updateComment',
+          payload,
+        });
+      }
+    },
+    *deleteComment({ payload }, { call, put }) {
+      const response = yield call(deleteComment, payload);
+      if (response.status === 'success') {
+        message.success('删除成功');
+        yield put({
+          type: 'saveDeleteComment',
           payload,
         });
       }
@@ -78,6 +89,14 @@ const Model = {
       return {
         ...state,
         comment_list: [action.payload, ...state.comment_list],
+      };
+    },
+
+    saveDeleteComment(state, action) {
+      const { id } = action.payload;
+      return {
+        ...state,
+        comment_list: state.comment_list.filter(item => item.id !== id),
       };
     },
   },

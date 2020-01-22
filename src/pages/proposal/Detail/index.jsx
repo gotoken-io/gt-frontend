@@ -81,10 +81,11 @@ const Detail = props => {
   }
 
   const { fetchDetailLoading } = props;
+  const { creator } = detail;
 
   return (
     <GridContent>
-      {isCreatorOrAdmin({ currentUser, detail }) && (
+      {isCreatorOrAdmin({ currentUser, creator }) && (
         <Link to={`/proposal/update/${id}`}>
           <Button type="primary" className={styles.actionsBtn}>
             修改提案
