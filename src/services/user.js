@@ -8,6 +8,7 @@ export async function queryUsers() {
     },
   });
 }
+
 export async function queryCurrent() {
   return request('/server/auth/login', {
     headers: {
@@ -38,6 +39,10 @@ export async function updateUserInfo(params) {
 
 export async function queryUserDetail({ id }) {
   return request(`/server/user/${id}`);
+}
+
+export async function queryUserProposals({ id }) {
+  return request(`/server/user/${id}/proposal`);
 }
 
 export async function postForgetPwd(params) {

@@ -2,6 +2,7 @@ import {
   queryCurrent,
   queryUsers,
   queryUserDetail,
+  queryUserProposals,
   updateUserAvatar,
   updateUserInfo,
   postForgetPwd,
@@ -17,6 +18,15 @@ const UserModel = {
   state: {
     currentUser: {},
     userDetail: {},
+    proposals: {
+      created: {
+        items: [],
+        page: 1,
+        pages: 1,
+        per_page: 20,
+        total: 1,
+      },
+    },
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -54,6 +64,22 @@ const UserModel = {
         yield put({
           type: 'saveUserDetail',
           payload: response.data,
+        });
+      }
+    },
+
+    *fetchUserProposals({ payload }, { call, put }) {
+      // 先置空，否则会把上一个用户的信息带过来
+      // yield put({
+      //   type: 'saveUserProposals',
+      //   payload: {},
+      // });
+
+      const response = yield call(queryUserProposals, payload);
+      if (response.data) {
+        yield put({
+          type: 'saveUserProposals',
+          payload: { ...payload, data: response.data },
         });
       }
     },
@@ -141,6 +167,15 @@ const UserModel = {
 
     saveUserDetail(state, action) {
       return { ...state, userDetail: action.payload || {} };
+    },
+
+    saveUserProposals(state, action) {
+      const { data, p_type } = action.payload;
+      if (p_type === 'created') {
+        return { ...state, proposals: { created: data } };
+      }
+
+      return state;
     },
 
     // changeNotifyCount(

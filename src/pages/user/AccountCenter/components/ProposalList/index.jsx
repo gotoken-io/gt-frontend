@@ -4,16 +4,15 @@ import Item from '@/components/Proposal/Item';
 import styles from './style.less';
 
 const ProposalList = props => {
-  const { list } = props;
+  const { data } = props;
   return (
     <div className={styles.container}>
       <Row>
-        {list &&
-          list.map(item => (
-            <Col lg={12} md={24}>
-              <Item {...item} />
-            </Col>
-          ))}
+        {data.items.map(item => (
+          <Col lg={12} md={24}>
+            <Item {...item} />
+          </Col>
+        ))}
       </Row>
     </div>
   );
