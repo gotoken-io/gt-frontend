@@ -11,11 +11,19 @@ export function removeCurrentUser() {
 }
 
 export function isCreatorOrAdmin({ currentUser, creator }) {
+  console.log('currentUser', currentUser);
+  console.log('creator', creator);
+
   if (currentUser && currentUser.admin === true) {
     return true;
   }
 
-  if (creator && creator.id.toString() === currentUser.id.toString() && currentUser.id.toString()) {
+  if (
+    creator &&
+    Object.keys(currentUser).length !== 0 &&
+    creator.id.toString() === currentUser.id.toString() &&
+    currentUser.id.toString()
+  ) {
     return true;
   }
 
