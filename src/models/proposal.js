@@ -14,6 +14,10 @@ import {
   queryProposalZoneList,
   queryCurrencylList,
   queryProposalZone,
+  queryCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory,
 } from '@/services/proposal';
 
 const ProposalModel = {
@@ -22,6 +26,7 @@ const ProposalModel = {
     zone_list: [],
     zone_detail: {},
     currency_ist: [],
+    proposal_category: [],
     proposal_list: {
       items: [],
       page: 1,
@@ -32,6 +37,58 @@ const ProposalModel = {
     detail: {},
   },
   effects: {
+    /*
+     * Proposal Category
+     */
+    *fetchAllCategory(_, { call, put }) {
+      const response = yield call(queryCategory);
+      yield put({
+        type: 'saveCategoryList',
+        payload: response.data,
+      });
+    },
+
+    *createCategory({ payload }, { call, put }) {
+      const response = yield call(createCategory, payload);
+      if (response.status === 'success') {
+        message.success('创建提案分类成功');
+        yield put({
+          type: 'createCategoryList',
+          payload: response.data,
+        });
+      }
+
+      if (response.status === 'fail') {
+        message.error(response.message);
+      }
+    },
+
+    *updateCategory({ payload }, { call, put }) {
+      const response = yield call(updateProposal, payload);
+      if (response.status === 'success') {
+        message.success('修改提案分类成功');
+        yield put({
+          type: 'updateCategoryList',
+          payload,
+        });
+      }
+
+      if (response.status === 'fail') {
+        message.error(response.message);
+      }
+    },
+
+    *deleteCategory({ payload }, { call, put }) {
+      const response = yield call(deleteCategory, payload);
+      if (response.status === 'success') {
+        message.success('删除提案分类成功');
+        yield put({
+          type: 'deleteCategoryList',
+          payload,
+        });
+      }
+    },
+
     // proposal zone
     *fetchAllProposalZone(_, { call, put }) {
       const response = yield call(queryProposalZoneList);
@@ -164,6 +221,13 @@ const ProposalModel = {
     },
     saveProposalZone(state, action) {
       return { ...state, zone_detail: action.payload || {} };
+    },
+
+    /*
+     * Proposal category
+     */
+    saveCategoryList(state, action) {
+      return { ...state, proposal_category: action.payload };
     },
 
     saveProposalList(state, action) {
