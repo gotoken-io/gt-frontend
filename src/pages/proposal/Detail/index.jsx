@@ -124,8 +124,16 @@ const Detail = props => {
                 <Title level={2} className={styles.proposalTitle}>
                   {detail.title}
                 </Title>
-                <Paragraph>创建时间: {moment.datetime(detail.created)}</Paragraph>
-                <Paragraph>{detail.summary}</Paragraph>
+                {detail.category && detail.category.id && (
+                  <Paragraph className={styles.category}>
+                    提案分类: {detail.category.name}
+                  </Paragraph>
+                )}
+
+                <Paragraph className={styles.createtime}>
+                  创建时间: {moment.datetime(detail.created)}
+                </Paragraph>
+                <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
                 <Tags tag={detail.tag} />
               </div>
             </div>
@@ -142,9 +150,11 @@ const Detail = props => {
 
             <div className={styles.detail}>
               <Title level={3}>项目详情</Title>
-              <Paragraph>
-                <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
-              </Paragraph>
+              <div className={styles.content}>
+                <Paragraph>
+                  <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
+                </Paragraph>
+              </div>
             </div>
 
             <div className={styles.comments}>

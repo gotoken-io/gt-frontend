@@ -156,6 +156,10 @@ const ProposalModel = {
           }),
         );
       }
+
+      if (response.status === 'fail') {
+        message.error(response.message);
+      }
     },
 
     *updateProposal({ payload }, { call, put }) {
