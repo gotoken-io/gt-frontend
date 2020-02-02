@@ -27,3 +27,10 @@ export const getAuthorityFromRouter = (router = [], pathname) => {
   if (authority) return authority;
   return undefined;
 };
+
+export const isEmpty = obj => {
+  if (!obj) {
+    return true;
+  }
+  return !Object.keys(obj).length;
+};
