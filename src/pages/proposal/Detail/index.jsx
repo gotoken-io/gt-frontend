@@ -115,7 +115,7 @@ const Detail = props => {
                   <div className={styles.right}>
                     {proposalAmount > 0 && (
                       <span className={styles.proposalAmount}>
-                        {proposalAmount}&nbsp;
+                        {proposalAmount.toLocaleString()}&nbsp;
                         {detail.currency_unit && detail.currency_unit.unit}
                       </span>
                     )}

@@ -58,7 +58,7 @@ const Item = props => {
               <div className={styles.right}>
                 {proposalAmount > 0 && (
                   <span className={styles.proposalAmount}>
-                    {proposalAmount} {currency_unit && currency_unit.unit}
+                    {proposalAmount.toLocaleString()} {currency_unit && currency_unit.unit}
                   </span>
                 )}
               </div>

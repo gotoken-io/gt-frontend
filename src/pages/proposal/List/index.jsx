@@ -60,11 +60,18 @@ const List = props => {
   };
 
   const handleFetchProposals = page => {
+    const params = getPageQuery();
+
+    const routeQuery = {
+      ...params,
+      page,
+    };
+
+    console.log(routeQuery);
+
     router.push({
-      pathname: match.url,
-      query: {
-        page,
-      },
+      pathname: window.location.pathname,
+      query: routeQuery,
     });
   };
 
