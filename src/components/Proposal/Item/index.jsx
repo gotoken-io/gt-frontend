@@ -26,6 +26,7 @@ const Item = props => {
     currency_unit,
     comments_count,
     created,
+    category,
   } = props;
 
   const proposalAmount = parseInt(amount);
@@ -57,7 +58,7 @@ const Item = props => {
               <div className={styles.right}>
                 {proposalAmount > 0 && (
                   <span className={styles.proposalAmount}>
-                    {proposalAmount} {currency_unit && currency_unit.unit}
+                    {proposalAmount.toLocaleString()} {currency_unit && currency_unit.unit}
                   </span>
                 )}
               </div>
@@ -67,6 +68,7 @@ const Item = props => {
               <Title level={3} className={styles.title}>
                 <LinesEllipsis text={title} maxLine="2" />
               </Title>
+              {category.id && <span className={styles.category}>提案分类: {category.name}</span>}
               <span className={styles.datetime}>创建时间: {moment.datetime(created)}</span>
             </div>
 

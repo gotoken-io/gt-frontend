@@ -13,7 +13,6 @@ const List = props => {
   const {
     dispatch,
     proposal_list,
-    zone_list,
     match,
     currentUser,
     fetchProposalListLoading,
@@ -42,13 +41,12 @@ const List = props => {
     console.log('params', params);
 
     if (dispatch) {
-      dispatch({
-        type: 'proposal/fetchAllProposalZone',
-      });
+      const payload = { ...match.params, ...params };
+      console.log('payload', payload);
 
       dispatch({
         type: 'proposal/fetchAllProposal',
-        payload: { ...match.params, ...params },
+        payload,
       });
     }
   }, [match.params]);
@@ -62,20 +60,25 @@ const List = props => {
   };
 
   const handleFetchProposals = page => {
+    const params = getPageQuery();
+
+    const routeQuery = {
+      ...params,
+      page,
+    };
+
+    console.log(routeQuery);
+
     router.push({
-      pathname: match.url,
-      query: {
-        page,
-      },
+      pathname: window.location.pathname,
+      query: routeQuery,
     });
   };
 
   return (
     <GridContent>
       <div className={styles.filter}>
-        <Spin spinning={fetchProposalZoneLoading}>
-          <Filter zone_list={zone_list} />
-        </Spin>
+        <Filter />
       </div>
 
       <div className={styles.actions}>
@@ -93,9 +96,7 @@ const List = props => {
             ))}
           </Row>
         </div>
-      </Spin>
 
-      <Spin spinning={fetchProposalListLoading}>
         <div className={styles.pagination}>
           <Pagination
             defaultCurrent={1}
@@ -113,7 +114,5 @@ const List = props => {
 export default connect(({ user, proposal, loading }) => ({
   currentUser: user.currentUser,
   proposal_list: proposal.proposal_list,
-  zone_list: proposal.zone_list,
-  fetchProposalZoneLoading: loading.effects['proposal/fetchAllProposalZone'],
   fetchProposalListLoading: loading.effects['proposal/fetchAllProposal'],
 }))(List);

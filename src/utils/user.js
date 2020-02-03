@@ -1,3 +1,5 @@
+import { isEmpty } from './utils';
+
 export function getCurrentUser() {
   return JSON.parse(localStorage.getItem('currentUser'));
 }
@@ -11,16 +13,13 @@ export function removeCurrentUser() {
 }
 
 export function isCreatorOrAdmin({ currentUser, creator }) {
-  console.log('currentUser', currentUser);
-  console.log('creator', creator);
-
-  if (currentUser && currentUser.admin === true) {
+  if (!isEmpty(currentUser) && currentUser.admin === true) {
     return true;
   }
 
   if (
-    creator &&
-    Object.keys(currentUser).length !== 0 &&
+    !isEmpty(creator) &&
+    !isEmpty(currentUser) &&
     creator.id.toString() === currentUser.id.toString() &&
     currentUser.id.toString()
   ) {
@@ -31,7 +30,7 @@ export function isCreatorOrAdmin({ currentUser, creator }) {
 }
 
 export function isAdmin({ currentUser }) {
-  if (currentUser && currentUser.admin === true) {
+  if (!isEmpty(currentUser) && currentUser.admin === true) {
     return true;
   }
   return false;
