@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { Button, Spin, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Spin, Select, Icon } from 'antd';
 import { connect } from 'dva';
+import { getPageQuery } from '@/utils/utils';
 import router from 'umi/router';
 import Link from 'umi/link';
 import styles from './style.less';
@@ -8,10 +9,27 @@ import styles from './style.less';
 const { Option } = Select;
 
 const Filter = props => {
+  const [category, setCategory] = useState('all');
+  const [sort, setSort] = useState({
+    name: 'createtime',
+    by: 'desc',
+  });
+
   const { zone_list, proposal_category } = props;
 
   useEffect(() => {
     const { dispatch } = props;
+
+    const { c, sort_name, sort_by } = getPageQuery();
+
+    if (sort_name && sort_by) {
+      setSort({
+        name: sort_name,
+        by: sort_by,
+      });
+
+      console.log('sort', sort);
+    }
 
     if (dispatch) {
       dispatch({
@@ -20,18 +38,91 @@ const Filter = props => {
 
       dispatch({
         type: 'proposal/fetchAllCategory',
+      }).then(res => {
+        console.log(res);
+        if (c) {
+          setCategory(parseInt(c));
+        }
       });
     }
   }, []);
 
   const onChangeCategory = value => {
-    console.log(value);
+    setCategory(value);
+    const params = getPageQuery();
+
+    const routeQuery = {
+      ...params,
+      c: value,
+    };
+
+    console.log(routeQuery);
+
     router.push({
       pathname: window.location.pathname,
-      query: {
-        c: value,
-      },
+      query: routeQuery,
     });
+  };
+
+  const onClickSort = value => {
+    let by = 'desc';
+
+    if (value === sort.name) {
+      if (sort.by === 'desc') {
+        by = 'asc';
+      }
+
+      if (sort.by === 'asc') {
+        by = 'desc';
+      }
+    }
+
+    setSort({
+      name: value,
+      by,
+    });
+
+    const params = getPageQuery();
+
+    const routeQuery = {
+      ...params,
+      sort_name: value,
+      sort_by: by,
+    };
+
+    console.log(routeQuery);
+
+    router.push({
+      pathname: window.location.pathname,
+      query: routeQuery,
+    });
+  };
+
+  const showSortArrow = key => {
+    if (key === sort.name) {
+      if (sort.by === 'desc') {
+        return <Icon type="arrow-down" />;
+      }
+      if (sort.by === 'asc') {
+        return <Icon type="arrow-up" />;
+      }
+    }
+
+    return null;
+  };
+
+  const sortButtons = () => {
+    const sorts = [
+      { key: 'createtime', name: '创建时间' },
+      { key: 'amount', name: '提案金额' },
+      { key: 'comments', name: '评论数' },
+    ];
+
+    return sorts.map(item => (
+      <Button onClick={() => onClickSort(item.key)}>
+        {item.name} {showSortArrow(item.key)}
+      </Button>
+    ));
   };
 
   return (
@@ -58,6 +149,7 @@ const Filter = props => {
             placeholder="请选择提案分类"
             style={{ width: 200 }}
             onChange={onChangeCategory}
+            value={category}
           >
             <Option key="all" value="all">
               全部
@@ -70,6 +162,11 @@ const Filter = props => {
                 </Option>
               ))}
           </Select>
+        </div>
+
+        <div className={styles.sort}>
+          <h3 className={styles.title}>排序：</h3>
+          <Button.Group>{sortButtons()}</Button.Group>
         </div>
       </div>
     </div>

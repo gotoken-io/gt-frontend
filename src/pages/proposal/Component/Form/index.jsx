@@ -263,9 +263,9 @@ const ProposalForm = props => {
                 ))}
             </Select>,
           )}
-          <Button type="link" style={{ marginLeft: 10 }} href="/manage/category">
+          {/* <Button type="link" style={{ marginLeft: 10 }} href="/manage/category">
             管理分类
-          </Button>
+          </Button> */}
         </Form.Item>
 
         <Form.Item label="提案简介">

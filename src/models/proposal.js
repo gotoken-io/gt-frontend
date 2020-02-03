@@ -42,10 +42,12 @@ const ProposalModel = {
      */
     *fetchAllCategory(_, { call, put }) {
       const response = yield call(queryCategory);
+
       yield put({
         type: 'saveCategoryList',
         payload: response.data,
       });
+      return true;
     },
 
     *createCategory({ payload }, { call, put }) {
