@@ -248,10 +248,10 @@ const ProposalForm = props => {
         <Form.Item label="提案分类">
           {getFieldDecorator('category_id', {
             rules: [
-              {
-                required: true,
-                message: '请选择提案分类',
-              },
+              //   {
+              //     required: true,
+              //     message: '请选择提案分类',
+              //   },
             ],
           })(
             <Select name="category" placeholder="请选择提案分类" style={{ width: 200 }}>
