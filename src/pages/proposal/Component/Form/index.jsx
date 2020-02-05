@@ -87,10 +87,9 @@ const ProposalForm = props => {
           type: 'proposal/fetchProposal',
           payload: { id },
         }).then(data => {
+          // set form value by proposal.id
           setFormValues(data);
         });
-        // 回填表单内容
-        //
       }
 
       dispatch({
@@ -224,7 +223,11 @@ const ProposalForm = props => {
               },
             ],
           })(
-            <Select style={{ width: 120 }} name="proposal-zone">
+            <Select
+              style={{ width: 250 }}
+              placeholder="请选择要发布在哪个提案专区"
+              name="proposal-zone"
+            >
               {zone_list.map(zone => (
                 <Option key={zone.id} value={zone.id}>
                   {zone.name}
@@ -309,9 +312,13 @@ const ProposalForm = props => {
               {getFieldDecorator('currency_id', {
                 rules: [],
               })(
-                <Select name="budget-unit" style={{ width: 120, marginLeft: 10 }}>
-                  {proposal_category &&
-                    proposal_category.map(currency => (
+                <Select
+                  name="budget-unit"
+                  placeholder="请选择token单位"
+                  style={{ width: 200, marginLeft: 10 }}
+                >
+                  {currency_list &&
+                    currency_list.map(currency => (
                       <Option key={currency.id} value={currency.id}>
                         {currency.unit}
                       </Option>

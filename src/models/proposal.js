@@ -121,6 +121,8 @@ const ProposalModel = {
     // get all currency
     *fetchAllCurrency(_, { call, put }) {
       const response = yield call(queryCurrencylList);
+
+      // console.log('saveCurrencyList', response.data);
       yield put({
         type: 'saveCurrencyList',
         payload: response.data,
@@ -205,11 +207,7 @@ const ProposalModel = {
       const response = yield call(createProposalZone, payload);
       if (response.status === 'success') {
         message.success('提案专区创建成功');
-        yield put(
-          routerRedux.replace({
-            pathname: '/',
-          }),
-        );
+        router.go(-1); // 回到上一页
       }
     },
 
