@@ -209,6 +209,12 @@ const ProposalModel = {
         message.success('提案专区创建成功');
         router.go(-1); // 回到上一页
       }
+
+      if (response.status === 'fail') {
+        if (response.code === 409) {
+          message.error('已存在同名专区');
+        }
+      }
     },
 
     *updateProposalZone({ payload }, { call, put }) {

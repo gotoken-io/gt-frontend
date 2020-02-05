@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Divider, Upload, Icon, Spin } from 'antd';
+import { Form, Input, Button, Divider, Upload, Icon, Spin, Slider } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { getFielUrl, beforeUpload, getBase64 } from '@/utils/upload';
@@ -76,11 +76,16 @@ const tailFormItemLayout = {
   },
 };
 
+const VOTE_DURATION_MIN = 5;
+const VOTE_DURATION_MAX = 1000;
+const VOTE_DURATION_DEFAULT = [24, 72];
+
 const ProposalZoneForm = props => {
   // state
   const [cover, setCover] = useState(null);
   const [coverStream, setCoverStream] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [voteDuration, setVoteDuration] = useState(VOTE_DURATION_DEFAULT);
 
   // prpos
   const { id, dispatch, zone_detail } = props;
@@ -114,6 +119,10 @@ const ProposalZoneForm = props => {
       if (detail.cover) {
         setCover(detail.cover);
         setCoverStream(getFielUrl(detail.cover));
+      }
+
+      if (detail.vote_duration_hours_min && detail.vote_duration_hours_max) {
+        setVoteDuration([detail.vote_duration_hours_min, detail.vote_duration_hours_max]);
       }
 
       Object.keys(form.getFieldsValue()).forEach(key => {
@@ -158,6 +167,11 @@ const ProposalZoneForm = props => {
     }
   }
 
+  function onVoteDurationChange(value) {
+    console.log('onVoteDurationChange', value);
+    setVoteDuration(value);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
@@ -172,6 +186,8 @@ const ProposalZoneForm = props => {
           vote_addr_weight_json: values.vote_addr_weight_json ? values.vote_addr_weight_json : '',
           vote_rule: values.vote_rule ? values.vote_rule : '',
           detail: values.detail.toHTML(), // or values.content.toHTML()
+          vote_duration_hours_min: voteDuration[0],
+          vote_duration_hours_max: voteDuration[1],
         };
 
         console.log(submitData);
@@ -302,6 +318,23 @@ const ProposalZoneForm = props => {
 
         <Form.Item label="投票规则">
           {getFieldDecorator('vote_rule')(<TextArea placeholder="" rows={4} />)}
+        </Form.Item>
+
+        <Form.Item label="投票持续时间(小时)">
+          {getFieldDecorator('vote_duration')(
+            <Slider
+              range
+              min={VOTE_DURATION_MIN}
+              max={VOTE_DURATION_MAX}
+              onChange={onVoteDurationChange}
+            />,
+          )}
+          <div>
+            <span>
+              {voteDuration[0]}小时 ~ {voteDuration[1]}小时
+            </span>
+            <span></span>
+          </div>
         </Form.Item>
 
         <Form.Item label="可投票地址权重分配">

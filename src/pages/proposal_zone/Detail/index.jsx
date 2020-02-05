@@ -4,14 +4,13 @@ import Image from '@/components/Image';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
 
-const ZoneCover = ({ name, cover }) => {
+const ZoneCover = ({ id, name, cover }) => {
   let cardCoverSrc = defaultCover;
   if (cover) {
     cardCoverSrc = cover;
@@ -19,7 +18,9 @@ const ZoneCover = ({ name, cover }) => {
 
   return (
     <div className={styles.cardCover}>
-      <Image name={name} src={cardCoverSrc} size={200} />
+      <Link to={`/proposal/list/${id}`}>
+        <Image name={name} src={cardCoverSrc} size={200} />
+      </Link>
     </div>
   );
 };
@@ -85,7 +86,10 @@ const Detail = props => {
               <ZoneCover {...zone_detail} />
 
               <div className={styles.summaryContent}>
-                <Title level={1}>{title}</Title>
+                <Link to={`/proposal/list/${id}`}>
+                  <Title level={1}>{title}</Title>
+                </Link>
+
                 <h3 className={styles.proposalTitle}>简称: {name}</h3>
                 <h3 className={styles.proposalTitle}>Token: {token}</h3>
                 <Paragraph>{summary}</Paragraph>
