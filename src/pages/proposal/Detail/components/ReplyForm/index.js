@@ -49,7 +49,7 @@ const ReplyForm = props => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={hasErrors(getFieldsError()) || submittingCreate}
+            loading={hasErrors(getFieldsError()) || submittingCreate}
           >
             回复
           </Button>

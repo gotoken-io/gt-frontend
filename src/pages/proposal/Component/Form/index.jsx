@@ -362,13 +362,15 @@ const ProposalForm = props => {
         </Form.Item>
 
         <Form.Item {...tailFormItemLayout} className={styles.buttons}>
-          <Button size="large" type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={id ? props.submitingUpdate : props.submitingCreate}
+          >
             提交
           </Button>
 
-          <Button onClick={() => router.go(-1)} size="large">
-            取消
-          </Button>
+          <Button onClick={() => router.go(-1)}>取消</Button>
         </Form.Item>
       </Form>
     </div>
@@ -389,6 +391,6 @@ export default connect(({ proposal, loading }) => ({
   proposal_category: proposal.proposal_category,
   currency_list: proposal.currency_list,
   loading: loading.effects['proposal/fetchProposal'],
-  submittingCreate: loading.effects['proposal/createProposal'],
-  submittingUpdate: loading.effects['proposal/updateProposal'],
+  submitingCreate: loading.effects['proposal/createProposal'],
+  submitingUpdate: loading.effects['proposal/updateProposal'],
 }))(FormWrapper);

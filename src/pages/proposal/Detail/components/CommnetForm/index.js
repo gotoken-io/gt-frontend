@@ -50,7 +50,7 @@ const CommentForm = props => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={hasErrors(getFieldsError()) || submittingCreate}
+            loading={hasErrors(getFieldsError()) || submittingCreate}
           >
             发表评论
           </Button>
@@ -65,5 +65,4 @@ export default connect(({ user, proposal, loading }) => ({
   currentUser: user.currentUser,
   proposalDetail: proposal.detail,
   submittingCreate: loading.effects['comment/createComment'],
-  submittingUpdate: loading.effects['comment/updateComment'],
 }))(CommentFormWrapper);
