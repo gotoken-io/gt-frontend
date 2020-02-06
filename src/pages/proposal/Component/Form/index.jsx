@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, Radio, Button, Spin } from 'antd';
+import { Form, Input, Select, Radio, Button, Spin, InputNumber } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
 import router from 'umi/router';
+import { converHoursToDayAndHour } from '@/utils/utils';
 import { connect } from 'dva';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
@@ -31,6 +32,19 @@ const tailFormItemLayout = {
       span: 16,
       offset: 8,
     },
+  },
+};
+
+const workHourSettings = {
+  day: {
+    default: 0,
+    min: 0,
+    max: 100,
+  },
+  hour: {
+    default: 0,
+    min: 0,
+    max: 24,
   },
 };
 
@@ -72,10 +86,16 @@ const controls = [
 ];
 
 const ProposalForm = props => {
+  // props
   const { id, zone_list, currency_list, proposal_category, loading } = props;
   const { getFieldDecorator } = props.form;
 
+  // state
   const [formState, setFormState] = useState({});
+  const [workHour, setWorkHour] = useState({
+    day: workHourSettings.day.default,
+    hour: workHourSettings.hour.default,
+  });
 
   useEffect(() => {
     const { dispatch } = props;
@@ -113,6 +133,10 @@ const ProposalForm = props => {
   function setFormValues(detail) {
     const { form } = props;
     if (detail) {
+      if (detail.estimated_hours) {
+        setWorkHour(converHoursToDayAndHour(detail.estimated_hours));
+      }
+
       Object.keys(form.getFieldsValue()).forEach(key => {
         const obj = {};
         obj[key] = detail[key] || null;
@@ -165,6 +189,10 @@ const ProposalForm = props => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  function onChangeWorkTime(value, type) {
+    setWorkHour({ ...workHour, [type]: value });
+  }
+
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
@@ -177,6 +205,7 @@ const ProposalForm = props => {
         // filter some form value
         let submitData = {
           ...values,
+          estimated_hours: workHour.day * 24 + workHour.hour,
           tag: tag === false ? '' : tag, // 如果 tag=false, 传空字符串
           detail: values.detail.toHTML(), // or values.content.toHTML()
         };
@@ -327,6 +356,29 @@ const ProposalForm = props => {
               )}
             </div>
           )}
+        </Form.Item>
+
+        <Form.Item label="提案预计工时">
+          <div className={styles.workHour}>
+            <span>
+              <InputNumber
+                min={workHourSettings.day.min}
+                max={workHourSettings.day.max}
+                value={workHour.day}
+                onChange={value => onChangeWorkTime(value, 'day')}
+              />{' '}
+              天
+            </span>
+            <span>
+              <InputNumber
+                min={workHourSettings.hour.min}
+                max={workHourSettings.hour.max}
+                value={workHour.hour}
+                onChange={value => onChangeWorkTime(value, 'hour')}
+              />{' '}
+              小时
+            </span>
+          </div>
         </Form.Item>
 
         <Form.Item label="提案标签">

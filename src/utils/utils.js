@@ -51,3 +51,9 @@ export const isJSON = str => {
 
   return false;
 };
+
+// conver hours to days and hours
+export const converHoursToDayAndHour = hours => ({
+  day: Math.floor(hours / 24),
+  hour: Math.floor(hours) % 24,
+});
