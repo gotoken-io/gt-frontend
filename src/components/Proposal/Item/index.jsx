@@ -57,7 +57,10 @@ const Item = props => {
               </div>
               <div className={styles.right}>
                 {proposalAmount > 0 && (
-                  <span className={styles.proposalAmount}>
+                  <span
+                    style={zone.theme_color && { backgroundColor: zone.theme_color }}
+                    className={styles.proposalAmount}
+                  >
                     {proposalAmount.toLocaleString()} {currency_unit && currency_unit.unit}
                   </span>
                 )}

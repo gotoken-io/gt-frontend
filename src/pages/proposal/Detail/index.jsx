@@ -81,7 +81,7 @@ const Detail = props => {
   }
 
   const { fetchDetailLoading } = props;
-  const { creator } = detail;
+  const { creator, zone } = detail;
 
   return (
     <GridContent>
@@ -103,18 +103,21 @@ const Detail = props => {
         <Spin spinning={fetchDetailLoading}>
           <Typography>
             <div className={styles.summaryCard}>
-              <ZoneCover {...detail.zone} />
+              <ZoneCover {...zone} />
 
               <div className={styles.summaryContent}>
                 <div className={styles.cardHead}>
                   <div className={styles.left}>
-                    <Text>{detail.zone && detail.zone.name}</Text>
+                    <Text>{zone && zone.name}</Text>
                     &nbsp;&nbsp;
                     {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
                   </div>
                   <div className={styles.right}>
                     {proposalAmount > 0 && (
-                      <span className={styles.proposalAmount}>
+                      <span
+                        style={zone.theme_color && { backgroundColor: zone.theme_color }}
+                        className={styles.proposalAmount}
+                      >
                         {proposalAmount.toLocaleString()}&nbsp;
                         {detail.currency_unit && detail.currency_unit.unit}
                       </span>

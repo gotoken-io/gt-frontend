@@ -4,6 +4,9 @@ import ImgCrop from 'antd-img-crop';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { getFielUrl, beforeUpload, getBase64 } from '@/utils/upload';
 import { connect } from 'dva';
+import 'rc-color-picker/assets/index.css';
+import ColorPicker from 'rc-color-picker';
+
 import BraftEditor from 'braft-editor';
 import Image from '@/components/Image';
 import 'braft-editor/dist/index.css';
@@ -86,6 +89,7 @@ const ProposalZoneForm = props => {
   const [coverStream, setCoverStream] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [voteDuration, setVoteDuration] = useState(VOTE_DURATION_DEFAULT);
+  const [themeColor, setThemeColor] = useState(props.primaryColor);
 
   // prpos
   const { id, dispatch, zone_detail } = props;
@@ -95,6 +99,7 @@ const ProposalZoneForm = props => {
     // 清空 state, 防止从 update proposal zone 中带数据来
     setCover(null);
     setCoverStream(null);
+    setThemeColor(props.primaryColor);
 
     if (dispatch) {
       if (id) {
@@ -119,6 +124,10 @@ const ProposalZoneForm = props => {
       if (detail.cover) {
         setCover(detail.cover);
         setCoverStream(getFielUrl(detail.cover));
+      }
+
+      if (detail.theme_color) {
+        setThemeColor(detail.theme_color);
       }
 
       if (detail.vote_duration_hours_min && detail.vote_duration_hours_max) {
@@ -172,6 +181,11 @@ const ProposalZoneForm = props => {
     setVoteDuration(value);
   }
 
+  function changeHandler(colors) {
+    console.log(colors);
+    setThemeColor(colors.color);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
@@ -182,7 +196,7 @@ const ProposalZoneForm = props => {
         const submitData = {
           ...values,
           cover,
-          theme_style: values.theme_style ? values.theme_style : '',
+          theme_color: themeColor,
           vote_addr_weight_json: values.vote_addr_weight_json ? values.vote_addr_weight_json : '',
           vote_rule: values.vote_rule ? values.vote_rule : '',
           detail: values.detail.toHTML(), // or values.content.toHTML()
@@ -313,7 +327,9 @@ const ProposalZoneForm = props => {
         <Divider />
 
         <Form.Item label="提案专区风格(css)">
-          {getFieldDecorator('theme_style')(<TextArea placeholder="" rows={4} />)}
+          <div className={styles.colorPicker}>
+            <ColorPicker animation="slide-up" color={themeColor} onChange={changeHandler} />
+          </div>
         </Form.Item>
 
         <Form.Item label="投票规则">
@@ -366,7 +382,8 @@ const ProposalZoneForm = props => {
 
 const FormWrapper = Form.create({ name: 'proposal-zone-form' })(ProposalZoneForm);
 
-export default connect(({ proposal, loading }) => ({
+export default connect(({ settings, proposal, loading }) => ({
+  primaryColor: settings.primaryColor,
   currency_list: proposal.currency_list,
   zone_detail: proposal.zone_detail,
   loading: loading.effects['proposal/fetchProposalZone'],
