@@ -57,3 +57,10 @@ export const converHoursToDayAndHour = hours => ({
   day: Math.floor(hours / 24),
   hour: Math.floor(hours) % 24,
 });
+
+export const convertToDayHourText = obj => `${obj.day}天${obj.hour}小时`;
+
+export const converHoursToDayHourText = hours => {
+  const obj = converHoursToDayAndHour(hours);
+  return convertToDayHourText(obj);
+};

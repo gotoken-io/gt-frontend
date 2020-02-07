@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, Radio, Button, Spin, InputNumber } from 'antd';
+import { Form, Input, Select, Radio, Button, Spin, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
 import router from 'umi/router';
-import { converHoursToDayAndHour } from '@/utils/utils';
+import { converHoursToDayAndHour, convertToDayHourText } from '@/utils/utils';
 import { connect } from 'dva';
+import InputDayHour from '@/components/Proposal/InputDayHour';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
 
@@ -35,7 +36,22 @@ const tailFormItemLayout = {
   },
 };
 
+// 预计工时
 const workHourSettings = {
+  day: {
+    default: 0,
+    min: 0,
+    max: 100,
+  },
+  hour: {
+    default: 0,
+    min: 0,
+    max: 24,
+  },
+};
+
+// 投票持续时间
+const voteDurationSettings = {
   day: {
     default: 0,
     min: 0,
@@ -92,9 +108,16 @@ const ProposalForm = props => {
 
   // state
   const [formState, setFormState] = useState({});
+  const [selectZone, setSelectZone] = useState();
+
   const [workHour, setWorkHour] = useState({
     day: workHourSettings.day.default,
     hour: workHourSettings.hour.default,
+  });
+
+  const [voteDuration, setVoteDuration] = useState({
+    day: voteDurationSettings.day.default,
+    hour: voteDurationSettings.hour.default,
   });
 
   useEffect(() => {
@@ -135,6 +158,10 @@ const ProposalForm = props => {
     if (detail) {
       if (detail.estimated_hours) {
         setWorkHour(converHoursToDayAndHour(detail.estimated_hours));
+      }
+
+      if (detail.vote_duration_hours) {
+        setVoteDuration(converHoursToDayAndHour(detail.vote_duration_hours));
       }
 
       Object.keys(form.getFieldsValue()).forEach(key => {
@@ -184,13 +211,44 @@ const ProposalForm = props => {
     }
   }
 
-  const handleChange = e => {
+  function onSelectProposalZone(value) {
+    console.log('onChangeProposalZone', value);
+    const zone = zone_list.find(d => d.id === value);
+    setSelectZone({
+      ...zone,
+      vote_duration_min: converHoursToDayAndHour(zone.vote_duration_hours_min),
+      vote_duration_max: converHoursToDayAndHour(zone.vote_duration_hours_max),
+    });
+  }
+
+  function handleChange(e) {
     console.log(e);
     setFormState({ ...formState, [e.target.name]: e.target.value });
-  };
+  }
 
+  // 预计工时 onChange
   function onChangeWorkTime(value, type) {
     setWorkHour({ ...workHour, [type]: value });
+  }
+
+  // 投票时间 onChange
+  function onChangeVoteDuration(value, type) {
+    setVoteDuration({ ...voteDuration, [type]: value });
+  }
+
+  // validate before submit 投票时间
+  function validateVoteDurationHours(value) {
+    if (value < selectZone.vote_duration_hours_min) {
+      message.error(`投票时间必须大于${convertToDayHourText(selectZone.vote_duration_min)}`);
+      return false;
+    }
+
+    if (value > selectZone.vote_duration_hours_max) {
+      message.error(`投票时间必须小于${convertToDayHourText(selectZone.vote_duration_max)}`);
+      return false;
+    }
+
+    return true;
   }
 
   const handleSubmit = e => {
@@ -206,9 +264,14 @@ const ProposalForm = props => {
         let submitData = {
           ...values,
           estimated_hours: workHour.day * 24 + workHour.hour,
+          vote_duration_hours: voteDuration.day * 24 + voteDuration.hour,
           tag: tag === false ? '' : tag, // 如果 tag=false, 传空字符串
           detail: values.detail.toHTML(), // or values.content.toHTML()
         };
+
+        if (!validateVoteDurationHours(submitData.vote_duration_hours)) {
+          return false;
+        }
 
         // 无预算
         if (values['has-budget'] === 0) {
@@ -256,6 +319,8 @@ const ProposalForm = props => {
               style={{ width: 250 }}
               placeholder="请选择要发布在哪个提案专区"
               name="proposal-zone"
+              onSelect={onSelectProposalZone}
+              disabled={!!id}
             >
               {zone_list.map(zone => (
                 <Option key={zone.id} value={zone.id}>
@@ -316,7 +381,7 @@ const ProposalForm = props => {
             rules: [
               {
                 required: true,
-                message: '请输入提案简介!',
+                message: '请选择提案预算!',
               },
             ],
           })(
@@ -359,26 +424,24 @@ const ProposalForm = props => {
         </Form.Item>
 
         <Form.Item label="提案预计工时">
-          <div className={styles.workHour}>
+          <InputDayHour settings={workHourSettings} values={workHour} onChange={onChangeWorkTime} />
+        </Form.Item>
+
+        <Form.Item label="提案投票时间">
+          {/* 未来,提案创建后,会上链,投票时间也会上链,所以不能修改. */}
+          <InputDayHour
+            settings={voteDurationSettings}
+            values={voteDuration}
+            onChange={onChangeVoteDuration}
+            disabled={id || !selectZone}
+          />
+          {selectZone && (
             <span>
-              <InputNumber
-                min={workHourSettings.day.min}
-                max={workHourSettings.day.max}
-                value={workHour.day}
-                onChange={value => onChangeWorkTime(value, 'day')}
-              />{' '}
-              天
+              当前专区:{selectZone.name}, 投票时间限制为:{' '}
+              {convertToDayHourText(selectZone.vote_duration_min)} ~{' '}
+              {convertToDayHourText(selectZone.vote_duration_max)}
             </span>
-            <span>
-              <InputNumber
-                min={workHourSettings.hour.min}
-                max={workHourSettings.hour.max}
-                value={workHour.hour}
-                onChange={value => onChangeWorkTime(value, 'hour')}
-              />{' '}
-              小时
-            </span>
-          </div>
+          )}
         </Form.Item>
 
         <Form.Item label="提案标签">

@@ -4,6 +4,7 @@ import ImgCrop from 'antd-img-crop';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { getFielUrl, beforeUpload, getBase64 } from '@/utils/upload';
 import { connect } from 'dva';
+import { converHoursToDayHourText } from '@/utils/utils';
 import 'rc-color-picker/assets/index.css';
 import ColorPicker from 'rc-color-picker';
 
@@ -347,7 +348,8 @@ const ProposalZoneForm = props => {
           )}
           <div>
             <span>
-              {voteDuration[0]}小时 ~ {voteDuration[1]}小时
+              {converHoursToDayHourText(voteDuration[0])} ~{' '}
+              {converHoursToDayHourText(voteDuration[1])}
             </span>
             <span></span>
           </div>
