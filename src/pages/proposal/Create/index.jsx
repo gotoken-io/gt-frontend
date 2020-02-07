@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import ProposalForm from '../Component/Form';
+import ProposalForm from '../components/Form';
 
 const Create = props => <ProposalForm />;
 

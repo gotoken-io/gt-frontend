@@ -231,20 +231,20 @@ const ProposalForm = props => {
     setWorkHour({ ...workHour, [type]: value });
   }
 
-  // 投票时间 onChange
+  // 投票持续时长 onChange
   function onChangeVoteDuration(value, type) {
     setVoteDuration({ ...voteDuration, [type]: value });
   }
 
-  // validate before submit 投票时间
+  // validate before submit 投票持续时长
   function validateVoteDurationHours(value) {
     if (value < selectZone.vote_duration_hours_min) {
-      message.error(`投票时间必须大于${convertToDayHourText(selectZone.vote_duration_min)}`);
+      message.error(`投票持续时长必须大于${convertToDayHourText(selectZone.vote_duration_min)}`);
       return false;
     }
 
     if (value > selectZone.vote_duration_hours_max) {
-      message.error(`投票时间必须小于${convertToDayHourText(selectZone.vote_duration_max)}`);
+      message.error(`投票持续时长必须小于${convertToDayHourText(selectZone.vote_duration_max)}`);
       return false;
     }
 
@@ -427,8 +427,8 @@ const ProposalForm = props => {
           <InputDayHour settings={workHourSettings} values={workHour} onChange={onChangeWorkTime} />
         </Form.Item>
 
-        <Form.Item label="提案投票时间">
-          {/* 未来,提案创建后,会上链,投票时间也会上链,所以不能修改. */}
+        <Form.Item label="提案投票持续时长">
+          {/* 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改. */}
           <InputDayHour
             settings={voteDurationSettings}
             values={voteDuration}
@@ -437,7 +437,7 @@ const ProposalForm = props => {
           />
           {selectZone && (
             <span>
-              当前专区:{selectZone.name}, 投票时间限制为:{' '}
+              当前专区:{selectZone.name}, 投票持续时长限制为:{' '}
               {convertToDayHourText(selectZone.vote_duration_min)} ~{' '}
               {convertToDayHourText(selectZone.vote_duration_max)}
             </span>
