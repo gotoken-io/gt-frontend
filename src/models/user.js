@@ -8,6 +8,8 @@ import {
   postForgetPwd,
   postResetPwd,
 } from '@/services/user';
+import { queryUserWallet, addUserWallet, updateUserWallet } from '@/services/wallet';
+
 import { routerRedux } from 'dva/router';
 import { setCurrentUser, removeCurrentUser } from '@/utils/user';
 import { setAuthority, removeAuthority } from '@/utils/authority';
@@ -27,6 +29,7 @@ const UserModel = {
         total: 1,
       },
     },
+    wallet: [],
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -81,6 +84,32 @@ const UserModel = {
           type: 'saveUserProposals',
           payload: { ...payload, data: response.data },
         });
+      }
+    },
+
+    *fetchCurrentUserWallet({ _ }, { call, put }) {
+      const response = yield call(queryUserWallet, _);
+      if (response.data) {
+        yield put({
+          type: 'saveUserWallet',
+          payload: response.data,
+        });
+      }
+    },
+
+    *addUserWallet({ payload }, { call, put }) {
+      const response = yield call(addUserWallet, payload);
+      if (response.status === 'success') {
+        message.success('添加钱包地址成功');
+        window.location.reload();
+      }
+    },
+
+    *updateUserWallet({ payload }, { call, put }) {
+      const response = yield call(updateUserWallet, payload);
+      if (response.status === 'success') {
+        message.success('修改钱包地址成功');
+        window.location.reload();
       }
     },
 
@@ -157,6 +186,10 @@ const UserModel = {
       removeCurrentUser();
       removeAuthority();
       return { ...state, currentUser: {} };
+    },
+
+    saveUserWallet(state, action) {
+      return { ...state, wallet: action.payload || [] };
     },
 
     changeUserAvatar(state, action) {

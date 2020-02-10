@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import { connect } from 'dva';
+import router from 'umi/router';
 import BaseView from './components/base';
-
+import Wallet from './components/Wallet';
+import { getPageHash } from '@/utils/utils';
 import styles from './style.less';
 
 const { Item } = Menu;
@@ -15,14 +17,23 @@ class AccountSettings extends Component {
   main = undefined;
 
   constructor(props) {
+    // console.log('hash', window.location.hash);
+
     super(props);
     const menuMap = {
       base: '基本设置',
+      wallet: '钱包设置',
     };
+
+    let selectKeyDefault = 'base';
+    if (window.location.hash) {
+      selectKeyDefault = getPageHash();
+    }
+
     this.state = {
       mode: 'inline',
       menuMap,
-      selectKey: 'base',
+      selectKey: selectKeyDefault, // default view
     };
   }
 
@@ -53,6 +64,17 @@ class AccountSettings extends Component {
     this.setState({
       selectKey: key,
     });
+
+    if (key !== 'base') {
+      router.push({
+        pathname: window.location.pathname,
+        hash: key,
+      });
+    } else {
+      router.push({
+        pathname: window.location.pathname,
+      });
+    }
   };
 
   resize = () => {
@@ -89,11 +111,15 @@ class AccountSettings extends Component {
       case 'base':
         return <BaseView />;
 
-      default:
-        break;
-    }
+      case 'wallet':
+        return <Wallet />;
 
-    return null;
+      default:
+        this.setState({
+          selectKey: 'base',
+        });
+        return <BaseView />;
+    }
   };
 
   render() {
