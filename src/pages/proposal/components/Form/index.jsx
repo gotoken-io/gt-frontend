@@ -103,12 +103,13 @@ const controls = [
 
 const ProposalForm = props => {
   // props
-  const { id, zone_list, currency_list, proposal_category, loading } = props;
+  const { id, zone_list, currency_list, proposal_category, loading, form } = props;
   const { getFieldDecorator } = props.form;
 
   // state
   const [formState, setFormState] = useState({});
   const [selectZone, setSelectZone] = useState();
+  const [selectCurrency, setSelectCurrency] = useState([]);
 
   const [workHour, setWorkHour] = useState({
     day: workHourSettings.day.default,
@@ -124,17 +125,6 @@ const ProposalForm = props => {
     const { dispatch } = props;
 
     if (dispatch) {
-      // 存在 id && 编辑提案
-      if (id) {
-        dispatch({
-          type: 'proposal/fetchProposal',
-          payload: { id },
-        }).then(data => {
-          // set form value by proposal.id
-          setFormValues(data);
-        });
-      }
-
       dispatch({
         type: 'proposal/fetchAllCategory',
       });
@@ -144,17 +134,26 @@ const ProposalForm = props => {
       });
 
       dispatch({
-        type: 'proposal/fetchAllProposalZone',
-      });
-
-      dispatch({
         type: 'proposal/fetchAllCurrency',
       });
+
+      // 存在 id && 编辑提案
+      if (id) {
+        dispatch({
+          type: 'proposal/fetchProposal',
+          payload: { id },
+        }).then(data => {
+          // set form value by proposal.id
+          setFormValues(data);
+
+          // 预算金额 select set data
+          setSelectCurrency(data.zone.currencies);
+        });
+      }
     }
   }, []);
 
   function setFormValues(detail) {
-    const { form } = props;
     if (detail) {
       if (detail.estimated_hours) {
         setWorkHour(converHoursToDayAndHour(detail.estimated_hours));
@@ -219,6 +218,11 @@ const ProposalForm = props => {
       vote_duration_min: converHoursToDayAndHour(zone.vote_duration_hours_min),
       vote_duration_max: converHoursToDayAndHour(zone.vote_duration_hours_max),
     });
+
+    setSelectCurrency(zone.currencies);
+
+    // 对应的预算token select reset
+    form.resetFields(['currency_id']);
   }
 
   function handleChange(e) {
@@ -269,10 +273,6 @@ const ProposalForm = props => {
           detail: values.detail.toHTML(), // or values.content.toHTML()
         };
 
-        if (!validateVoteDurationHours(submitData.vote_duration_hours)) {
-          return false;
-        }
-
         // 无预算
         if (values['has-budget'] === 0) {
           submitData = {
@@ -294,6 +294,12 @@ const ProposalForm = props => {
           });
         } else {
           // 创建提案
+
+          // 创建提案才需要验证, 更新提案无法编辑投票持续时长
+          if (!validateVoteDurationHours(submitData.vote_duration_hours)) {
+            return false;
+          }
+
           dispatch({
             type: 'proposal/createProposal',
             payload: { ...submitData },
@@ -411,8 +417,8 @@ const ProposalForm = props => {
                   placeholder="请选择token单位"
                   style={{ width: 200, marginLeft: 10 }}
                 >
-                  {currency_list &&
-                    currency_list.map(currency => (
+                  {selectCurrency &&
+                    selectCurrency.map(currency => (
                       <Option key={currency.id} value={currency.id}>
                         {currency.unit}
                       </Option>

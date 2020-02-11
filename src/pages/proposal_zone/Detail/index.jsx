@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Modal, Spin } from 'antd';
+import { Typography, Button, Modal, Spin, Tag } from 'antd';
 import Image from '@/components/Image';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'dva';
@@ -63,7 +63,18 @@ const Detail = props => {
     });
   };
 
-  const { id, name, title, token, summary, detail, vote_rule, vote_addr_weight_json } = zone_detail;
+  const {
+    id,
+    name,
+    title,
+    token,
+    summary,
+    detail,
+    vote_rule,
+    vote_addr_weight_json,
+    currencies,
+    theme_color,
+  } = zone_detail;
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
 
   return (
@@ -87,29 +98,35 @@ const Detail = props => {
 
               <div className={styles.summaryContent}>
                 <Link to={`/proposal/list/${id}`}>
-                  <Title level={1}>{title}</Title>
+                  <Title level={2}>{title}</Title>
                 </Link>
 
-                <h3 className={styles.proposalTitle}>简称: {name}</h3>
-                <h3 className={styles.proposalTitle}>Token: {token}</h3>
+                {/* <h3 className={styles.proposalTitle}>简称: {name}</h3> */}
+                {/* <h3 className={styles.proposalTitle}>Token: {token}</h3> */}
+                <div className={styles.currency}>
+                  {currencies &&
+                    currencies.length > 0 &&
+                    currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
+                </div>
+
                 <Paragraph>{summary}</Paragraph>
               </div>
             </div>
 
+            <Title level={3}>专区详情</Title>
             <div className={styles.detail}>
-              <Title level={3}>专区详情</Title>
               <Paragraph>
                 <div dangerouslySetInnerHTML={{ __html: detail }} />
               </Paragraph>
             </div>
 
+            <Title level={3}>投票规则</Title>
             <div className={styles.detail}>
-              <Title level={3}>投票规则</Title>
               <Paragraph>{vote_rule}</Paragraph>
             </div>
 
+            <Title level={3}>投票地址与权重</Title>
             <div className={styles.detail}>
-              <Title level={3}>投票地址与权重</Title>
               <Paragraph>{vote_addr_weight_json}</Paragraph>
             </div>
           </Typography>

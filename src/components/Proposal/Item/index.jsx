@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Icon } from 'antd';
+import { Card, Typography, Icon, Tag } from 'antd';
 import Image from '@/components/Image';
 import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
@@ -54,16 +54,13 @@ const Item = props => {
                 &nbsp;&nbsp;
                 {/* 如果存在 zone_proposal_id 才会显示 ID */}
                 {zone_proposal_id && <Text>No.{zone_proposal_id}</Text>}
-              </div>
-              <div className={styles.right}>
-                {proposalAmount > 0 && (
-                  <span
-                    style={zone.theme_color && { backgroundColor: zone.theme_color }}
-                    className={styles.proposalAmount}
-                  >
-                    {proposalAmount.toLocaleString()} {currency_unit && currency_unit.unit}
-                  </span>
-                )}
+                <div className={styles.right}>
+                  {proposalAmount > 0 && (
+                    <Tag color={zone.theme_color}>
+                      {proposalAmount.toLocaleString()} {currency_unit && currency_unit.unit}
+                    </Tag>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -71,28 +68,31 @@ const Item = props => {
               <Title level={3} className={styles.title}>
                 <LinesEllipsis text={title} maxLine="2" />
               </Title>
-              {category.id && <span className={styles.category}>提案分类: {category.name}</span>}
-              <span className={styles.datetime}>创建时间: {moment.datetime(created)}</span>
+
+              {category.id && <Tag>{category.name}</Tag>}
             </div>
 
             <Paragraph className={styles.summary}>
-              <LinesEllipsis text={summary} maxLine="2" />
+              <LinesEllipsis text={summary} maxLine="3" />
             </Paragraph>
 
             <div className={styles.bottom}>
-              {creator && (
-                <div className={styles.creator}>
-                  <UserAvatar {...creator} />
-                  <Text className={styles.byCreator}>By {creator.username}</Text>
-                </div>
-              )}
-
-              <div className={styles.iconList}>
-                {comments_count > 0 && (
-                  <div className={styles.comment}>
-                    <IconFont type="icon-comment" style={{ fontSize: '18px' }} /> {comments_count}
+              <div className={styles.datetime}>crated: {moment.datetime(created)}</div>
+              <div className={styles.info}>
+                {creator && (
+                  <div className={styles.creator}>
+                    <UserAvatar {...creator} />
+                    <Text className={styles.byCreator}>By {creator.username}</Text>
                   </div>
                 )}
+
+                <div className={styles.iconList}>
+                  {comments_count > 0 && (
+                    <div className={styles.comment}>
+                      <IconFont type="icon-comment" style={{ fontSize: '18px' }} /> {comments_count}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

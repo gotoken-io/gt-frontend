@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Divider, Upload, Icon, Spin, Slider } from 'antd';
+import { Form, Input, Button, Divider, Upload, Icon, Spin, Slider, Select } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { getFielUrl, beforeUpload, getBase64 } from '@/utils/upload';
@@ -14,6 +14,7 @@ import 'braft-editor/dist/index.css';
 import styles from './style.less';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const ImgCropConfig = {
   width: 400,
@@ -93,7 +94,7 @@ const ProposalZoneForm = props => {
   const [themeColor, setThemeColor] = useState(props.primaryColor);
 
   // prpos
-  const { id, dispatch, zone_detail } = props;
+  const { id, dispatch, zone_detail, currency_list } = props;
   const { getFieldDecorator } = props.form;
 
   useEffect(() => {
@@ -103,6 +104,11 @@ const ProposalZoneForm = props => {
     setThemeColor(props.primaryColor);
 
     if (dispatch) {
+      // get all support currency list
+      dispatch({
+        type: 'proposal/fetchAllCurrency',
+      });
+
       if (id) {
         dispatch({
           type: 'proposal/fetchProposalZone',
@@ -139,11 +145,19 @@ const ProposalZoneForm = props => {
         const obj = {};
         obj[key] = detail[key] || null;
 
-        form.setFieldsValue(obj);
+        // form.setFieldsValue(obj);
 
         switch (key) {
           case 'detail':
             form.setFieldsValue({ detail: BraftEditor.createEditorState(detail.detail) });
+            break;
+          case 'currency_id':
+            if (detail.currencies.length) {
+              form.setFieldsValue({
+                currency_id: detail.currencies[0].id,
+              });
+            }
+
             break;
           default:
             form.setFieldsValue(obj);
@@ -203,6 +217,7 @@ const ProposalZoneForm = props => {
           detail: values.detail.toHTML(), // or values.content.toHTML()
           vote_duration_hours_min: voteDuration[0],
           vote_duration_hours_max: voteDuration[1],
+          currency_ids: [values.currency_id],
         };
 
         console.log(submitData);
@@ -251,15 +266,25 @@ const ProposalZoneForm = props => {
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label="提案专区token名称">
-          {getFieldDecorator('token', {
+        <Form.Item label="提案专区token">
+          {/* now only support single choice */}
+          {getFieldDecorator('currency_id', {
             rules: [
               {
                 required: true,
-                message: '请输入提案专区token名称!',
+                message: '请输入提案专区标题',
               },
             ],
-          })(<Input />)}
+          })(
+            <Select name="budget-unit" placeholder="请选择token单位" style={{ width: 200 }}>
+              {currency_list &&
+                currency_list.map(currency => (
+                  <Option key={currency.id} value={currency.id}>
+                    {currency.unit}
+                  </Option>
+                ))}
+            </Select>,
+          )}
         </Form.Item>
 
         <Form.Item label="提案专区简介">

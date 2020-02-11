@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Row, Col } from 'antd';
+import { Card, Typography, Row, Col, Tag } from 'antd';
 import Image from '@/components/Image';
 import Link from 'umi/link';
 import LinesEllipsis from 'react-lines-ellipsis';
@@ -10,7 +10,7 @@ import styles from './style.less';
 const { Title, Paragraph } = Typography;
 
 const ZoneItem = props => {
-  const { id, cover, title, name, summary } = props;
+  const { id, cover, title, name, summary, currencies, theme_color } = props;
 
   let cardCoverSrc = defaultCover;
   if (cover) {
@@ -32,6 +32,10 @@ const ZoneItem = props => {
                 <Title level={3}>
                   <LinesEllipsis text={title} maxLine="1" />
                 </Title>
+                <div className={styles.currency}>
+                  {currencies.length > 0 &&
+                    currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
+                </div>
                 <Paragraph className={styles.summary}>
                   <LinesEllipsis text={summary} maxLine="3" />
                 </Paragraph>

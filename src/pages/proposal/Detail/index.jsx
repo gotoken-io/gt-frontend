@@ -50,7 +50,7 @@ const Detail = props => {
       const tagCount = tags.length;
 
       if (tagCount) {
-        return tags.map(t => <Tag>{t}</Tag>);
+        return tags.map(t => <Tag>#{t}</Tag>);
       }
     }
 
@@ -129,7 +129,7 @@ const Detail = props => {
                 </Title>
                 {detail.category && detail.category.id && (
                   <Paragraph className={styles.category}>
-                    提案分类: {detail.category.name}
+                    <Tag>{detail.category.name}</Tag>
                   </Paragraph>
                 )}
 
@@ -137,7 +137,11 @@ const Detail = props => {
                   创建时间: {moment.datetime(detail.created)}
                 </Paragraph>
                 <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
-                <Tags tag={detail.tag} />
+
+                <div>
+                  标签:&nbsp;
+                  <Tags tag={detail.tag} />
+                </div>
               </div>
             </div>
 
