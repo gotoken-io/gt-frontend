@@ -62,6 +62,17 @@ export async function updateProposal(params) {
   });
 }
 
+// only admin can update proposal status
+export async function updateProposalStatus(params) {
+  return request(`/server/proposal/${params.id}/status`, {
+    method: 'PUT',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
 // only admin can delete proposal
 export async function deleteProposal(params) {
   return request(`/server/proposal/${params.id}`, {

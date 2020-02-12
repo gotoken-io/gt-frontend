@@ -9,7 +9,9 @@ import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
 import moment from '@/utils/moment';
+import ChangeStatusModal from './components/ChangeStatusModal';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
+import { getStatusTextByKey } from '@/utils/proposal';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -28,6 +30,11 @@ const ZoneCover = ({ name, cover }) => {
 };
 
 const Detail = props => {
+  // states
+
+  // change proposal status modal show
+  const [changeStatusModalShow, setChangeStatusModalShow] = useState(false);
+
   const { dispatch, detail, match, currentUser } = props;
 
   // get proposal id from url params
@@ -99,6 +106,19 @@ const Detail = props => {
         </Button>
       )}
 
+      {isAdmin({ currentUser }) && (
+        <>
+          <Button className={styles.actionsBtn} onClick={() => setChangeStatusModalShow(true)}>
+            修改提案状态
+          </Button>
+          <ChangeStatusModal
+            {...detail}
+            visible={changeStatusModalShow}
+            onCancel={() => setChangeStatusModalShow(false)}
+          />
+        </>
+      )}
+
       <div className={styles.container}>
         <Spin spinning={fetchDetailLoading}>
           <Typography>
@@ -127,10 +147,19 @@ const Detail = props => {
                 <Title level={2} className={styles.proposalTitle}>
                   {detail.title}
                 </Title>
+
+                {detail.status_key && (
+                  <div className={styles.status}>
+                    <span className={styles[detail.status_key]}>
+                      {getStatusTextByKey(detail.status_key)}
+                    </span>
+                  </div>
+                )}
+
                 {detail.category && detail.category.id && (
-                  <Paragraph className={styles.category}>
+                  <span className={styles.category}>
                     <Tag>{detail.category.name}</Tag>
-                  </Paragraph>
+                  </span>
                 )}
 
                 <Paragraph className={styles.createtime}>

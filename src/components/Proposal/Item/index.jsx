@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Typography, Icon, Tag } from 'antd';
+import { Card, Typography, Icon, Tag, Badge } from 'antd';
+import { getStatusTextByKey } from '@/utils/proposal';
 import Image from '@/components/Image';
 import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
@@ -27,6 +28,7 @@ const Item = props => {
     comments_count,
     created,
     category,
+    status_key,
   } = props;
 
   const proposalAmount = parseInt(amount);
@@ -69,6 +71,11 @@ const Item = props => {
                 <LinesEllipsis text={title} maxLine="2" />
               </Title>
 
+              {status_key && (
+                <div className={styles.status}>
+                  <span className={styles[status_key]}>{getStatusTextByKey(status_key)}</span>
+                </div>
+              )}
               {category.id && <Tag>{category.name}</Tag>}
             </div>
 

@@ -4,6 +4,7 @@ import router from 'umi/router';
 import {
   createProposal,
   updateProposal,
+  updateProposalStatus,
   deleteProposalZone,
   deleteProposal,
   createProposalZone,
@@ -171,6 +172,14 @@ const ProposalModel = {
       if (response.status === 'success') {
         message.success('提案修改成功');
         router.go(-1); // 回到上一页
+      }
+    },
+
+    *updateProposalStatus({ payload }, { call, _ }) {
+      const response = yield call(updateProposalStatus, payload);
+      if (response.status === 'success') {
+        message.success('提案状态修改成功');
+        window.location.reload();
       }
     },
 
