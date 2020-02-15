@@ -10,6 +10,7 @@ import UserAvatar from '@/components/User/UserAvatar';
 import Comments from './components/Comments';
 import moment from '@/utils/moment';
 import ChangeStatusModal from './components/ChangeStatusModal';
+import Logs from './components/Logs';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 
@@ -191,6 +192,10 @@ const Detail = props => {
                   <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
                 </Paragraph>
               </div>
+            </div>
+
+            <div className={styles.logs}>
+              <Logs id={id} proposal_creator={creator} />
             </div>
 
             <div className={styles.comments}>

@@ -1,0 +1,64 @@
+.container {
+
+    .actions {
+        margin-bottom: 16px;
+    }
+
+    ul {
+        li {
+            // clear .ant-typography styles
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+
+            :global {
+                .ant-timeline-item-content {
+                    padding-bottom: 12px;
+                }
+            }
+
+            .op-time {
+                font-weight: 500;
+            }
+
+            .item {
+                background-color: #fff;
+                border: 1px solid rgba(230, 230, 230, 1);
+                margin: 12px 0;
+                padding: 20px 30px;
+                border-radius: 6px;
+
+                .head {
+                    display: flex;
+                    align-items: center;
+
+                    .user {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 6px;
+
+                        .name {
+                            margin-left: 6px;
+                            color: rgba(0, 0, 0, 0.65);
+                        }
+                    }
+
+                    .content {
+                        font-weight: 500;
+                    }
+                }
+
+
+                .udpate-progress {
+                    margin-top: 6px;
+                    padding: 12px;
+                    background-color: #F0F2F5;
+                    // word-wrap: break-word;
+                    white-space: pre-line;
+                }
+            }
+
+
+        }
+    }
+}

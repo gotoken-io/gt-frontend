@@ -19,6 +19,8 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
+  queryProposalLogs,
+  updateProposalProgress,
 } from '@/services/proposal';
 
 const ProposalModel = {
@@ -36,6 +38,7 @@ const ProposalModel = {
       total: 1,
     },
     detail: {},
+    logs: [],
   },
   effects: {
     /*
@@ -233,6 +236,27 @@ const ProposalModel = {
         router.go(-1); // 回到上一页
       }
     },
+
+    *queryProposalLogs({ payload }, { call, put }) {
+      const response = yield call(queryProposalLogs, payload);
+      yield put({
+        type: 'saveProposalLogs',
+        payload: response.data,
+      });
+    },
+
+    // update proposal progress
+    *updateProposalProgress({ payload }, { call, put }) {
+      const response = yield call(updateProposalProgress, payload);
+      if (response.status === 'success') {
+        message.success('提案进度更新成功');
+        window.location.reload();
+        // yield put({
+        //   type: 'saveProposalLogs',
+        //   payload: response.data,
+        // });
+      }
+    },
   },
   reducers: {
     saveProposalZoneList(state, action) {
@@ -257,6 +281,9 @@ const ProposalModel = {
     },
     saveProposal(state, action) {
       return { ...state, detail: action.payload || {} };
+    },
+    saveProposalLogs(state, action) {
+      return { ...state, logs: action.payload || [] };
     },
   },
 };

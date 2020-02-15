@@ -146,3 +146,18 @@ export async function updateProposalZone(params) {
     data: params,
   });
 }
+
+export async function queryProposalLogs({ id }) {
+  return request(`/server/proposal/${id}/log`);
+}
+
+export async function updateProposalProgress(params) {
+  console.log(params);
+  return request(`/server/proposal/${params.id}/progress`, {
+    method: 'POST',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
