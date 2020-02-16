@@ -23,11 +23,9 @@ const Filter = props => {
 
   // clear filter select
   useEffect(() => {
-    if (!zone_id) {
-      setCategory('all');
-      setStatus('all');
-    }
-  }, [match.params]);
+    setCategory('all');
+    setStatus('all');
+  }, [match.params.zone_id]);
 
   useEffect(() => {
     const { dispatch } = props;
@@ -57,7 +55,11 @@ const Filter = props => {
       }).then(res => {
         console.log(res);
         if (c) {
-          setCategory(parseInt(c));
+          if (c === 'all') {
+            setCategory('all');
+          } else {
+            setCategory(parseInt(c));
+          }
         }
       });
     }
