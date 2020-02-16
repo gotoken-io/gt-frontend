@@ -58,7 +58,7 @@ const Logs = props => {
     <div className={styles.container}>
       <h3>项目日志</h3>
 
-      {isCreatorOrAdmin({ currentUser, proposal_creator }) && (
+      {isCreatorOrAdmin({ currentUser, creator: proposal_creator }) && (
         <div className={styles.actions}>
           <Button type="primary" onClick={() => setUpdateProgressVisible(true)}>
             更新项目进度
