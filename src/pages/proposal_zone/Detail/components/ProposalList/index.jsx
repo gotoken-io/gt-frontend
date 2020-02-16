@@ -53,7 +53,7 @@ const ProposalList = props => {
   return (
     <div className={styles.container}>
       <div className={styles.filter}>
-        <Filter zone_id={zone_id} />
+        <Filter zone_id={zone_id} match={match} />
       </div>
 
       <Spin spinning={loading}>
