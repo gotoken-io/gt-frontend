@@ -23,8 +23,10 @@ const Filter = props => {
 
   // clear filter select
   useEffect(() => {
-    setCategory('all');
-    setStatus('all');
+    if (!zone_id) {
+      setCategory('all');
+      setStatus('all');
+    }
   }, [match.params]);
 
   useEffect(() => {
@@ -235,5 +237,4 @@ export default connect(({ proposal, loading }) => ({
   proposal_category: proposal.proposal_category,
   zone_list: proposal.zone_list,
   loadingZone: loading.effects['proposal/fetchAllProposalZone'],
-  loadingCategory: loading.effects['proposal/fetchProposal'],
 }))(Filter);

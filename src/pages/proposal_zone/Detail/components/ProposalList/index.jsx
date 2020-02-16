@@ -10,13 +10,15 @@ import Filter from '@/components/Proposal/Filter';
 import styles from './style.less';
 
 const ProposalList = props => {
-  const { dispatch, proposal_list, match, loading, zone_id } = props;
+  const { dispatch, proposal_list, match, loading } = props;
 
   useEffect(() => {
     console.log('match', match);
 
     const params = getPageQuery();
     console.log('params', params);
+
+    const zone_id = match.params.id;
 
     if (dispatch) {
       const payload = {
@@ -25,12 +27,14 @@ const ProposalList = props => {
         ...params,
       };
 
-      console.log('payload', payload);
+      if (zone_id) {
+        console.log('payload', payload);
 
-      dispatch({
-        type: 'proposal/fetchAllProposal',
-        payload,
-      });
+        dispatch({
+          type: 'proposal/fetchAllProposal',
+          payload,
+        });
+      }
     }
   }, [match.params]);
 
@@ -53,7 +57,7 @@ const ProposalList = props => {
   return (
     <div className={styles.container}>
       <div className={styles.filter}>
-        <Filter zone_id={zone_id} match={match} />
+        <Filter zone_id={match.params.id} match={match} />
       </div>
 
       <Spin spinning={loading}>
@@ -67,15 +71,17 @@ const ProposalList = props => {
           </Row>
         </div>
 
-        <div className={styles.pagination}>
-          <Pagination
-            defaultCurrent={1}
-            current={proposal_list.page}
-            pageSize={proposal_list.per_page}
-            total={proposal_list.total}
-            onChange={handleFetchProposals}
-          />
-        </div>
+        {proposal_list.items.length > 0 && (
+          <div className={styles.pagination}>
+            <Pagination
+              defaultCurrent={1}
+              current={proposal_list.page}
+              pageSize={proposal_list.per_page}
+              total={proposal_list.total}
+              onChange={handleFetchProposals}
+            />
+          </div>
+        )}
       </Spin>
     </div>
   );

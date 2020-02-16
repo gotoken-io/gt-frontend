@@ -114,12 +114,26 @@ const ProposalModel = {
       //   response = yield call(queryProposalList, payload);
       // }
 
-      const response = yield call(queryProposalList, payload);
-
+      // clear state
       yield put({
         type: 'saveProposalList',
-        payload: response.data,
+        payload: {
+          items: [],
+          page: 1,
+          pages: 1,
+          per_page: 20,
+          total: 1,
+        },
       });
+
+      const response = yield call(queryProposalList, payload);
+
+      if (response.data) {
+        yield put({
+          type: 'saveProposalList',
+          payload: response.data,
+        });
+      }
     },
 
     // get all currency
@@ -144,6 +158,12 @@ const ProposalModel = {
     },
 
     *fetchProposalZone({ payload }, { call, put }) {
+      // clear state
+      yield put({
+        type: 'saveProposalZone',
+        payload: {},
+      });
+
       const response = yield call(queryProposalZone, payload);
 
       yield put({
@@ -274,7 +294,16 @@ const ProposalModel = {
     },
 
     saveProposalList(state, action) {
-      return { ...state, proposal_list: action.payload };
+      return {
+        ...state,
+        proposal_list: action.payload || {
+          items: [],
+          page: 1,
+          pages: 1,
+          per_page: 20,
+          total: 1,
+        },
+      };
     },
     saveCurrencyList(state, action) {
       return { ...state, currency_list: action.payload || [] };
