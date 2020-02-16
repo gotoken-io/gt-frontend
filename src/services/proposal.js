@@ -87,12 +87,13 @@ export async function queryProposal({ id }) {
   return request(`/server/proposal/${id}`);
 }
 
-export async function queryProposalList({ page, zone_id, c, sort_by, sort_name }) {
+export async function queryProposalList({ page, zone_id, c, status, sort_by, sort_name }) {
   return request('/server/proposal/', {
     params: {
       page,
       zone_id,
       category_id: c,
+      status_key: status,
       sort_by,
       sort_name,
     },

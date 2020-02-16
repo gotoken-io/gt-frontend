@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Spin, Select, Icon } from 'antd';
 import { connect } from 'dva';
 import { getPageQuery } from '@/utils/utils';
+import { proposalStatus } from '@/utils/proposal';
 import router from 'umi/router';
 import Link from 'umi/link';
 import styles from './style.less';
@@ -11,18 +12,29 @@ const { Option } = Select;
 const Filter = props => {
   // state
   const [category, setCategory] = useState('all');
+  const [status, setStatus] = useState('all');
   const [sort, setSort] = useState({
     name: 'createtime',
     by: 'desc',
   });
 
   // props
-  const { zone_list, proposal_category, zone_id = null } = props;
+  const { match, zone_list, proposal_category, zone_id = null } = props;
+
+  // clear filter select
+  useEffect(() => {
+    setCategory('all');
+    setStatus('all');
+  }, [match.params]);
 
   useEffect(() => {
     const { dispatch } = props;
 
-    const { c, sort_name, sort_by } = getPageQuery();
+    const { c, status, sort_name, sort_by } = getPageQuery();
+
+    if (status) {
+      setStatus(status);
+    }
 
     if (sort_name && sort_by) {
       setSort({
@@ -49,6 +61,7 @@ const Filter = props => {
     }
   }, []);
 
+  // click category
   const onChangeCategory = value => {
     setCategory(value);
     const params = getPageQuery();
@@ -56,6 +69,24 @@ const Filter = props => {
     const routeQuery = {
       ...params,
       c: value,
+    };
+
+    console.log(routeQuery);
+
+    router.push({
+      pathname: window.location.pathname,
+      query: routeQuery,
+    });
+  };
+
+  // click status
+  const onChangeStatus = value => {
+    setStatus(value);
+    const params = getPageQuery();
+
+    const routeQuery = {
+      ...params,
+      status: value,
     };
 
     console.log(routeQuery);
@@ -167,6 +198,27 @@ const Filter = props => {
                   {!zone_id && <span className={styles.count}>({ctg.proposals_count})</span>}
                 </Option>
               ))}
+          </Select>
+        </div>
+
+        <div className={styles.status}>
+          <h3 className={styles.title}>提案状态：</h3>
+          <Select
+            name="status"
+            placeholder="请选择提案状态"
+            style={{ width: 200 }}
+            onChange={onChangeStatus}
+            value={status}
+          >
+            <Option key="all" value="all">
+              全部
+            </Option>
+
+            {proposalStatus.map(d => (
+              <Option key={d.key} value={d.key}>
+                {d.text}
+              </Option>
+            ))}
           </Select>
         </div>
 

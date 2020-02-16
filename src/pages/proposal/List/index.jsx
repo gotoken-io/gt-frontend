@@ -78,7 +78,7 @@ const List = props => {
   return (
     <GridContent>
       <div className={styles.filter}>
-        <Filter />
+        <Filter match={match} />
       </div>
 
       <div className={styles.actions}>
