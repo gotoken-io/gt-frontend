@@ -2,86 +2,99 @@
 @cover-height: 200px;
 
 .actionBtn {
-    button {
-        margin: 0 5px 10px 5px;
-    }
+  button {
+    margin: 0 5px 10px 5px;
+  }
 }
 
 .container {
-    // margin: 0 auto;
+  // margin: 0 auto;
 }
 
 .summaryCard {
-    display: flex;
-    // height: @cover-height;
-    background-color: #fff;
-    padding: 20px;
-    // justify-content: center;
+  display: flex;
+  // height: @cover-height;
+  background-color: #fff;
+  padding: 20px;
+  // justify-content: center;
 }
 
 .cardCover {
-    position: relative;
-    min-width: @cover-width;
-    height: @cover-height;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-
+  position: relative;
+  min-width: @cover-width;
+  height: @cover-height;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .summaryContent {
-    padding: 15px;
-    background-color: #fff;
-    width: 100%;
+  padding: 15px;
+  background-color: #fff;
+  width: 100%;
 
-    .currency {
-        margin-bottom: 10px;
-    }
+  .currency {
+    margin-bottom: 10px;
+  }
 }
 
 .titleNo {
-    position: absolute;
-    bottom: 0;
-    width: @cover-width;
-    text-align: center;
-    color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: @cover-width;
+  text-align: center;
+  color: #fff;
 }
 
 .cardHead {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .proposalTitle {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 16px;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 16px;
 }
 
 .subContainerStyle {
-    margin: 15px 0;
-    padding: 30px;
-    background-color: #fff;
+  margin: 15px 0;
+  padding: 30px;
+  background-color: #fff;
 }
 
 .userList {
-    .subContainerStyle();
+  .subContainerStyle();
 }
 
 .user {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .userContent {
-    margin-left: 10px;
+  margin-left: 10px;
 
-    h3 {
-        margin: 0;
-    }
+  h3 {
+    margin: 0;
+  }
 }
 
 .detail {
-    .subContainerStyle();
-    white-space: pre-line; // support break line
+  .subContainerStyle();
+  white-space: pre-line; // support break line
+}
+
+.collapse {
+  margin: 16px 0 0 0;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  span {
+    margin-right: 6px;
+  }
 }

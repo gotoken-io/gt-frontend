@@ -9,30 +9,8 @@ import Item from '@/components/Proposal/Item';
 import Filter from '@/components/Proposal/Filter';
 import styles from './style.less';
 
-const List = props => {
-  const {
-    dispatch,
-    proposal_list,
-    match,
-    currentUser,
-    fetchProposalListLoading,
-    fetchProposalZoneLoading,
-  } = props;
-
-  const { zone_id } = match.params;
-
-  // useEffect(() => {
-  //   if (dispatch) {
-  //     const params = getPageQuery();
-
-  //     console.log('params', params);
-
-  //     dispatch({
-  //       type: 'proposal/fetchAllProposal',
-  //       payload: { ...params },
-  //     });
-  //   }
-  // }, []);
+const ProposalList = props => {
+  const { dispatch, proposal_list, match, loading, zone_id } = props;
 
   useEffect(() => {
     console.log('match', match);
@@ -41,7 +19,12 @@ const List = props => {
     console.log('params', params);
 
     if (dispatch) {
-      const payload = { ...match.params, ...params };
+      const payload = {
+        zone_id,
+        ...match.params,
+        ...params,
+      };
+
       console.log('payload', payload);
 
       dispatch({
@@ -50,14 +33,6 @@ const List = props => {
       });
     }
   }, [match.params]);
-
-  const handleCreateProposal = () => {
-    if (currentUser.id) {
-      router.push('/proposal/create');
-    } else {
-      message.error('请先登陆');
-    }
-  };
 
   const handleFetchProposals = page => {
     const params = getPageQuery();
@@ -76,17 +51,12 @@ const List = props => {
   };
 
   return (
-    <GridContent>
+    <div className={styles.container}>
       <div className={styles.filter}>
-        <Filter />
+        <Filter zone_id={zone_id} />
       </div>
 
-      <div className={styles.actions}>
-        <Button onClick={handleCreateProposal} type="primary">
-          创建提案
-        </Button>
-      </div>
-      <Spin spinning={fetchProposalListLoading}>
+      <Spin spinning={loading}>
         <div className={styles.list}>
           <Row>
             {proposal_list.items.map(item => (
@@ -107,12 +77,11 @@ const List = props => {
           />
         </div>
       </Spin>
-    </GridContent>
+    </div>
   );
 };
 
-export default connect(({ user, proposal, loading }) => ({
-  currentUser: user.currentUser,
+export default connect(({ proposal, loading }) => ({
   proposal_list: proposal.proposal_list,
-  fetchProposalListLoading: loading.effects['proposal/fetchAllProposal'],
-}))(List);
+  loading: loading.effects['proposal/fetchAllProposal'],
+}))(ProposalList);

@@ -9,13 +9,15 @@ import styles from './style.less';
 const { Option } = Select;
 
 const Filter = props => {
+  // state
   const [category, setCategory] = useState('all');
   const [sort, setSort] = useState({
     name: 'createtime',
     by: 'desc',
   });
 
-  const { zone_list, proposal_category } = props;
+  // props
+  const { zone_list, proposal_category, zone_id = null } = props;
 
   useEffect(() => {
     const { dispatch } = props;
@@ -127,19 +129,22 @@ const Filter = props => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.zone}>
-        <h3 className={styles.title}>提案专区：</h3>
+      {/* if set zone_id, hide proposal zone choose */}
+      {!zone_id && (
+        <div className={styles.zone}>
+          <h3 className={styles.title}>提案专区：</h3>
 
-        <Spin spinning={props.loadingZone}>
-          <div className={styles.zoneItems}>
-            {zone_list.map(zone => (
-              <Link key={zone.id} to={`/proposal/list/${zone.id}`}>
-                <Button type="link">{zone.name}</Button>
-              </Link>
-            ))}
-          </div>
-        </Spin>
-      </div>
+          <Spin spinning={props.loadingZone}>
+            <div className={styles.zoneItems}>
+              {zone_list.map(zone => (
+                <Link key={zone.id} to={`/proposal/list/${zone.id}`}>
+                  <Button type="link">{zone.name}</Button>
+                </Link>
+              ))}
+            </div>
+          </Spin>
+        </div>
+      )}
 
       <div className={styles.filters}>
         <div className={styles.category}>
@@ -158,7 +163,8 @@ const Filter = props => {
             {proposal_category &&
               proposal_category.map(ctg => (
                 <Option key={ctg.id} value={ctg.id}>
-                  {ctg.name}&nbsp;({ctg.proposals_count})
+                  {ctg.name}
+                  {!zone_id && <span className={styles.count}>({ctg.proposals_count})</span>}
                 </Option>
               ))}
           </Select>

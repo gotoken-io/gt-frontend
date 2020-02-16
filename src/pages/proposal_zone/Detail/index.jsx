@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Modal, Spin, Tag } from 'antd';
+import { Typography, Button, Modal, Spin, Tag, Icon } from 'antd';
 import Image from '@/components/Image';
 import { GridContent } from '@ant-design/pro-layout';
+import { Collapse } from 'react-collapse';
+
 import { connect } from 'dva';
 import Link from 'umi/link';
+import ProposalList from './components/ProposalList';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
 
@@ -26,6 +29,10 @@ const ZoneCover = ({ id, name, cover }) => {
 };
 
 const Detail = props => {
+  // state
+  const [collapse, setCollapse] = useState(true);
+
+  // props
   const { dispatch, zone_detail, match, currentUser } = props;
 
   // get proposal id from url params
@@ -113,22 +120,33 @@ const Detail = props => {
               </div>
             </div>
 
-            <Title level={3}>专区详情</Title>
-            <div className={styles.detail}>
-              <Paragraph>
-                <div dangerouslySetInnerHTML={{ __html: detail }} />
-              </Paragraph>
+            <div className={styles.collapse} onClick={() => setCollapse(!collapse)}>
+              <span>{!collapse ? '收起' : '展开'}</span>
+              <Icon type={collapse ? 'down' : 'up'} />
             </div>
 
-            <Title level={3}>投票规则</Title>
-            <div className={styles.detail}>
-              <Paragraph>{vote_rule}</Paragraph>
-            </div>
+            {/* default is collapse */}
+            <Collapse isOpened={!collapse}>
+              <Title level={3}>专区详情</Title>
+              <div className={styles.detail}>
+                <Paragraph>
+                  <div dangerouslySetInnerHTML={{ __html: detail }} />
+                </Paragraph>
+              </div>
 
-            <Title level={3}>投票地址与权重</Title>
-            <div className={styles.detail}>
-              <Paragraph>{vote_addr_weight_json}</Paragraph>
-            </div>
+              <Title level={3}>投票规则</Title>
+              <div className={styles.detail}>
+                <Paragraph>{vote_rule}</Paragraph>
+              </div>
+
+              <Title level={3}>投票地址与权重</Title>
+              <div className={styles.detail}>
+                <Paragraph>{vote_addr_weight_json}</Paragraph>
+              </div>
+            </Collapse>
+
+            {/* proposal list */}
+            <ProposalList zone_id={id} match={match} />
           </Typography>
         </div>
       </Spin>

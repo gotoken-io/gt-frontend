@@ -62,6 +62,7 @@
     "qs": "^6.9.0",
     "rc-color-picker": "^1.2.6",
     "react": "^16.8.6",
+    "react-collapse": "^5.0.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
