@@ -102,6 +102,18 @@ export const proposalEvent = [
     text: '投票结果产生',
     color: 'green',
   },
+  {
+    key: 'proposal_claim_passed',
+    value: 9,
+    text: '提案申领审核通过',
+    color: 'green',
+  },
+  {
+    key: 'proposal_claim_fail',
+    value: 10,
+    text: '提案申领审核不通过',
+    color: 'red',
+  },
 ];
 
 export const getProposalEventByKey = key => proposalEvent.find(d => d.key === key);
