@@ -56,8 +56,6 @@ const Logs = props => {
 
   return (
     <div className={styles.container}>
-      <h3>项目日志</h3>
-
       {isCreatorOrAdmin({ currentUser, creator: proposal_creator }) && (
         <div className={styles.actions}>
           <Button type="primary" onClick={() => setUpdateProgressVisible(true)}>

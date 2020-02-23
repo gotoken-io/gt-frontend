@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button, Modal, Spin } from 'antd';
+import { Typography, Tag, Button, Modal, Spin, Tabs } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import Image from '@/components/Image';
 import { connect } from 'dva';
 import Link from 'umi/link';
+import { StickyContainer, Sticky } from 'react-sticky';
 import styles from './style.less';
 import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
@@ -13,9 +14,12 @@ import ChangeStatusModal from './components/ChangeStatusModal';
 import Logs from './components/Logs';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
+import Claims from './components/Claims';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
+
+const { TabPane } = Tabs;
 
 const ZoneCover = ({ name, cover }) => {
   let cardCoverSrc = defaultCover;
@@ -185,23 +189,29 @@ const Detail = props => {
               </div>
             </div>
 
-            <div className={styles.detail}>
-              <Title level={3}>项目详情</Title>
-              <div className={styles.content}>
-                <Paragraph>
-                  <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
-                </Paragraph>
-              </div>
-            </div>
+            <Tabs size="large" animated={false} defaultActiveKey="detail" onChange={() => {}}>
+              <TabPane tab="提案详情" key="detail">
+                <div className={styles.detail}>
+                  <div className={styles.content}>
+                    <Paragraph>
+                      <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
+                    </Paragraph>
+                  </div>
+                </div>
+              </TabPane>
 
-            <div className={styles.logs}>
-              <Logs id={id} proposal_creator={creator} />
-            </div>
-
-            <div className={styles.comments}>
-              <Title level={3}>评论</Title>
-              {detail && <Comments id={id} />}
-            </div>
+              <TabPane tab="提案日志" key="logs">
+                <div className={styles.logs}>
+                  <Logs id={id} proposal_creator={creator} />
+                </div>
+              </TabPane>
+              <TabPane tab="申领" key="claims">
+                <Claims id={id} proposal_creator={creator} />
+              </TabPane>
+              <TabPane tab="评论" key="comments">
+                <div className={styles.comments}>{detail && <Comments id={id} />}</div>
+              </TabPane>
+            </Tabs>
           </Typography>
         </Spin>
       </div>

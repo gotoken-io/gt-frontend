@@ -21,6 +21,9 @@ import {
   deleteCategory,
   queryProposalLogs,
   updateProposalProgress,
+  queryProposalClaims,
+  claimProposal,
+  cancelClaimProposal,
 } from '@/services/proposal';
 
 const ProposalModel = {
@@ -39,6 +42,7 @@ const ProposalModel = {
     },
     detail: {},
     logs: [],
+    claims: [],
   },
   effects: {
     /*
@@ -277,6 +281,41 @@ const ProposalModel = {
         // });
       }
     },
+
+    /*
+     * Proposal claim
+     */
+    *queryProposalClaims({ payload }, { call, put }) {
+      const response = yield call(queryProposalClaims, payload);
+      yield put({
+        type: 'saveProposalClaims',
+        payload: response.data,
+      });
+    },
+
+    *claimProposal({ payload }, { call, put }) {
+      const response = yield call(claimProposal, payload);
+      if (response.status === 'success') {
+        message.success('提案申领成功');
+        window.location.reload();
+        // yield put({
+        //   type: 'saveProposalClaims',
+        //   payload: response.data,
+        // });
+      }
+    },
+
+    *cancelClaimProposal({ payload }, { call, put }) {
+      const response = yield call(cancelClaimProposal, payload);
+      if (response.status === 'success') {
+        message.success('提案取消申领成功');
+        window.location.reload();
+        // yield put({
+        //   type: 'saveProposalClaims',
+        //   payload: response.data,
+        // });
+      }
+    },
   },
   reducers: {
     saveProposalZoneList(state, action) {
@@ -313,6 +352,10 @@ const ProposalModel = {
     },
     saveProposalLogs(state, action) {
       return { ...state, logs: action.payload || [] };
+    },
+    /* Proposal Claims */
+    saveProposalClaims(state, action) {
+      return { ...state, claims: action.payload || [] };
     },
   },
 };

@@ -3,60 +3,65 @@
 
 // 修改提案 button
 .actionsBtn {
-    margin-bottom: 10px;
-    margin-right: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .container {
-    // margin: 0 auto;
+  // margin: 0 auto;
+
+  :global {
+    .ant-tabs-nav-wrap {
+      background-color: #fff;
+    }
+  }
 }
 
 .summaryCard {
-    display: flex;
-    // height: @cover-height;
-    background-color: #fff;
-    padding: 20px;
-    // justify-content: center;
+  display: flex;
+  // height: @cover-height;
+  background-color: #fff;
+  padding: 20px;
+  // justify-content: center;
 }
 
 .cardCover {
-    position: relative;
-    min-width: @cover-width;
-    height: @cover-height;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-
+  position: relative;
+  min-width: @cover-width;
+  height: @cover-height;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .summaryContent {
-    padding: 0 15px;
-    background-color: #fff;
-    width: 100%;
-    white-space: pre-line; // support break line
+  padding: 0 15px;
+  background-color: #fff;
+  width: 100%;
+  white-space: pre-line; // support break line
 
-    .createtime {
-        font-size: 12px;
-        margin: 0;
-        color: #aaa;
-    }
+  .createtime {
+    font-size: 12px;
+    margin: 0;
+    color: #aaa;
+  }
 
-    .category {
-        // font-size: 12px;
-        margin: 6px 0;
-    }
+  .category {
+    // font-size: 12px;
+    margin: 6px 0;
+  }
 
-    .summaryText {
-        margin: 15px 0;
-    }
+  .summaryText {
+    margin: 15px 0;
+  }
 }
 
 .titleNo {
-    position: absolute;
-    bottom: 0;
-    width: @cover-width;
-    text-align: center;
-    color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: @cover-width;
+  text-align: center;
+  color: #fff;
 }
 
 // .cardHead {
@@ -65,93 +70,90 @@
 // }
 
 .cardHead {
-    // display: flex;
-    // justify-content: space-between;
-    position: relative;
+  // display: flex;
+  // justify-content: space-between;
+  position: relative;
 
-    .right {
-        position: absolute;
-        right: 0;
+  .right {
+    position: absolute;
+    right: 0;
 
-        .proposalAmount {
-            height: 40px;
-            line-height: 1;
-            padding: 6px 12px;
-            background-color: #29CC7A;
-            color: #fff;
-            border-radius: 6px;
-        }
+    .proposalAmount {
+      height: 40px;
+      line-height: 1;
+      padding: 6px 12px;
+      background-color: #29cc7a;
+      color: #fff;
+      border-radius: 6px;
     }
+  }
 }
 
 .proposalTitle {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 16px;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 16px;
 }
 
 .subContainerStyle {
-    margin: 30px 0;
+  margin: 10px 0;
 
-    .content {
-        padding: 30px;
-        background-color: #fff;
-    }
+  .content {
+    padding: 30px;
+    background-color: #fff;
+  }
 }
 
 .userList {
-    margin: 30px 0;
-    padding: 30px;
-    background-color: #fff;
+  margin: 30px 0;
+  padding: 30px;
+  background-color: #fff;
 }
 
 .user {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .userContent {
-    margin-left: 10px;
+  margin-left: 10px;
 
-    h3 {
-        margin: 0;
-    }
+  h3 {
+    margin: 0;
+  }
 }
 
 .detail {
-    .subContainerStyle();
+  .subContainerStyle();
 }
 
 .comments {
-    .subContainerStyle();
+  .subContainerStyle();
 }
-
 
 // proposal status
 .status {
-    margin-bottom: 6px;
-    margin-right: 12px;
-    display: inline-block;
+  margin-bottom: 6px;
+  margin-right: 12px;
+  display: inline-block;
 
-    span {
-        background-color: #ccc;
-        color: #fff;
-        padding: 4px 12px;
-        font-size: 12px;
-        border-radius: 5px;
-    }
+  span {
+    background-color: #ccc;
+    color: #fff;
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
 
-    .claiming {
-        background-color: orange;
-    }
+  .claiming {
+    background-color: orange;
+  }
 
-    .success {
-        background-color: green;
-    }
+  .success {
+    background-color: green;
+  }
 
-    .fail {
-        background-color: red;
-    }
-
-
+  .fail {
+    background-color: red;
+  }
 }

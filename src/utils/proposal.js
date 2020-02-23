@@ -111,7 +111,7 @@ export const proposalEvent = [
   {
     key: 'proposal_claim_cancel',
     value: 10,
-    text: '取消领提案',
+    text: '取消申领提案',
     color: 'gray',
   },
   {

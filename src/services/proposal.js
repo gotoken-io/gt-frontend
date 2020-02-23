@@ -148,6 +148,7 @@ export async function updateProposalZone(params) {
   });
 }
 
+/* Proposal Logs */
 export async function queryProposalLogs({ id }) {
   return request(`/server/proposal/${id}/log`);
 }
@@ -156,6 +157,34 @@ export async function updateProposalProgress(params) {
   console.log(params);
   return request(`/server/proposal/${params.id}/progress`, {
     method: 'POST',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
+/* Proposal Claims */
+export async function queryProposalClaims({ id }) {
+  console.log(`/server/proposal_claim/proposal/${id}`);
+  return request(`/server/proposal_claim/proposal/${id}`);
+}
+
+export async function claimProposal(params) {
+  console.log(params);
+  return request('/server/proposal_claim/', {
+    method: 'POST',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
+export async function cancelClaimProposal(params) {
+  console.log(params);
+  return request('/server/proposal_claim/', {
+    method: 'PUT',
     headers: {
       Authorization: getAuthority(),
     },
