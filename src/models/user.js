@@ -8,6 +8,9 @@ import {
   postForgetPwd,
   postResetPwd,
 } from '@/services/user';
+
+import { queryUserProposalClaims } from '@/services/proposal';
+
 import { queryUserWallet, addUserWallet, updateUserWallet } from '@/services/wallet';
 
 import { routerRedux } from 'dva/router';
@@ -28,6 +31,13 @@ const UserModel = {
         per_page: 20,
         total: 1,
       },
+    },
+    proposal_claims: {
+      items: [],
+      page: 1,
+      pages: 1,
+      per_page: 20,
+      total: 1,
     },
     wallet: [],
   },
@@ -83,6 +93,16 @@ const UserModel = {
         yield put({
           type: 'saveUserProposals',
           payload: { ...payload, data: response.data },
+        });
+      }
+    },
+
+    *queryUserProposalClaims({ payload }, { call, put }) {
+      const response = yield call(queryUserProposalClaims, payload);
+      if (response.data) {
+        yield put({
+          type: 'saveUserProposalClaims',
+          payload: response.data,
         });
       }
     },
@@ -209,6 +229,10 @@ const UserModel = {
       }
 
       return state;
+    },
+
+    saveUserProposalClaims(state, action) {
+      return { ...state, proposal_claims: action.payload };
     },
 
     // changeNotifyCount(

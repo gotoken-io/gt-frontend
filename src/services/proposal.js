@@ -202,3 +202,11 @@ export async function VerifyProposalClaim(params) {
     data: params,
   });
 }
+
+export async function queryUserProposalClaims({ username, page }) {
+  return request(`/server/proposal_claim/user/${username}`, {
+    params: {
+      page,
+    },
+  });
+}

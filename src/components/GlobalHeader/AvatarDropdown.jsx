@@ -32,7 +32,7 @@ class AvatarDropdown extends React.Component {
     }
 
     if (key === 'account') {
-      router.push(`/user/${currentUser.id}`);
+      router.push(`/user/${currentUser.username}`);
     } else {
       router.push(`/account/${key}`);
     }

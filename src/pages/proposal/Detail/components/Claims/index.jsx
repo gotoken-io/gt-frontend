@@ -71,7 +71,7 @@ const Claims = props => {
         description={
           <div className={styles.reason}>
             <p className={styles.subtitle}>申领理由:</p>
-            <p>{reason}</p>
+            <p className={styles.reasonText}>{reason}</p>
           </div>
         }
       />

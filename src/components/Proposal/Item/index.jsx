@@ -7,6 +7,7 @@ import Link from 'umi/link';
 import moment from '@/utils/moment';
 import styles from './style.less';
 import UserAvatar from '@/components/User/UserAvatar';
+import { getClaimStatusByKey } from '@/utils/proposal_claim';
 import defaultCover from '@/assets/default_cover.png';
 
 const { Title, Paragraph, Text } = Typography;
@@ -29,6 +30,7 @@ const Item = props => {
     created,
     category,
     status_key,
+    claim,
   } = props;
 
   const proposalAmount = parseInt(amount);
@@ -44,7 +46,7 @@ const Item = props => {
   return (
     <div className={styles.container}>
       <Link to={`/proposal/detail/${id}`}>
-        <Card className={styles.card} hoverable>
+        <Card className={claim ? styles['card-extra-height'] : styles.card} hoverable>
           <div className={styles.cardBody}>
             <div className={styles.cardHead}>
               <div className={styles.left}>
@@ -101,6 +103,28 @@ const Item = props => {
                   )}
                 </div>
               </div>
+
+              {/* 申领信息 */}
+              {claim && (
+                <div className={styles['claim-info']}>
+                  <div className={styles.head}>
+                    <span>
+                      <UserAvatar size={16} {...claim.claimer} />
+                      <span className={styles.username}>{claim.claimer.username}</span>
+                    </span>
+                    <span className={styles.status}>
+                      <Tag color={getClaimStatusByKey(claim.status_key).color}>
+                        {getClaimStatusByKey(claim.status_key).text}
+                      </Tag>
+                    </span>
+                  </div>
+
+                  <div className={styles.reason}>
+                    <p className={styles.subtitle}>申领理由:</p>
+                    <p className={styles.reasonText}>{claim.reason}</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </Card>
