@@ -35,6 +35,7 @@ const Logs = props => {
     const event_text = <span>{getProposalEventTextByKey(event_key)}</span>;
     let content;
     switch (event_key) {
+      // 项目进度更新
       case 'update_status':
         if (to_value) {
           const content_text = `${getProposalEventTextByKey(event_key)}为:${getStatusTextByKey(
@@ -45,6 +46,9 @@ const Logs = props => {
           content = event_text;
         }
         break;
+
+      // 审核提案申领
+      // case 'proposal_claim_passed':
 
       default:
         content = event_text;

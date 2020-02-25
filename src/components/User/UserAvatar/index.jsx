@@ -30,7 +30,7 @@ const UserAvatar = ({ id, src, avatar, username, size = 'default', shape = 'circ
   }
 
   if (id) {
-    return <Link to={`/user/${id}`}>{avatarComponent}</Link>;
+    return <Link to={`/user/${username}`}>{avatarComponent}</Link>;
   }
 
   return avatarComponent;

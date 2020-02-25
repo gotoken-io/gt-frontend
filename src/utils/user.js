@@ -30,6 +30,7 @@ export function isCreatorOrAdmin({ currentUser, creator }) {
 }
 
 export function isAdmin({ currentUser }) {
+  console.log('isAdmin', currentUser);
   if (!isEmpty(currentUser) && currentUser.admin === true) {
     return true;
   }

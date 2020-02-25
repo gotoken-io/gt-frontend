@@ -37,12 +37,12 @@ export async function updateUserInfo(params) {
   });
 }
 
-export async function queryUserDetail({ id }) {
-  return request(`/server/user/${id}`);
+export async function queryUserDetail({ username }) {
+  return request(`/server/user/${username}`);
 }
 
-export async function queryUserProposals({ id }) {
-  return request(`/server/user/${id}/proposal`);
+export async function queryUserProposals({ username }) {
+  return request(`/server/user/${username}/proposal`);
 }
 
 export async function postForgetPwd(params) {

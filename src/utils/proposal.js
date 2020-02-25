@@ -42,7 +42,8 @@ export const proposalStatus = [
   },
 ];
 
-export const getStatusTextByKey = key => proposalStatus.find(d => d.key === key).text;
+export const getStatusByKey = key => proposalStatus.find(d => d.key === key);
+export const getStatusTextByKey = key => getStatusByKey(key).text;
 
 // event
 export const proposalEvent = [
@@ -117,17 +118,17 @@ export const proposalEvent = [
   {
     key: 'proposal_claim_passed',
     value: 11,
-    text: '提案申领审核通过',
+    text: '审核提案申领:通过',
     color: 'green',
   },
   {
     key: 'proposal_claim_fail',
     value: 12,
-    text: '提案申领审核不通过',
+    text: '审核提案申领:不通过',
     color: 'red',
   },
 ];
 
 export const getProposalEventByKey = key => proposalEvent.find(d => d.key === key);
 
-export const getProposalEventTextByKey = key => proposalEvent.find(d => d.key === key).text;
+export const getProposalEventTextByKey = key => getProposalEventByKey(key).text;

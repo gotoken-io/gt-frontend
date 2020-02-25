@@ -24,6 +24,7 @@ import {
   queryProposalClaims,
   claimProposal,
   cancelClaimProposal,
+  VerifyProposalClaim,
 } from '@/services/proposal';
 
 const ProposalModel = {
@@ -309,6 +310,18 @@ const ProposalModel = {
       const response = yield call(cancelClaimProposal, payload);
       if (response.status === 'success') {
         message.success('提案取消申领成功');
+        window.location.reload();
+        // yield put({
+        //   type: 'saveProposalClaims',
+        //   payload: response.data,
+        // });
+      }
+    },
+
+    *VerifyProposalClaim({ payload }, { call, put }) {
+      const response = yield call(VerifyProposalClaim, payload);
+      if (response.status === 'success') {
+        message.success('提案申领审核成功');
         window.location.reload();
         // yield put({
         //   type: 'saveProposalClaims',

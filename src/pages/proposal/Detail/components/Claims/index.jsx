@@ -1,41 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Button, Card, Row, Col, Modal } from 'antd';
+import { Spin, Button, Card, Row, Col, Modal, Tag } from 'antd';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import moment from '@/utils/moment';
-import {
-  getProposalEventByKey,
-  getProposalEventTextByKey,
-  getStatusTextByKey,
-} from '@/utils/proposal';
+import { getClaimStatusByKey, isClaimer } from '@/utils/proposal_claim';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import UserAvatar from '@/components/User/UserAvatar';
 import ClaimModal from '../ClaimModal';
-import { isClaimer } from '@/utils/proposal_claim';
+import VerifyClaimModal from '../VerifyClaimModal';
+
 import styles from './style.less';
 
 const { confirm } = Modal;
 
 const { Meta } = Card;
 
-const ClaimItem = ({ claimer, reason }) => (
-  <Card>
-    <Meta
-      avatar={<UserAvatar {...claimer} />}
-      title={claimer.username}
-      description={
-        <div className={styles.reason}>
-          <p className={styles.subtitle}>申领理由:</p>
-          <p>{reason}</p>
-        </div>
-      }
-    />
-  </Card>
-);
-
 const Claims = props => {
   // state
   const [claimModalVisible, setClaimModalVisible] = useState(false);
+  const [verifyClaimModalVisible, setVerifyClaimModalVisible] = useState(false);
 
   const { id, claims, loading, proposal_creator, currentUser } = props;
 
@@ -50,6 +33,50 @@ const Claims = props => {
       });
     }
   }, []);
+
+  const ClaimItem = ({ claim_id, claimer, reason, status_key }) => (
+    <Card>
+      <Meta
+        className={styles['claim-item']}
+        avatar={<UserAvatar {...claimer} />}
+        title={
+          <div className={styles.head}>
+            <span>{claimer.username}</span>
+            <span className={styles.status}>
+              <Tag color={getClaimStatusByKey(status_key).color}>
+                {getClaimStatusByKey(status_key).text}
+              </Tag>
+            </span>
+            {isAdmin({ currentUser }) && (
+              <span className={styles.actions}>
+                {status_key !== 'cancel' && (
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={() => setVerifyClaimModalVisible(true)}
+                  >
+                    审核
+                  </Button>
+                )}
+
+                <VerifyClaimModal
+                  claim_id={claim_id}
+                  visible={verifyClaimModalVisible}
+                  onCancel={() => setVerifyClaimModalVisible(false)}
+                />
+              </span>
+            )}
+          </div>
+        }
+        description={
+          <div className={styles.reason}>
+            <p className={styles.subtitle}>申领理由:</p>
+            <p>{reason}</p>
+          </div>
+        }
+      />
+    </Card>
+  );
 
   function showCancelClaimConfirm() {
     confirm({
@@ -110,7 +137,7 @@ const Claims = props => {
                 d =>
                   d.status_key !== 'cancel' && (
                     <Col md={12} sm={24}>
-                      <ClaimItem claimer={d.claimer} reason={d.reason} />
+                      <ClaimItem {...d} />
                     </Col>
                   ),
               )}

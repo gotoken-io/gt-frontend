@@ -191,3 +191,14 @@ export async function cancelClaimProposal(params) {
     data: params,
   });
 }
+
+export async function VerifyProposalClaim(params) {
+  console.log(params);
+  return request('/server/proposal_claim/verify', {
+    method: 'PUT',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}

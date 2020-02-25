@@ -59,7 +59,7 @@ export const routes = [
     routes: [
       {
         name: '个人中心',
-        path: '/user/:id',
+        path: '/user/:username',
         component: './user/AccountCenter',
       },
       {
