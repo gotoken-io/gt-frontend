@@ -37,6 +37,10 @@ const ChangeStatusModal = props => {
           dispatch({
             type: 'proposal/updateProposalStatus',
             payload,
+          }).then(res => {
+            if (res) {
+              props.onCancel();
+            }
           });
         }
       }

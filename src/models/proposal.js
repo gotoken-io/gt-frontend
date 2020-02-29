@@ -29,7 +29,7 @@ import {
   verifyProposalClaimResult,
 } from '@/services/proposal';
 
-import { showMsgReload } from '@/utils/utils';
+import { showMsgReload, showMsgGoBack } from '@/utils/utils';
 
 const ProposalModel = {
   namespace: 'proposal',
@@ -202,16 +202,15 @@ const ProposalModel = {
     *updateProposal({ payload }, { call, put }) {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
-        message.success('提案修改成功');
-        router.go(-1); // 回到上一页
+        showMsgGoBack('提案修改成功');
       }
     },
 
     *updateProposalStatus({ payload }, { call, _ }) {
       const response = yield call(updateProposalStatus, payload);
       if (response.status === 'success') {
-        message.success('提案状态修改成功');
-        window.location.reload();
+        showMsgReload('提案状态修改成功');
+        return true;
       }
     },
 
@@ -247,8 +246,7 @@ const ProposalModel = {
     *createProposalZone({ payload }, { call, put }) {
       const response = yield call(createProposalZone, payload);
       if (response.status === 'success') {
-        message.success('提案专区创建成功');
-        router.go(-1); // 回到上一页
+        showMsgGoBack('提案专区创建成功');
       }
 
       if (response.status === 'fail') {
@@ -261,8 +259,7 @@ const ProposalModel = {
     *updateProposalZone({ payload }, { call, put }) {
       const response = yield call(updateProposalZone, payload);
       if (response.status === 'success') {
-        message.success('提案专区修改成功');
-        router.go(-1); // 回到上一页
+        showMsgGoBack('提案专区修改成功');
       }
     },
 
@@ -279,6 +276,8 @@ const ProposalModel = {
       const response = yield call(updateProposalProgress, payload);
       if (response.status === 'success') {
         showMsgReload('提案进度更新成功');
+
+        return true;
       }
     },
 

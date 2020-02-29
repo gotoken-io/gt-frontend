@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Icon, Tag, Badge } from 'antd';
+import { Card, Typography, Icon, Tag, Badge, Divider } from 'antd';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Image from '@/components/Image';
 import LinesEllipsis from 'react-lines-ellipsis';
@@ -119,9 +119,18 @@ const Item = props => {
                     </span>
                   </div>
 
-                  <div className={styles.reason}>
-                    <p className={styles.subtitle}>申领理由:</p>
-                    <p className={styles.reasonText}>{claim.reason}</p>
+                  <div className={styles.claimContent}>
+                    <div className={styles.reason}>
+                      <Divider>申领理由</Divider>
+                      <p className={styles.reasonText}>{claim.reason}</p>
+                    </div>
+
+                    {claim.result && (
+                      <div className={styles.result}>
+                        <Divider>提交结果</Divider>
+                        <p className={styles.resultText}>{claim.result}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
