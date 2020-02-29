@@ -1,4 +1,5 @@
 import { parse } from 'querystring';
+import { message } from 'antd';
 import pathRegexp from 'path-to-regexp';
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 
@@ -67,3 +68,9 @@ export const converHoursToDayHourText = hours => {
   const obj = converHoursToDayAndHour(hours);
   return convertToDayHourText(obj);
 };
+
+export function showMsgReload(text = '提交成功') {
+  message.success(text).then(() => {
+    window.location.reload();
+  });
+}

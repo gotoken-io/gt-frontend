@@ -118,13 +118,31 @@ export const proposalEvent = [
   {
     key: 'proposal_claim_passed',
     value: 11,
-    text: '审核提案申领:通过',
+    text: '提案申领:通过',
     color: 'green',
   },
   {
     key: 'proposal_claim_fail',
     value: 12,
-    text: '审核提案申领:不通过',
+    text: '提案申领:不通过',
+    color: 'red',
+  },
+  {
+    key: 'proposal_claim_result_submit',
+    value: 13,
+    text: '申领结果提交',
+    color: 'lime',
+  },
+  {
+    key: 'proposal_claim_result_approve',
+    value: 14,
+    text: '提交结果:通过',
+    color: 'green',
+  },
+  {
+    key: 'proposal_claim_result_fail',
+    value: 15,
+    text: '提交结果:不通过',
     color: 'red',
   },
 ];

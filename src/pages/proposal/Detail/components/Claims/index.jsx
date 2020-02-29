@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Button, Card, Row, Col, Modal, Tag } from 'antd';
+import { Spin, Button, Card, Row, Col, Modal, Tag, Divider } from 'antd';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import moment from '@/utils/moment';
-import { getClaimStatusByKey, isClaimer } from '@/utils/proposal_claim';
+import { getClaimStatusByKey, isClaimer, isClaimerByStatus } from '@/utils/proposal_claim';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import UserAvatar from '@/components/User/UserAvatar';
 import ClaimModal from '../ClaimModal';
 import VerifyClaimModal from '../VerifyClaimModal';
+import SubmitClaimResultModal from '../SubmitClaimResultModal';
 
 import styles from './style.less';
 
@@ -18,6 +19,12 @@ const { Meta } = Card;
 const Claims = props => {
   // state
   const [claimModalVisible, setClaimModalVisible] = useState(false);
+  const [submitClaimResultModalVisible, setSubmitClaimResultModalVisible] = useState(false);
+
+  // verify
+  const [verifyClaimId, setVerifyClaimId] = useState();
+  const [verifyClaimer, setVerifyClaimer] = useState();
+  const [verifyClaimStatus, setVerifyClaimStatus] = useState();
   const [verifyClaimModalVisible, setVerifyClaimModalVisible] = useState(false);
 
   const { id, claims, loading, proposal_creator, currentUser } = props;
@@ -34,7 +41,17 @@ const Claims = props => {
     }
   }, []);
 
-  const ClaimItem = ({ claim_id, claimer, reason, status_key }) => (
+  function handleVerify({ claim_id, claimer, status_key }) {
+    setVerifyClaimId(claim_id);
+    setVerifyClaimer(claimer);
+    setVerifyClaimStatus(status_key);
+    // console.log(claim_id, claimer, status_key);
+    if (claim_id && claimer && status_key) {
+      setVerifyClaimModalVisible(true);
+    }
+  }
+
+  const ClaimItem = ({ claim_id, claimer, reason, status_key, result }) => (
     <Card>
       <Meta
         className={styles['claim-item']}
@@ -53,25 +70,28 @@ const Claims = props => {
                   <Button
                     type="primary"
                     size="small"
-                    onClick={() => setVerifyClaimModalVisible(true)}
+                    onClick={() => handleVerify({ claim_id, claimer, status_key })}
                   >
                     审核
                   </Button>
                 )}
-
-                <VerifyClaimModal
-                  claim_id={claim_id}
-                  visible={verifyClaimModalVisible}
-                  onCancel={() => setVerifyClaimModalVisible(false)}
-                />
               </span>
             )}
           </div>
         }
         description={
-          <div className={styles.reason}>
-            <p className={styles.subtitle}>申领理由:</p>
-            <p className={styles.reasonText}>{reason}</p>
+          <div className={styles.claimContent}>
+            <div className={styles.reason}>
+              <Divider>申领理由</Divider>
+              <p className={styles.reasonText}>{reason}</p>
+            </div>
+
+            {result && (
+              <div className={styles.result}>
+                <Divider>提交结果</Divider>
+                <p className={styles.resultText}>{result}</p>
+              </div>
+            )}
           </div>
         }
       />
@@ -122,11 +142,33 @@ const Claims = props => {
           </>
         )}
 
-        {isClaimer(claims, currentUser) === true && (
+        {isClaimerByStatus(claims, currentUser, ['claiming']) === true && (
           <Button type="primary" onClick={showCancelClaimConfirm}>
             取消申领
           </Button>
         )}
+        {/* 可提交结果, 状态包括:申领通过, 结果提交中, 结果审核失败 */}
+        {isClaimerByStatus(claims, currentUser, ['passed', 'submit_result', 'result_fail']) ===
+          true && (
+          <>
+            <Button type="primary" onClick={() => setSubmitClaimResultModalVisible(true)}>
+              提交结果
+            </Button>
+            <SubmitClaimResultModal
+              id={id}
+              visible={submitClaimResultModalVisible}
+              onCancel={() => setSubmitClaimResultModalVisible(false)}
+            />
+          </>
+        )}
+
+        <VerifyClaimModal
+          claim_id={verifyClaimId}
+          claimer={verifyClaimer}
+          status_key={verifyClaimStatus}
+          visible={verifyClaimModalVisible}
+          onCancel={() => setVerifyClaimModalVisible(false)}
+        />
       </div>
 
       <Spin spinning={loading}>

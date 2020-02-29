@@ -5,7 +5,7 @@ import styles from './style.less';
 
 const { TextArea } = Input;
 
-const UpdateProgressModal = props => {
+const SubmitClaimResultModal = props => {
   // state
 
   // props
@@ -18,7 +18,7 @@ const UpdateProgressModal = props => {
         // filter some form value
         const payload = {
           ...values,
-          id, // proposal id
+          proposal_id: id, // proposal id
         };
 
         console.log('payload', payload);
@@ -26,9 +26,8 @@ const UpdateProgressModal = props => {
         const { dispatch } = props;
 
         if (dispatch) {
-          console.log('udpate');
           dispatch({
-            type: 'proposal/updateProposalProgress',
+            type: 'proposal/submitProposalClaimResult',
             payload,
           }).then(res => {
             if (res) {
@@ -43,19 +42,19 @@ const UpdateProgressModal = props => {
 
   return (
     <Modal
-      title="更新提案进度"
+      title="提交结果"
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
       onCancel={props.onCancel}
     >
       <Form>
-        <Form.Item label="提案进度概况">
-          {getFieldDecorator('progress_content', {
+        <Form.Item label="提案完成结果">
+          {getFieldDecorator('result', {
             rules: [
               {
                 required: true,
-                message: '请输入提案进度概况!',
+                message: '请输入提案完成结果!',
               },
             ],
           })(<TextArea rows={4} />)}
@@ -65,10 +64,10 @@ const UpdateProgressModal = props => {
   );
 };
 
-const UpdateProgressModalWrapper = Form.create({
-  name: 'update-progress-modal',
-})(UpdateProgressModal);
+const SubmitClaimResultModalWrapper = Form.create({
+  name: 'submit-claim-result-modal',
+})(SubmitClaimResultModal);
 
 export default connect(({ loading }) => ({
-  submiting: loading.effects['proposal/updateProposalProgress'],
-}))(UpdateProgressModalWrapper);
+  submiting: loading.effects['proposal/submitProposalClaimResult'],
+}))(SubmitClaimResultModalWrapper);

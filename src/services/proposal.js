@@ -192,7 +192,7 @@ export async function cancelClaimProposal(params) {
   });
 }
 
-export async function VerifyProposalClaim(params) {
+export async function verifyProposalClaim(params) {
   console.log(params);
   return request('/server/proposal_claim/verify', {
     method: 'PUT',
@@ -208,5 +208,27 @@ export async function queryUserProposalClaims({ username, page }) {
     params: {
       page,
     },
+  });
+}
+
+export async function submitProposalClaimResult(params) {
+  console.log(params);
+  return request('/server/proposal_claim/result', {
+    method: 'POST',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
+export async function verifyProposalClaimResult(params) {
+  console.log(params);
+  return request('/server/proposal_claim/verify/result', {
+    method: 'PUT',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
   });
 }

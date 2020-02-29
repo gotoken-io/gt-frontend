@@ -47,8 +47,35 @@ const Logs = props => {
         }
         break;
 
+      // case 'proposal_claim_result_submit':
+      //   if (to_value) {
+      //     const content_text = `${getProposalEventTextByKey(event_key)}为:${getStatusTextByKey(
+      //       to_value,
+      //     )}`;
+      //     content = <span>{content_text}</span>;
+      //   } else {
+      //     content = event_text;
+      //   }
+      //   break;
+
       // 审核提案申领
-      // case 'proposal_claim_passed':
+      case 'proposal_claim_passed':
+      case 'proposal_claim_fail':
+      // 审核提案结果
+      case 'proposal_claim_result_approve':
+      case 'proposal_claim_result_fail':
+        if (to_value) {
+          const link_to_user = <Link to={`/user/${to_value}`}>{to_value}</Link>;
+          content = (
+            <span>
+              审核{link_to_user}
+              {getProposalEventTextByKey(event_key)}
+            </span>
+          );
+        } else {
+          content = event_text;
+        }
+        break;
 
       default:
         content = event_text;
@@ -91,8 +118,13 @@ const Logs = props => {
                       {renderEventContent(event_key, from_value, to_value)}
                     </div>
                   </div>
+                  {/* update progress detail */}
+                  {event_key === 'update_progress' && to_value && (
+                    <div className={styles['udpate-progress']}> {to_value}</div>
+                  )}
 
-                  {event_key === 'update_progress' && (
+                  {/* submit claim result detail */}
+                  {event_key === 'proposal_claim_result_submit' && to_value && (
                     <div className={styles['udpate-progress']}> {to_value}</div>
                   )}
                 </div>

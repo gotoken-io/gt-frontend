@@ -24,8 +24,12 @@ import {
   queryProposalClaims,
   claimProposal,
   cancelClaimProposal,
-  VerifyProposalClaim,
+  verifyProposalClaim,
+  submitProposalClaimResult,
+  verifyProposalClaimResult,
 } from '@/services/proposal';
+
+import { showMsgReload } from '@/utils/utils';
 
 const ProposalModel = {
   namespace: 'proposal',
@@ -274,12 +278,7 @@ const ProposalModel = {
     *updateProposalProgress({ payload }, { call, put }) {
       const response = yield call(updateProposalProgress, payload);
       if (response.status === 'success') {
-        message.success('提案进度更新成功');
-        window.location.reload();
-        // yield put({
-        //   type: 'saveProposalLogs',
-        //   payload: response.data,
-        // });
+        showMsgReload('提案进度更新成功');
       }
     },
 
@@ -297,36 +296,44 @@ const ProposalModel = {
     *claimProposal({ payload }, { call, put }) {
       const response = yield call(claimProposal, payload);
       if (response.status === 'success') {
-        message.success('提案申领成功');
-        window.location.reload();
-        // yield put({
-        //   type: 'saveProposalClaims',
-        //   payload: response.data,
-        // });
+        showMsgReload('提案申领成功');
+
+        return true;
       }
     },
 
     *cancelClaimProposal({ payload }, { call, put }) {
       const response = yield call(cancelClaimProposal, payload);
       if (response.status === 'success') {
-        message.success('提案取消申领成功');
-        window.location.reload();
-        // yield put({
-        //   type: 'saveProposalClaims',
-        //   payload: response.data,
-        // });
+        showMsgReload('提案取消申领成功');
+
+        return true;
       }
     },
 
-    *VerifyProposalClaim({ payload }, { call, put }) {
-      const response = yield call(VerifyProposalClaim, payload);
+    *verifyProposalClaim({ payload }, { call, put }) {
+      const response = yield call(verifyProposalClaim, payload);
       if (response.status === 'success') {
-        message.success('提案申领审核成功');
-        window.location.reload();
-        // yield put({
-        //   type: 'saveProposalClaims',
-        //   payload: response.data,
-        // });
+        showMsgReload('提案申领审核成功');
+
+        return true;
+      }
+    },
+
+    *submitProposalClaimResult({ payload }, { call, put }) {
+      const response = yield call(submitProposalClaimResult, payload);
+      if (response.status === 'success') {
+        showMsgReload('提案结果提交成功');
+
+        return true;
+      }
+    },
+
+    *verifyProposalClaimResult({ payload }, { call, put }) {
+      const response = yield call(verifyProposalClaimResult, payload);
+      if (response.status === 'success') {
+        showMsgReload('提案申领结果审核成功');
+        return true;
       }
     },
   },
