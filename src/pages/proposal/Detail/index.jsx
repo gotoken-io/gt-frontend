@@ -206,11 +206,13 @@ const Detail = props => {
                 </div>
               </TabPane>
 
-              {detail.status_key === 'claiming' && (
-                <TabPane tab="申领" key="claims">
-                  <Claims id={id} proposal_creator={creator} />
-                </TabPane>
-              )}
+              <TabPane tab="申领" key="claims">
+                <Claims
+                  proposal_status_key={detail.status_key}
+                  id={id}
+                  proposal_creator={creator}
+                />
+              </TabPane>
 
               <TabPane tab="评论" key="comments">
                 <div className={styles.comments}>{detail && <Comments id={id} />}</div>

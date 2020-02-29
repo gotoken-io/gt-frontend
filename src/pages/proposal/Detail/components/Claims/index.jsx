@@ -27,7 +27,7 @@ const Claims = props => {
   const [verifyClaimStatus, setVerifyClaimStatus] = useState();
   const [verifyClaimModalVisible, setVerifyClaimModalVisible] = useState(false);
 
-  const { id, claims, loading, proposal_creator, currentUser } = props;
+  const { id, claims, loading, proposal_creator, currentUser, proposal_status_key } = props;
 
   useEffect(() => {
     const { dispatch } = props;
@@ -129,7 +129,7 @@ const Claims = props => {
   return (
     <div className={styles.container}>
       <div className={styles.actions}>
-        {isClaimer(claims, currentUser) === false && (
+        {isClaimer(claims, currentUser) === false && proposal_status_key === 'claiming' && (
           <>
             <Button type="primary" onClick={() => setClaimModalVisible(true)}>
               申领
