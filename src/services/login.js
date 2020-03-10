@@ -7,6 +7,21 @@ export async function login(params) {
     data: params,
   });
 }
+export async function loginWithAddress(params) {
+  return request('/server/auth/address', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function getAddressNonce(params) {
+  return request(`/server/auth/address?address=${params.address}`, {
+    method: 'GET',
+    headers: {
+      ContentType: 'application/json',
+    },
+  });
+}
 
 export async function logout() {
   return request('/server/auth/logout', {

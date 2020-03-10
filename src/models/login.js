@@ -1,11 +1,11 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'querystring';
-import { logout, login, register } from '@/services/login';
+import { logout, login, register, loginWithAddress, getAddressNonce } from '@/services/login';
 import { setAuthority, removeAuthority } from '@/utils/authority';
 import { removeCurrentUser } from '@/utils/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
-
+const md5 = require('md5');
 const Model = {
   namespace: 'login',
   state: {
@@ -52,38 +52,100 @@ const Model = {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
       const { status } = response;
+      if (status === 401) {
+        message.error('邮箱或密码错误！');
+        return;
+      }
+      if (status !== 'success') {
+        message.success('内部服务器错误');
+        return;
+      }
+      message.success('登陆成功');
+      yield put({
+        type: 'setLoginStatus',
+        payload: { ...response, noExpire: payload.remember }, // 默认保存账号
+      });
 
-      if (status === 'success') {
-        message.success('登陆成功');
+      const urlParams = new URL(window.location.href);
+      const params = getPageQuery();
+      let { redirect } = params;
 
-        yield put({
-          type: 'setLoginStatus',
-          payload: { ...response, noExpire: payload.remember }, // 默认保存账号
-        }); // Login successfully
+      if (redirect) {
+        const redirectUrlParams = new URL(redirect);
 
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
-
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = redirect;
-            return;
-          }
+        if (redirectUrlParams.origin !== urlParams.origin) {
+          window.location.href = redirect;
+          return;
         }
 
-        yield put(routerRedux.replace(redirect || '/'));
-      } else if (status === 401) {
-        message.error('邮箱或密码错误！');
+        redirect = redirect.substr(urlParams.origin.length);
+        if (redirect.match(/^\/.*#/)) {
+          redirect = redirect.substr(redirect.indexOf('#') + 1);
+        }
       }
+      yield put(routerRedux.replace(redirect || '/'));
+    },
+
+    *loginWithAddress({ payload }, { call, put }) {
+      const nonceResponse = yield call(getAddressNonce, { address: payload.address });
+      if (nonceResponse.status === 404) {
+        message.error('找不到地址！');
+        return;
+      }
+
+      if (nonceResponse.status !== 'success') {
+        message.error('服务器出问题');
+        return;
+      }
+      const signature = md5(nonceResponse.data.nonce + nonceResponse.data.userId);
+
+      const response = yield call(loginWithAddress, {
+        address: payload.address,
+        signature,
+      });
+      const { status } = response;
+
+      if (status !== 'success') {
+        message.success('内部服务器错误');
+
+        return;
+      }
+      message.success('登陆成功');
+      console.log(response);
+
+      yield put({
+        type: 'setLoginStatus',
+        payload: { ...response, noExpire: payload.remember }, // 默认保存账号
+      });
+      // Login successfully
+      if (status === 404) {
+        message.error('找不到地址！');
+        return;
+      }
+
+      if (status === 401) {
+        message.error('找不到地址！');
+        return;
+      }
+      const urlParams = new URL(window.location.href);
+      const params = getPageQuery();
+      let { redirect } = params;
+
+      if (redirect) {
+        const redirectUrlParams = new URL(redirect);
+
+        if (redirectUrlParams.origin !== urlParams.origin) {
+          window.location.href = redirect;
+          return;
+        }
+
+        redirect = redirect.substr(urlParams.origin.length);
+        if (redirect.match(/^\/.*#/)) {
+          redirect = redirect.substr(redirect.indexOf('#') + 1);
+        }
+      }
+
+      yield put(routerRedux.replace(redirect || '/'));
     },
 
     *logout({ payload }, { call, put }) {
@@ -112,7 +174,7 @@ const Model = {
   },
   reducers: {
     setLoginStatus(state, { payload }) {
-      console.log(payload);
+      console.log('LoginStatus', payload);
       setAuthority(payload.Authorization, payload.noExpire);
       return state;
     },

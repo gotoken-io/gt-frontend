@@ -1,14 +1,15 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Row } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import styles from './index.less';
 import layoutStyles from '@/layouts/style.less';
+import MetamaskLogin from './utils/MetamaskLogin';
 
 @connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
+  // login,
+  // submitting: loading.effects['login/login'],
 }))
 class Login extends React.Component {
   handleSubmit = e => {
@@ -25,8 +26,16 @@ class Login extends React.Component {
     });
   };
 
+  loginWithAddress(address) {
+    console.log('Login with address', address);
+    this.props.dispatch({
+      type: 'login/loginWithAddress',
+      payload: { address, remember: this.props.form.getFieldValue('remember') },
+    });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log(this.props);
     return (
       <div className={layoutStyles.userMain}>
         <h3>
@@ -110,6 +119,10 @@ class Login extends React.Component {
               <Link to="/forget-password">忘记密码</Link>
               <Link to="/register">注册</Link>
             </div>
+          </Form.Item>
+          <div className="margin" />
+          <Form.Item>
+            <MetamaskLogin onLogin={address => this.loginWithAddress(address)} />
           </Form.Item>
         </Form>
       </div>

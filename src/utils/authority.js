@@ -7,7 +7,7 @@ export function getAuthority() {
   } else if (localStorage.getItem('Authorization')) {
     Authorization = localStorage.getItem('Authorization');
   }
-
+  
   return Authorization;
 }
 
