@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Button, Row, message, Spin } from 'antd';
 import styles from '../index.less';
 import { useWeb3Context } from 'web3-react';
+import { Web3Lib } from '@/services/web3';
 
 export default function(props) {
   const web3Info = useWeb3Context();
   const [loading, setLoading] = useState(false);
 
-  console.log({ loading, setLoading });
-
+  console.log(web3Info);
   useEffect(() => {
     const result = connectResult(web3Info);
     if (!result) {
       return web3Info.unsetConnector(); // Allow to retry
     }
-
     return;
   }, [web3Info.error]);
 

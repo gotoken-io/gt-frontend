@@ -40,16 +40,18 @@ const List = props => {
     const params = getPageQuery();
     console.log('params', params);
 
-    if (dispatch) {
-      const payload = { ...match.params, ...params };
-      console.log('payload', payload);
-
-      dispatch({
-        type: 'proposal/fetchAllProposal',
-        payload,
-      });
+    if (!dispatch) {
+      return;
     }
-  }, [match.params]);
+
+    const payload = { ...match.params, ...params };
+    console.log('payload', payload);
+
+    dispatch({
+      type: 'proposal/fetchAllProposal',
+      payload,
+    });
+  }, [window.location.href]);
 
   const handleCreateProposal = () => {
     if (currentUser.id) {

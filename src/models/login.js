@@ -5,7 +5,10 @@ import { setAuthority, removeAuthority } from '@/utils/authority';
 import { removeCurrentUser } from '@/utils/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import { Web3Lib } from '@/services/web3';
+
 const md5 = require('md5');
+const myWeb3 = global.web3;
 const Model = {
   namespace: 'login',
   state: {
@@ -97,7 +100,17 @@ const Model = {
         message.error('服务器出问题');
         return;
       }
-      const signature = md5(nonceResponse.data.nonce + nonceResponse.data.userId);
+
+      var original_message = nonceResponse.nonce;
+      var message_hash = web3.sha3(
+        '\u0019Ethereum Signed Message:\n' + original_message.length.toString() + original_message,
+      );
+      console.log('KECCAC', original_message);
+      const signature = yield new Promise(resolve =>
+        myWeb3.personal.sign(original_message, window.ethereum.selectedAddress, (_, result) =>
+          resolve(result),
+        ),
+      );
 
       const response = yield call(loginWithAddress, {
         address: payload.address,
@@ -106,8 +119,7 @@ const Model = {
       const { status } = response;
 
       if (status !== 'success') {
-        message.success('内部服务器错误');
-
+        message.error('内部服务器错误');
         return;
       }
       message.success('登陆成功');
