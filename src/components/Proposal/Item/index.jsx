@@ -86,7 +86,7 @@ const Item = props => {
             </Paragraph>
 
             <div className={styles.bottom}>
-              <div className={styles.datetime}>crated: {moment.datetime(created)}</div>
+              <div className={styles.datetime}>created: {moment.datetime(created)}</div>
               <div className={styles.info}>
                 {creator && (
                   <div className={styles.creator}>

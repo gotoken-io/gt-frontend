@@ -53,14 +53,23 @@ const UserModel = {
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
 
-      if (response.status === 'success') {
-        yield put({
-          type: 'saveCurrentUser',
-          payload: response.data,
-        });
-      } else {
+      if (response.status !== 'success') {
         yield put({
           type: 'removeCurrentUser',
+        });
+        return;
+      }
+
+      yield put({
+        type: 'saveCurrentUser',
+        payload: response.data,
+      });
+
+      const walletResponse = yield call(queryUserWallet, _);
+      if (walletResponse.data) {
+        yield put({
+          type: 'saveUserWallet',
+          payload: walletResponse.data,
         });
       }
     },

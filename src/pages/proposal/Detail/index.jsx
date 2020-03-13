@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button, Modal, Spin, Tabs } from 'antd';
+import { Typography, Tag, Button, Modal, Spin, Tabs, Row, Col } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import Image from '@/components/Image';
 import { connect } from 'dva';
@@ -8,6 +8,8 @@ import { StickyContainer, Sticky } from 'react-sticky';
 import styles from './style.less';
 import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
+import Voting from './components/Voting';
+
 import Comments from './components/Comments';
 import moment from '@/utils/moment';
 import ChangeStatusModal from './components/ChangeStatusModal';
@@ -178,17 +180,25 @@ const Detail = props => {
                 </div>
               </div>
             </div>
-
-            <div className={styles.userList}>
-              <div className={styles.user}>
-                <UserAvatar {...detail.creator} />
-                <div className={styles.userContent}>
-                  <Title level={3}>{detail.creator && detail.creator.username}</Title>
-                  <Text>创建人</Text>
+            <Row>
+              <Col span={15}>
+                <div className={styles.userList}>
+                  <div className={styles.user}>
+                    <UserAvatar {...detail.creator} />
+                    <div className={styles.userContent}>
+                      <Title level={3}>{detail.creator && detail.creator.username}</Title>
+                      <Text>创建人</Text>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </Col>
 
+              <Col span={8} offset={1}>
+                <div className={styles.userList}>
+                  <Voting detail={detail} />
+                </div>
+              </Col>
+            </Row>
             <Tabs size="large" animated={false} defaultActiveKey="detail" onChange={() => {}}>
               <TabPane tab="提案详情" key="detail">
                 <div className={styles.detail}>

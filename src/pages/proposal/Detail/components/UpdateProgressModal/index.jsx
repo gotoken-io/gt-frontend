@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
-import styles from './style.less';
 
 const { TextArea } = Input;
 

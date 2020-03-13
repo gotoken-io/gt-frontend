@@ -30,6 +30,7 @@ import {
 } from '@/services/proposal';
 
 import { showMsgReload, showMsgGoBack } from '@/utils/utils';
+import { VoteContract } from '../services/voteContract';
 
 const ProposalModel = {
   namespace: 'proposal',
@@ -46,6 +47,7 @@ const ProposalModel = {
       total: 1,
     },
     detail: {},
+    voteDetail: {},
     logs: [],
     claims: [],
   },
@@ -158,6 +160,9 @@ const ProposalModel = {
 
     *fetchProposal({ payload }, { call, put }) {
       const response = yield call(queryProposal, payload);
+      const detail = response.data;
+      const responseZone = yield call(queryProposalZone, { id: detail.zone_proposal_id });
+      detail.zone_detail = responseZone.data;
       yield put({
         type: 'saveProposal',
         payload: response.data,
@@ -335,6 +340,20 @@ const ProposalModel = {
         return true;
       }
     },
+    *vote({ payload }, { call, put }) {},
+    *fetchVoteInformation({ payload }, { call, put }) {
+      const vote = VoteContract.get();
+      const signers = yield call(vote.getSigners, { zone: payload.zone });
+      const voteInfo = yield call(vote.getVoteInfo, { zone: payload.zone, hash: payload.hash });
+
+      yield put({
+        type: 'saveVoteInfo',
+        payload: {
+          signers,
+          ...voteInfo,
+        },
+      });
+    },
   },
   reducers: {
     saveProposalZoneList(state, action) {
@@ -369,6 +388,10 @@ const ProposalModel = {
     saveProposal(state, action) {
       return { ...state, detail: action.payload || {} };
     },
+    saveVoteInfo(state, action) {
+      return { ...state, voteDetail: action.payload || {} };
+    },
+
     saveProposalLogs(state, action) {
       return { ...state, logs: action.payload || [] };
     },

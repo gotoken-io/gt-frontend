@@ -5,7 +5,6 @@ import { setAuthority, removeAuthority } from '@/utils/authority';
 import { removeCurrentUser } from '@/utils/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
-import { Web3Lib } from '@/services/web3';
 
 const md5 = require('md5');
 const myWeb3 = global.web3;
@@ -60,7 +59,7 @@ const Model = {
         return;
       }
       if (status !== 'success') {
-        message.success('内部服务器错误');
+        message.error('内部服务器错误');
         return;
       }
       message.success('登陆成功');
