@@ -8,7 +8,6 @@ export default function(props) {
   const web3Info = useWeb3Context();
   const [loading, setLoading] = useState(false);
 
-  console.log(web3Info);
   useEffect(() => {
     const result = connectResult(web3Info);
     if (!result) {
@@ -44,7 +43,7 @@ export default function(props) {
         ) : (
           <>
             <img src="/metamask.jpeg" className={styles.metamaskIcon} />
-            {web3Info.account ? `已经连接 ${renderAccount(web3Info.account)}` : `Metamask 登记`}
+            {web3Info.account ? `与 ${renderAccount(web3Info.account)} 连接` : `Metamask 登记`}
           </>
         )}
       </Row>

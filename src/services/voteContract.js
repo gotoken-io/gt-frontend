@@ -3,12 +3,13 @@ import { MultiSignABI } from '../abis/MultiSign';
 import { PromiseCallback } from '../utils/promisify';
 const BigNumber = require('bignumber.js');
 import moment from 'moment';
+import Web3 from 'web3';
 
 const myWeb3 = global.web3;
 export const VoteValueEnum = {
   agree: '1',
   disagree: '2',
-  ignore: '2',
+  ignore: '0',
 };
 export class VoteContract {
   static get() {
@@ -30,7 +31,7 @@ export class VoteContract {
         .toNumber(),
     );
     console.log({ hash, start_height, end_height });
-    debugger;
+
     const tx = await new PromiseCallback(cb =>
       contract.createVote.sendTransaction(hash, start_height, end_height, cb),
     );
@@ -51,6 +52,15 @@ export class VoteContract {
     const contract = myWeb3.eth.contract(MultiSignABI).at(zone.multiSigAddress);
     const id = await PromiseCallback(cb => contract.get_unused_invoke_id.call(invokeName, cb));
     return id;
+  }
+
+  getMyAddress() {
+    console.log(myWeb3.eth);
+    try {
+      return myWeb3.eth.coinbase;
+    } catch (err) {
+      return '';
+    }
   }
 
   async getSigners({ zone }) {

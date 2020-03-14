@@ -110,7 +110,10 @@ const Model = {
           resolve(result),
         ),
       );
-
+      if (!signature) {
+        message.info('操作已取消');
+        return;
+      }
       const response = yield call(loginWithAddress, {
         address: payload.address,
         signature,

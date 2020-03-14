@@ -17,6 +17,9 @@ import site_logo from '@/assets/gt_logo_transparent.png';
 import Footer from './components/Footer';
 import { getAuthority } from '@/utils/authority';
 import styles from './style.less';
+import { web3Connectors } from '@/services/web3';
+import Web3Provider from 'web3-react';
+import Web3 from 'web3';
 
 const noMatch = (
   <Result
@@ -139,7 +142,9 @@ const BasicLayout = props => {
       {...settings}
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>
-        {children}
+        <Web3Provider connectors={web3Connectors} libraryName={'web3.js'} web3Api={Web3}>
+          {children}
+        </Web3Provider>
       </Authorized>
     </ProLayout>
   );

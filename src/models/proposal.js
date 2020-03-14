@@ -340,12 +340,10 @@ const ProposalModel = {
         return true;
       }
     },
-    *vote({ payload }, { call, put }) {},
     *fetchVoteInformation({ payload }, { call, put }) {
       const vote = VoteContract.get();
       const signers = yield call(vote.getSigners, { zone: payload.zone });
       const voteInfo = yield call(vote.getVoteInfo, { zone: payload.zone, hash: payload.hash });
-
       yield put({
         type: 'saveVoteInfo',
         payload: {
