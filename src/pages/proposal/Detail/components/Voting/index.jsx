@@ -71,11 +71,11 @@ const Voting = props => {
                   }
                 }}
               >
-                创建投票合同
+                创建投票合约
               </Button>
             </div>
           ) : (
-            <span>没有连锁合同</span>
+            <span>提案尚未上链</span>
           )}
         </Row>
       </>
