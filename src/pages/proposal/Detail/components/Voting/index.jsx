@@ -86,7 +86,7 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票情况</span>
+          <span className={styles.votingTitle}>投票结果</span>
         </Row>
         <div className="margin" />
         {voteDetail.value}
@@ -124,7 +124,7 @@ const Voting = props => {
     <>
       <div>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票情况</span>
+          <span className={styles.votingTitle}>投票状况</span>
         </Row>
         <div className="margin" />
         <Row>
@@ -135,13 +135,13 @@ const Voting = props => {
             </span>
           </Col> */}
           <Col span={18}>
-            <span>投票时间： {detail.vote_duration_hours}小时</span>
+            <span>总 时 长：{detail.vote_duration_hours}小时</span>
           </Col>
           <Col span={12}>
-            <span>起始块： {voteDetail.start_height}</span>
+            <span>起始区块： {voteDetail.start_height}</span>
           </Col>
           <Col span={12}>
-            <span>端块： {voteDetail.end_height}</span>
+            <span>结束区块： {voteDetail.end_height}</span>
           </Col>
         </Row>
         <div className="margin" />
@@ -150,7 +150,7 @@ const Voting = props => {
           {progress !== 100 ? (
             <Progress percent={+progress.toFixed(2)} />
           ) : (
-            <span>投票已完成，没有最终决定</span>
+            <span>投票已截止，未能达成决议</span>
           )}
         </Row>
         <div className="margin" />
@@ -172,7 +172,7 @@ const Voting = props => {
             <Row type="flex" align="middle" justify="center">
               <>
                 <img src="/metamask.jpeg" className={styles.metamaskIcon} />
-                {`Metamask 登记`}
+                {`连接Metamask`}
               </>
             </Row>
           </Button>
@@ -208,7 +208,7 @@ async function createVote({ dispatch, detail }) {
     type: 'proposal/fetchVoteInformation',
     payload: { zone: detail.zone, hash: detail.onchain_hash },
   });
-  message.info('交易正在进行中。 等待确认后再刷新');
+  message.info('交易已提交，请稍后检查Metamask确认交易结果');
 }
 
 async function vote({ dispatch, value, detail, web3Info }) {
@@ -225,7 +225,7 @@ async function vote({ dispatch, value, detail, web3Info }) {
     type: 'proposal/fetchVoteInformation',
     payload: { zone: detail.zone, hash: detail.onchain_hash },
   });
-  message.info('交易正在进行中。 等待确认后再刷新');
+  message.info('交易已提交，请稍后检查Metamask确认交易结果');
 }
 export default connect(data => {
   return {
