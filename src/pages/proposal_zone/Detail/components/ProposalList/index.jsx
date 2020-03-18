@@ -36,7 +36,7 @@ const ProposalList = props => {
         });
       }
     }
-  }, [match.params]);
+  }, [window.location.href]);
 
   const handleFetchProposals = page => {
     const params = getPageQuery();

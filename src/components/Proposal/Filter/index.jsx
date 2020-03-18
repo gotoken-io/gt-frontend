@@ -25,7 +25,7 @@ const Filter = props => {
   useEffect(() => {
     setCategory('all');
     setStatus('all');
-  }, [match.params.zone_id]);
+  }, [window.location.href]);
 
   useEffect(() => {
     const { dispatch } = props;

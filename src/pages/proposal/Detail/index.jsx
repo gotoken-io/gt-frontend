@@ -17,6 +17,7 @@ import Logs from './components/Logs';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Claims from './components/Claims';
+import VoteQrCode from './components/VoteQrCode';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -96,7 +97,7 @@ const Detail = props => {
 
   const { fetchDetailLoading } = props;
   const { creator, zone } = detail;
-
+  console.log(detail);
   return (
     <GridContent>
       {isCreatorOrAdmin({ currentUser, creator }) && (
@@ -195,7 +196,11 @@ const Detail = props => {
 
               <Col span={8} offset={1}>
                 <div className={styles.userList}>
-                  <Voting detail={detail} />
+                  {zone && zone.id == '2' ? (
+                    <Voting detail={detail} />
+                  ) : (
+                    <VoteQrCode detail={detail} />
+                  )}
                 </div>
               </Col>
             </Row>

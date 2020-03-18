@@ -81,3 +81,9 @@ export function showMsgReload(text = '提交成功') {
     window.location.reload();
   });
 }
+
+export function deleteUndefined(list) {
+  Object.keys(list)
+    .filter(key => list[key] === undefined)
+    .forEach(key => delete list[key]);
+}
