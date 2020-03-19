@@ -87,3 +87,10 @@ export function deleteUndefined(list) {
     .filter(key => list[key] === undefined)
     .forEach(key => delete list[key]);
 }
+
+export const toQueryString = d => {
+  return Object.keys(d)
+    .sort()
+    .map(k => `${k}=${d[k]}`)
+    .join('&');
+};
