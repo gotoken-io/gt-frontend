@@ -22,7 +22,7 @@
   .card {
     :global {
       .ant-card-body {
-        height: 300px;
+        // height: 300px;
         padding: 20px;
       }
     }
@@ -81,12 +81,8 @@
       // bottom: 0;
       margin-top: auto;
 
-      .datetime {
-        margin-bottom: 6px;
-        font-size: 12px;
-        color: #aaa;
-      }
-
+      
+      
       .info {
         display: flex;
         align-items: center;
@@ -96,9 +92,7 @@
         .creator {
           // margin: 10px 0 0 0;
 
-          .byCreator {
-            margin-left: 10px;
-          }
+          
         }
       }
     }
@@ -128,7 +122,31 @@
     }
   }
 }
-
+.author{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+}
+.steps{
+  margin: 20px 0;
+}
+.byCreator {
+  margin-left: 10px;
+}
+.datetime {
+  font-size: 12px;
+  color: #aaa;
+  margin-left: 10px;
+}
+.bystatus{
+  text-align: right;
+}
+.toux{
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
 .cardCover {
   position: relative;
   width: 100%;
@@ -150,7 +168,7 @@
   // display: flex;
   // justify-content: space-between;
   position: relative;
-  height: 32px;
+  // height: 32px;
   // margin-bottom: 10px;
 
   .left {

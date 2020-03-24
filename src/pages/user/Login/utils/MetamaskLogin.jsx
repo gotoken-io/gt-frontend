@@ -4,7 +4,7 @@ import styles from '../index.less';
 import { useWeb3Context } from 'web3-react';
 import { Web3Lib } from '@/services/web3';
 
-export default function(props) {
+export default function (props) {
   const web3Info = useWeb3Context();
   const [loading, setLoading] = useState(false);
 
@@ -41,11 +41,11 @@ export default function(props) {
         {loading ? (
           <Spin size="default" />
         ) : (
-          <>
-            <img src="/metamask.jpeg" className={styles.metamaskIcon} />
-            {web3Info.account ? `与 ${renderAccount(web3Info.account)} 连接` : `Metamask 登记`}
-          </>
-        )}
+            <>
+              <img src="/metamask.jpeg" className={styles.metamaskIcon} />
+              {web3Info.account ? `与 ${renderAccount(web3Info.account)} 连接` : `Metamask 登记`}
+            </>
+          )}
       </Row>
     </Button>
   );

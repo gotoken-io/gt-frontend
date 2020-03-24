@@ -342,6 +342,15 @@ const ProposalModel = {
     },
     *fetchVoteInformation({ payload }, { call, put }) {
       const vote = VoteContract.get();
+      if (!vote) {
+        yield put({
+          type: 'saveVoteInfo',
+          payload: {
+            error: "No Metamask"
+          },
+        });
+        return;
+      }
       const signers = yield call(vote.getSigners, { zone: payload.zone });
       const voteInfo = yield call(vote.getVoteInfo, { zone: payload.zone, hash: payload.hash });
       yield put({

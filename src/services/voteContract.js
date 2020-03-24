@@ -13,8 +13,12 @@ export const VoteValueEnum = {
 };
 export class VoteContract {
   static get() {
+    if (!myWeb3) {
+      return null;
+    }
     return new VoteContract();
   }
+
   async createVote({ zone, hash, vote_duration_hours }) {
     const contract = myWeb3.eth.contract(MultiSignVoteABI).at(zone.voteAddress);
 

@@ -41,11 +41,11 @@ const noMatch = (
 const menuData = [
   {
     path: '/proposal/zone/list',
-    name: '提案专区',
+    name: '生态专区',
   },
   {
     path: '/proposal/list',
-    name: '提案列表',
+    name: '所有项目',
   },
 ];
 
@@ -105,6 +105,7 @@ const BasicLayout = props => {
   };
   return (
     <ProLayout
+      className={styles.contail}
       logo={logo}
       title="GoToken"
       menuHeaderRender={(logoDom, titleDom) => <Link to="/">{logoDom}</Link>}
@@ -131,8 +132,8 @@ const BasicLayout = props => {
         return first ? (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
         ) : (
-          <span>{route.breadcrumbName}</span>
-        );
+            <span>{route.breadcrumbName}</span>
+          );
       }}
       footerRender={footerRender}
       menuDataRender={() => menuData}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Row, Col, Tag } from 'antd';
+import { Card, Typography, Row, Col, Tag, Button } from 'antd';
 import Image from '@/components/Image';
 import Link from 'umi/link';
 import LinesEllipsis from 'react-lines-ellipsis';
@@ -16,32 +16,36 @@ const ZoneItem = props => {
   if (cover) {
     cardCoverSrc = cover;
   }
-
+  console.log(1, props)
   return (
     <div className={styles.card}>
       <Link to={`/proposal/zone/detail/${id}`}>
         <Card hoverable>
-          <Row>
-            <Col md={8} sm={24}>
-              <span className={styles.zoneImg}>
-                <Image name={name} src={cardCoverSrc} size={160} />
-              </span>
-            </Col>
-            <Col md={16} sm={24}>
-              <div className={styles.zoneSummary}>
-                <Title level={3}>
-                  <LinesEllipsis text={title} maxLine="1" />
-                </Title>
-                <div className={styles.currency}>
-                  {currencies.length > 0 &&
-                    currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
+          <div className={styles.zoneImg} style={{ background: `url(${getFielUrl(cardCoverSrc)}) center no-repeat`, backgroundSize: 'cover' }}>
+            {/* <Image name={name} src={cardCoverSrc} size={160} /> */}
+          </div>
+          <div className={styles.zoneSummary}>
+            <div className={styles.zoneTitle}>
+              <span className={styles.iconTitle}>
+                <Image src={cardCoverSrc} />
+                <div className={styles.headings}>
+                  <Title level={4}>
+                    <LinesEllipsis text={title} maxLine="1" />
+                  </Title>
+                  <div className={styles.text}>56个提案·3600人参与</div>
                 </div>
-                <Paragraph className={styles.summary}>
-                  <LinesEllipsis text={summary} maxLine="3" />
-                </Paragraph>
-              </div>
-            </Col>
-          </Row>
+              </span>
+              <Button size="small" type="primary">加入专区</Button>
+            </div>
+            {/* <div className={styles.currency}>
+              {currencies.length > 0 &&
+                currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
+            </div> */}
+            <div className={styles.zxxm}>最新项目</div>
+            <Paragraph className={styles.summary}>
+              <LinesEllipsis text={summary} maxLine="1" ellipsis='...' trimRight />
+            </Paragraph>
+          </div>
         </Card>
       </Link>
     </div>

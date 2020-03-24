@@ -312,7 +312,7 @@ const ProposalForm = props => {
   const FormContent = (
     <div className={styles.container}>
       <Form className={styles.formContainer} {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item label="提案专区">
+        <Form.Item label="项目专区">
           {getFieldDecorator('zone_id', {
             rules: [
               {
@@ -337,7 +337,7 @@ const ProposalForm = props => {
           )}
         </Form.Item>
 
-        <Form.Item label="提案名称">
+        <Form.Item label="提案信息">
           {getFieldDecorator('title', {
             rules: [
               {
@@ -345,30 +345,7 @@ const ProposalForm = props => {
                 message: '请输入提案名称!',
               },
             ],
-          })(<Input />)}
-        </Form.Item>
-
-        <Form.Item label="提案分类">
-          {getFieldDecorator('category_id', {
-            rules: [
-              //   {
-              //     required: true,
-              //     message: '请选择提案分类',
-              //   },
-            ],
-          })(
-            <Select name="category" placeholder="请选择提案分类" style={{ width: 200 }}>
-              {proposal_category &&
-                proposal_category.map(ctg => (
-                  <Option key={ctg.id} value={ctg.id}>
-                    {ctg.name}
-                  </Option>
-                ))}
-            </Select>,
-          )}
-          {/* <Button type="link" style={{ marginLeft: 10 }} href="/manage/category">
-            管理分类
-          </Button> */}
+          })(<Input placeholder="请填写项目标题，不超过30个字符" />)}
         </Form.Item>
 
         <Form.Item label="提案简介">
@@ -380,6 +357,29 @@ const ProposalForm = props => {
               },
             ],
           })(<TextArea rows={4} />)}
+        </Form.Item>
+
+        <Form.Item label="提案类别">
+          {getFieldDecorator('category_id', {
+            rules: [
+              //   {
+              //     required: true,
+              //     message: '请选择提案分类',
+              //   },
+            ],
+          })(
+            <Select name="category" placeholder="类别" style={{ width: 200 }}>
+              {proposal_category &&
+                proposal_category.map(ctg => (
+                  <Option key={ctg.id} value={ctg.id}>
+                    {ctg.name}
+                  </Option>
+                ))}
+            </Select>,
+          )}
+          {/* <Button type="link" style={{ marginLeft: 10 }} href="/manage/category">
+            管理分类
+          </Button> */}
         </Form.Item>
 
         <Form.Item label="提案预算">
@@ -433,8 +433,8 @@ const ProposalForm = props => {
           <InputDayHour settings={workHourSettings} values={workHour} onChange={onChangeWorkTime} />
         </Form.Item>
 
-        <Form.Item label="提案投票持续时长">
-          {/* 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改. */}
+        {/* <Form.Item label="提案投票持续时长">
+          // 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改.
           <InputDayHour
             settings={voteDurationSettings}
             values={voteDuration}
@@ -448,17 +448,17 @@ const ProposalForm = props => {
               {convertToDayHourText(selectZone.vote_duration_max)}
             </span>
           )}
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item label="提案标签">
+        {/* <Form.Item label="提案标签">
           {getFieldDecorator('tag')(
             <Select mode="tags" style={{ width: '100%' }} placeholder="提案标签">
-              {/* {children} */}
+              // {children}
             </Select>,
           )}
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item label="提案详情">
+        <Form.Item label="详细描述">
           {getFieldDecorator('detail', {
             validateTrigger: 'onBlur',
             rules: [
@@ -477,7 +477,7 @@ const ProposalForm = props => {
             <BraftEditor
               className={styles.richEditor}
               controls={controls}
-              placeholder="请输入正文内容"
+              placeholder="需要包括对提案的描述（当前问题、解决方案、理由）以及提案成果形式（如github地址、Dapp、PDF、文档链接等，也可以是综合性结果或报告）"
             />,
           )}
         </Form.Item>
@@ -488,7 +488,7 @@ const ProposalForm = props => {
             htmlType="submit"
             loading={id ? props.submitingUpdate : props.submitingCreate}
           >
-            提交
+            发起提案
           </Button>
 
           <Button onClick={() => router.go(-1)}>取消</Button>

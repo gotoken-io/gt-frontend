@@ -105,7 +105,7 @@ const Logs = props => {
           {logs.length > 0 &&
             logs.map(({ operator, event_key, from_value, to_value, op_time }) => (
               <Timeline.Item color={getProposalEventByKey(event_key).color}>
-                <span className={styles['op-time']}>{moment.datetime(op_time)}</span>
+                <span className={styles['op-time']}>{moment.TimeLine(op_time)}</span>
                 <div className={styles.item}>
                   <div className={styles.head}>
                     <span className={styles.user}>

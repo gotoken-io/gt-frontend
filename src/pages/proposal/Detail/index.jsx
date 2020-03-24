@@ -91,9 +91,25 @@ const Detail = props => {
           }
         });
       },
-      onCancel() {},
+      onCancel() { },
     });
   }
+
+  const details = [
+    {
+      title: "这里是标题",
+      contents: "我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大"
+    },
+    {
+      title: "这里是标题2",
+      contents: "我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大"
+    },
+    {
+      title: "这里是标题3",
+      contents: "我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大"
+    }
+  ]
+
 
   const { fetchDetailLoading } = props;
   const { creator, zone } = detail;
@@ -130,7 +146,7 @@ const Detail = props => {
       <div className={styles.container}>
         <Spin spinning={fetchDetailLoading}>
           <Typography>
-            <div className={styles.summaryCard}>
+            {/* <div className={styles.summaryCard}>
               <ZoneCover {...zone} />
 
               <div className={styles.summaryContent}>
@@ -152,9 +168,7 @@ const Detail = props => {
                     )}
                   </div>
                 </div>
-                <Title level={2} className={styles.proposalTitle}>
-                  {detail.title}
-                </Title>
+
 
                 {detail.status_key && (
                   <div className={styles.status}>
@@ -170,69 +184,105 @@ const Detail = props => {
                   </span>
                 )}
 
-                <Paragraph className={styles.createtime}>
-                  创建时间: {moment.datetime(detail.created)}
-                </Paragraph>
-                <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
+                
+
 
                 <div>
                   标签:&nbsp;
                   <Tags tag={detail.tag} />
                 </div>
               </div>
-            </div>
+            </div> */}
             <Row>
-              <Col span={15}>
+              <Col span={17}>
                 <div className={styles.userList}>
-                  <div className={styles.user}>
-                    <UserAvatar {...detail.creator} />
-                    <div className={styles.userContent}>
-                      <Title level={3}>{detail.creator && detail.creator.username}</Title>
-                      <Text>创建人</Text>
+                  <Title level={2} className={styles.proposalTitle}>
+                    {detail.title}
+                  </Title>
+                  <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
+                  <div className={styles.budget}>
+                    <div>
+                      <div className={styles.weight}>{detail.amount}GOO</div>
+                      <div className={styles.zq}>项目预算</div>
+                    </div>
+                    <div>
+                      <div className={styles.weight2}>{(detail.estimated_hours) / 24}天</div>
+                      <div className={styles.zq}>最大执行周期</div>
+                    </div>
+                    <div className={styles.user}>
+                      <UserAvatar {...detail.creator} />
+                      <div className={styles.userContent}>
+                        <Title level={4}>{detail.creator && detail.creator.username}</Title>
+                        <Paragraph className={styles.createtime}>
+                          提交时间: {moment.createTime(detail.created)}
+                        </Paragraph>
+                        {/* <Text>创建人</Text> */}
+                      </div>
                     </div>
                   </div>
+
                 </div>
+                <Tabs size="large" className={styles.tabs} animated={false} defaultActiveKey="detail" onChange={() => { }}>
+                  <TabPane tab="详情描述" key="detail">
+                    <div className={styles.detail}>
+                      <div className={styles.describe}>详情描述</div>
+                      <div className={styles.details}>
+
+                        <div className={styles.content}>
+                          {
+                            details.map((item, index) => {
+                              return <div key={index}>
+                                <div className={styles.title}>{detail.title}</div>
+                                <Paragraph>
+                                  <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
+                                </Paragraph>
+                              </div>
+                            })
+                          }
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </TabPane>
+
+                  <TabPane tab="申领详情" key="claims">
+                    <Claims
+                      proposal_status_key={detail.status_key}
+                      id={id}
+                      proposal_creator={creator}
+                    />
+                  </TabPane>
+
+                  <TabPane tab="项目进度" key="logs">
+                    <div className={styles.logs}>
+                      <Logs id={id} proposal_creator={creator} />
+                    </div>
+                  </TabPane>
+
+                  <TabPane tab="协作看板" key="tasks">
+                    <div className={styles.logs}>
+
+                    </div>
+                  </TabPane>
+
+                  <TabPane tab="评论" key="comments">
+                    <div className={styles.comments}>{detail && <Comments id={id} />}</div>
+                  </TabPane>
+                </Tabs>
               </Col>
 
-              <Col span={8} offset={1}>
+              <Col span={6} offset={1}>
                 <div className={styles.userList}>
                   {zone && zone.id == '2' ? (
                     <Voting detail={detail} />
                   ) : (
-                    <VoteQrCode detail={detail} />
-                  )}
+                      <VoteQrCode detail={detail} />
+                    )}
                 </div>
               </Col>
             </Row>
-            <Tabs size="large" animated={false} defaultActiveKey="detail" onChange={() => {}}>
-              <TabPane tab="提案详情" key="detail">
-                <div className={styles.detail}>
-                  <div className={styles.content}>
-                    <Paragraph>
-                      <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
-                    </Paragraph>
-                  </div>
-                </div>
-              </TabPane>
 
-              <TabPane tab="提案日志" key="logs">
-                <div className={styles.logs}>
-                  <Logs id={id} proposal_creator={creator} />
-                </div>
-              </TabPane>
-
-              <TabPane tab="申领" key="claims">
-                <Claims
-                  proposal_status_key={detail.status_key}
-                  id={id}
-                  proposal_creator={creator}
-                />
-              </TabPane>
-
-              <TabPane tab="评论" key="comments">
-                <div className={styles.comments}>{detail && <Comments id={id} />}</div>
-              </TabPane>
-            </Tabs>
           </Typography>
         </Spin>
       </div>

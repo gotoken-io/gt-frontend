@@ -148,9 +148,9 @@ class Register extends Component {
     const { help, visible } = this.state;
     return (
       <div className={layoutStyles.userMain}>
-        <h3>
+        {/* <h3>
           <FormattedMessage id="userandregister.register.register" />
-        </h3>
+        </h3> */}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {getFieldDecorator('email', {

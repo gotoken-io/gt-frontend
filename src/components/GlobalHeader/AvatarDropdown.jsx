@@ -12,7 +12,7 @@ const LoginAndRegister = () => (
   <div>
     <Link to="/login">登录</Link>
     <em>|</em>
-    <Link to="/register">注册</Link>
+    <Link to="/login">注册</Link>
   </div>
 );
 
@@ -73,8 +73,8 @@ class AvatarDropdown extends React.Component {
         </span>
       </HeaderDropdown>
     ) : (
-      <LoginAndRegister />
-    );
+        <LoginAndRegister />
+      );
   }
 }
 

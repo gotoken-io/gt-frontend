@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { connect } from 'dva';
+import UserAvatar from '@/components/User/UserAvatar';
 
 import styles from './style.less';
 
@@ -36,23 +37,24 @@ const CommentForm = props => {
 
   return (
     <div className={styles.container}>
-      <Form onSubmit={handleSubmit}>
-        <Form.Item>
+      <Form onSubmit={handleSubmit} className={styles.content}>
+        {/* <UserAvatar {...creator} /> */}
+        <Form.Item className={styles.input}>
           {getFieldDecorator('text', {
             rules: [
               { required: true, message: '请输入评论内容' },
               { max: 250, message: '评论内容最多250字符' },
             ],
-          })(<TextArea rows={4} />)}
+          })(<Input allowClear />)}
         </Form.Item>
 
-        <Form.Item>
+        <Form.Item className={styles.button}>
           <Button
             type="primary"
             htmlType="submit"
             loading={hasErrors(getFieldsError()) || submittingCreate}
           >
-            发表评论
+            提交
           </Button>
         </Form.Item>
       </Form>

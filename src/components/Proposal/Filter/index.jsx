@@ -13,10 +13,7 @@ const Filter = props => {
   // state
   const [category, setCategory] = useState('all');
   const [status, setStatus] = useState('all');
-  const [sort, setSort] = useState({
-    name: 'createtime',
-    by: 'desc',
-  });
+  const [sort, setSort] = useState('all');
 
   // props
   const { match, zone_list, proposal_category, zone_id = null } = props;
@@ -25,21 +22,22 @@ const Filter = props => {
   useEffect(() => {
     setCategory('all');
     setStatus('all');
+    setSort('all');
   }, [window.location.href]);
 
   useEffect(() => {
     const { dispatch } = props;
 
-    const { c, status, sort_name, sort_by } = getPageQuery();
+    const { c, status, sort_name } = getPageQuery();
 
     if (status) {
       setStatus(status);
     }
 
-    if (sort_name && sort_by) {
+    if (sort_name) {
       setSort({
         name: sort_name,
-        by: sort_by,
+        // by: sort_by,
       });
 
       console.log('sort', sort);
@@ -75,7 +73,7 @@ const Filter = props => {
       c: value,
     };
 
-    console.log(routeQuery);
+    console.log(3, routeQuery);
 
     router.push({
       pathname: window.location.pathname,
@@ -102,29 +100,29 @@ const Filter = props => {
   };
 
   const onClickSort = value => {
-    let by = 'desc';
+    // let by = 'desc';
 
-    if (value === sort.name) {
-      if (sort.by === 'desc') {
-        by = 'asc';
-      }
+    // if (value === sort.name) {
+    //   if (sort.by === 'desc') {
+    //     by = 'asc';
+    //   }
 
-      if (sort.by === 'asc') {
-        by = 'desc';
-      }
-    }
+    //   if (sort.by === 'asc') {
+    //     by = 'desc';
+    //   }
+    // }
 
-    setSort({
-      name: value,
-      by,
-    });
+    setSort(
+      value,
+      // by,
+    );
 
     const params = getPageQuery();
 
     const routeQuery = {
       ...params,
       sort_name: value,
-      sort_by: by,
+      // sort_by: by,
     };
 
     console.log(routeQuery);
@@ -134,33 +132,37 @@ const Filter = props => {
       query: routeQuery,
     });
   };
+  const sorts = [
+    { key: 'createtime', name: '创建时间' },
+    { key: 'amount', name: '提案金额' },
+    { key: 'comments', name: '评论数' },
+  ];
+  // const showSortArrow = key => {
+  //   if (key === sort.name) {
+  //     if (sort.by === 'desc') {
+  //       return <Icon type="arrow-down" />;
+  //     }
+  //     if (sort.by === 'asc') {
+  //       return <Icon type="arrow-up" />;
+  //     }
+  //   }
 
-  const showSortArrow = key => {
-    if (key === sort.name) {
-      if (sort.by === 'desc') {
-        return <Icon type="arrow-down" />;
-      }
-      if (sort.by === 'asc') {
-        return <Icon type="arrow-up" />;
-      }
-    }
+  //   return null;
+  // };
 
-    return null;
-  };
+  // const sortButtons = () => {
+  //   const sorts = [
+  //     { key: 'createtime', name: '创建时间' },
+  //     { key: 'amount', name: '提案金额' },
+  //     { key: 'comments', name: '评论数' },
+  //   ];
 
-  const sortButtons = () => {
-    const sorts = [
-      { key: 'createtime', name: '创建时间' },
-      { key: 'amount', name: '提案金额' },
-      { key: 'comments', name: '评论数' },
-    ];
-
-    return sorts.map(item => (
-      <Button onClick={() => onClickSort(item.key)}>
-        {item.name} {showSortArrow(item.key)}
-      </Button>
-    ));
-  };
+  //   return sorts.map(item => (
+  //     <Button onClick={() => onClickSort(item.key)}>
+  //       {item.name} {showSortArrow(item.key)}
+  //     </Button>
+  //   ));
+  // };
 
   return (
     <div className={styles.container}>
@@ -183,16 +185,15 @@ const Filter = props => {
 
       <div className={styles.filters}>
         <div className={styles.category}>
-          <h3 className={styles.title}>提案分类：</h3>
           <Select
             name="category"
-            placeholder="请选择提案分类"
+            placeholder='Core'
             style={{ width: 200 }}
             onChange={onChangeCategory}
             value={category}
           >
             <Option key="all" value="all">
-              全部
+              Core
             </Option>
 
             {proposal_category &&
@@ -206,16 +207,15 @@ const Filter = props => {
         </div>
 
         <div className={styles.status}>
-          <h3 className={styles.title}>提案状态：</h3>
           <Select
             name="status"
-            placeholder="请选择提案状态"
+            placeholder='In Progress'
             style={{ width: 200 }}
             onChange={onChangeStatus}
             value={status}
           >
             <Option key="all" value="all">
-              全部
+              In Progress
             </Option>
 
             {proposalStatus.map(d => (
@@ -226,10 +226,29 @@ const Filter = props => {
           </Select>
         </div>
 
-        <div className={styles.sort}>
-          <h3 className={styles.title}>排序：</h3>
-          <Button.Group>{sortButtons()}</Button.Group>
+        <div className={styles.status}>
+          <Select
+            name="sort"
+            placeholder='Newest'
+            style={{ width: 200 }}
+            onChange={onClickSort}
+            value={name}
+          >
+            <Option key="all" value="all">
+              Newest
+            </Option>
+
+            {sorts.map(d => (
+              <Option key={d.key} value={d.key}>
+                {d.name}
+              </Option>
+            ))}
+          </Select>
         </div>
+
+        {/* <div className={styles.sort}>
+          <Button.Group>{sortButtons()}</Button.Group>
+        </div> */}
       </div>
     </div>
   );

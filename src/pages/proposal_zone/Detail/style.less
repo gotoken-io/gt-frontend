@@ -12,32 +12,72 @@
 }
 
 .summaryCard {
-  display: flex;
+  display: block;
   // height: @cover-height;
   background-color: #fff;
-  padding: 20px;
+  // padding: 10px;
   // justify-content: center;
 }
-
+.content{
+  padding: 15px;
+}
 .cardCover {
   position: relative;
   min-width: @cover-width;
-  height: @cover-height;
+  height: 120px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
-
+.image{
+  width: 100%;
+  height: 120px;
+}
+.toupr{
+  margin-right: 15px;
+}
+.tpl{
+  margin: 10px 0;
+}
 .summaryContent {
-  padding: 15px;
+  // padding: 10px;
   background-color: #fff;
   width: 100%;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   .currency {
     margin-bottom: 10px;
   }
 }
-
+.toux{
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+.toup{
+  margin: 0 15px;
+}
+.toul{
+  margin-left: 15px;
+}
+.num{
+  font-weight: bold;
+}
+.number{
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.vote{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  margin-left: 100px;
+}
+.voters{
+  text-align: right
+}
 .titleNo {
   position: absolute;
   bottom: 0;
@@ -59,7 +99,7 @@
 
 .subContainerStyle {
   margin: 15px 0;
-  padding: 30px;
+  // padding: 30px;
   background-color: #fff;
 }
 
@@ -86,8 +126,9 @@
 }
 
 .collapse {
-  margin: 16px 0 0 0;
+  // margin: 16px 0 0 0;
   text-align: center;
+  font-size: 10px;
 
   &:hover {
     cursor: pointer;

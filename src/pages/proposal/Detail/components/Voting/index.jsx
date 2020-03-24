@@ -18,7 +18,7 @@ import { useWeb3Context } from 'web3-react';
 const Voting = props => {
   const { currentUser, detail, voteDetail, dispatch } = props;
   const web3Info = useWeb3Context();
-  console.log(web3Info);
+  console.log(web3Info, voteDetail);
 
   useEffect(() => {
     if (web3Info.error) {
@@ -40,11 +40,44 @@ const Voting = props => {
   if (isEmpty(detail)) {
     return null;
   }
+
   if (isEmpty(voteDetail)) {
     return (
       <>
-        <Row type="flex" justify="center" align="center">
+        <Row type="flex" justify="center" align="middle">
           <Spin />
+        </Row>
+      </>
+    );
+  }
+
+  if (voteDetail.error) {
+    return (
+      <>
+        <Row type="flex" justify="center">
+          <span className={styles.votingTitle}>投票情况</span>
+        </Row>
+        <div className="margin-l" />
+
+
+        <Row type="flex" justify="center">
+          <span style={{ textAlign: "center" }}>为了获取投票信息，请首先启用Web3提供程序作为元掩码</span>
+          <div className="margin" />
+
+          <Button
+            size="large"
+            className="login-form-button"
+            block
+            href="https://metamask.io/download.html"
+            target="_blank"
+          >
+            <Row type="flex" align="middle" justify="center">
+              <>
+                <img src="/metamask.jpeg" className={styles.metamaskIcon} />
+                {`安装掩码`}
+              </>
+            </Row>
+          </Button>
         </Row>
       </>
     );
@@ -75,8 +108,8 @@ const Voting = props => {
               </Button>
             </div>
           ) : (
-            <span>提案尚未上链</span>
-          )}
+              <span>提案尚未上链</span>
+            )}
         </Row>
       </>
     );
@@ -114,7 +147,7 @@ const Voting = props => {
     voteDetail.currentBlock > voteDetail.end_height
       ? 100
       : (100 * (voteDetail.currentBlock - voteDetail.start_height)) /
-        (voteDetail.end_height - voteDetail.start_height);
+      (voteDetail.end_height - voteDetail.start_height);
   const canVote =
     currentUser.id &&
     voteDetail.signers.includes((web3Info.account || '').toLowerCase()) &&
@@ -150,8 +183,8 @@ const Voting = props => {
           {progress !== 100 ? (
             <Progress percent={+progress.toFixed(2)} />
           ) : (
-            <span>投票已截止，未能达成决议</span>
-          )}
+              <span>投票已截止，未能达成决议</span>
+            )}
         </Row>
         <div className="margin" />
         {!web3Info.account && currentUser.id && (

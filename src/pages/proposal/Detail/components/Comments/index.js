@@ -20,7 +20,7 @@ const CommentItem = ({ id, text, created, updated, creator }) => (
       content={<p>{text}</p>}
       datetime={
         <Tooltip title={moment.datetime(created)}>
-          <span>{moment.fromNow(created)}</span>
+          <span>{moment.createTime(created)}</span>
         </Tooltip>
       }
     ></Comment>
@@ -67,7 +67,7 @@ const CommentWrapper = props => {
         content={<p>{text}</p>}
         datetime={
           <Tooltip title={moment.datetime(created)}>
-            <span>{moment.fromNow(created)}</span>
+            <span>{moment.createTime(created)}</span>
           </Tooltip>
         }
       >

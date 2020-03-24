@@ -33,6 +33,7 @@ const List = props => {
   //     });
   //   }
   // }, []);
+  console.log({ propsoalList: props })
 
   useEffect(() => {
     console.log('match', match);
