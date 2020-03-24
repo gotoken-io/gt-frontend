@@ -44,7 +44,16 @@ const ClaimTeamModal = props => {
       }
     });
   }
+  function handleDelete(teamMember) {
+    const { dispatch } = props;
 
+    if (dispatch) {
+      dispatch({
+        type: 'proposal/deleteTeamMember',
+        payload: { id: teamMember.id },
+      });
+    }
+  }
   return (
     <Modal
       title="申领提案"
@@ -61,7 +70,13 @@ const ClaimTeamModal = props => {
           renderItem={teamMember => (
             <List.Item
               actions={[
-                teamMember.user_id !== claim.user_id ? <a key="list-delete">删除</a> : '责任',
+                teamMember.user_id !== claim.user_id ? (
+                  <a key="list-delete" onClick={() => handleDelete(teamMember)}>
+                    删除
+                  </a>
+                ) : (
+                  '责任'
+                ),
               ]}
             >
               <Skeleton avatar loading={false} title={false} active>

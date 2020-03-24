@@ -27,6 +27,7 @@ import {
   submitProposalClaimResult,
   verifyProposalClaimResult,
   addTeam,
+  deleteTeam,
 } from '@/services/proposal';
 
 import { showMsgReload, showMsgGoBack } from '@/utils/utils';
@@ -333,6 +334,20 @@ const ProposalModel = {
         return true;
       }
       showMsgReload('提案申领成功');
+      return true;
+    },
+    *deleteTeamMember({ payload }, { call, put }) {
+      const result = yield call(deleteTeam, {
+        id: payload.id,
+        user_id: payload.user_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (result.status !== 'success') {
+        message.error('提案删除失败了');
+        return true;
+      }
+      showMsgReload('提案删除成功');
       return true;
     },
 

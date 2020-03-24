@@ -55,13 +55,21 @@ const Claims = props => {
   }
 
   const ClaimItem = ({ claim_id, claimer, reason, status_key, result, plan, team }) => (
-    <Card>
-      <Meta
-        className={styles['claim-item']}
-        avatar={<UserAvatar {...claimer} />}
-        title={
-          <div className={styles.head}>
-            <span>{claimer.username}</span>
+    <Card className={styles['claim-item']}>
+      <Row>
+        <Col span={12}>
+          <div className={styles.user}>
+            <UserAvatar {...claimer} size={48} />
+            <div className="margin-sm"></div>
+            <Row>
+              <span className="subtitle">负责人</span>
+              <br />
+              <span>{claimer.username}</span>
+            </Row>
+          </div>
+        </Col>
+        <Col>
+          <Row type="flex" justify="end">
             <span className={styles.status}>
               <Tag color={getClaimStatusByKey(status_key).color}>
                 {getClaimStatusByKey(status_key).text}
@@ -80,27 +88,32 @@ const Claims = props => {
                 )}
               </span>
             )}
-          </div>
-        }
-        description={
-          <div className={styles.claimContent}>
-            <div className={styles.reason}>
-              <Divider>申领理由</Divider>
-              <p className={styles.reasonText}>{reason}</p>
-              <div className="margin" />
-              <Divider>申领计划</Divider>
-              <p className={styles.reasonText}>{plan}</p>
-            </div>
+          </Row>
+        </Col>
+      </Row>
+      <div className="margin-l" />
+      <div className={styles.claimContent}>
+        <div className={styles.reason}>
+          <p className={styles.reasonText}>
+            <span className="highlight">申领理由：</span>
+            {reason}
+          </p>
+          <div className="margin-l" />
+          {plan && (
+            <p className={styles.reasonText}>
+              <span className="highlight">申领计划：</span>
+              {plan}
+            </p>
+          )}
+        </div>
 
-            {result && (
-              <div className={styles.result}>
-                <Divider>提交结果</Divider>
-                <p className={styles.resultText}>{result}</p>
-              </div>
-            )}
+        {result && (
+          <div className={styles.result}>
+            <Divider>提交结果</Divider>
+            <p className={styles.resultText}>{result}</p>
           </div>
-        }
-      />
+        )}
+      </div>
       <div>
         <span> 团队成员</span>
         <div className="margin" />
@@ -200,7 +213,7 @@ const Claims = props => {
               {claims.map(
                 d =>
                   d.status_key !== 'cancel' && (
-                    <Col md={12} sm={24}>
+                    <Col md={8} sm={24}>
                       <ClaimItem {...d} />
                     </Col>
                   ),
