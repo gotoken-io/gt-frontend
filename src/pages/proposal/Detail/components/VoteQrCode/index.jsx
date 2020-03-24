@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Progress } from 'antd';
+import { Row, Col, Progress, Popover, Button } from 'antd';
 import QRCode from 'qrcode.react';
 import styles from './index.less';
 import { isEmpty } from 'lodash';
 import { deleteUndefined, toQueryString } from '@/utils/utils';
+import {
+  CaretDownFilled,
+  CaretUpFilled,
+  CheckCircleFilled,
+  CloseCircleFilled,
+} from '@ant-design/icons';
 import moment from 'moment';
 const VoteQrCode = props => {
   const { currentUser, detail, dispatch, wallet } = props;
@@ -19,7 +25,7 @@ const VoteQrCode = props => {
     return null;
   }
 
-  if (!detail.vote_duration_hours) {
+  if (!detail.vote_duration_hours || !detail.onchain_hash) {
     return (
       <>
         <Row type="flex" justify="center">
@@ -72,6 +78,8 @@ const VoteQrCode = props => {
         </Row>
         <div className="margin-sm" />
         <span className={styles.votingTitle}>投票状况</span>
+        <div className="margin" />
+
         <span>总 时 长：{detail.vote_duration_hours}小时</span>
         <div className="margin-l" />
         <Progress percent={+progress.toFixed(2)} showInfo={false} />
@@ -88,33 +96,45 @@ const VoteQrCode = props => {
           </Row>
         )}
         {!!qrCodeData.voter && (
-          <Row>
-            <Col span={12}>
-              <div class="column center">
-                <span>支持</span>
-                <div className="margin-sm" />
-                <QRCode
-                  value={`${voteUrl}?${toQueryString({
-                    ...qrCodeData,
-                    action: 1,
-                  })}`}
-                  size={80}
-                />
-              </div>
-            </Col>
-            <Col span={12}>
-              <div class="column center">
-                <span>反对</span>
-                <div className="margin-sm" />
-                <QRCode
-                  value={`${voteUrl}?${toQueryString({
-                    ...qrCodeData,
-                    action: 2,
-                  })}`}
-                  size={80}
-                />
-              </div>
-            </Col>
+          <Row type="flex" justify="space-between">
+            <Popover
+              content={
+                <Row type="flex" justify="center">
+                  <QRCode
+                    value={`${voteUrl}?${toQueryString({
+                      ...qrCodeData,
+                      action: 1,
+                    })}`}
+                    size={150}
+                  />
+                </Row>
+              }
+              title="二维码"
+            >
+              <Button>
+                <CaretUpFilled style={{ color: 'green', fontSize: '12px' }} />
+                支持
+              </Button>
+            </Popover>
+            <Popover
+              content={
+                <Row type="flex" justify="center">
+                  <QRCode
+                    value={`${voteUrl}?${toQueryString({
+                      ...qrCodeData,
+                      action: 2,
+                    })}`}
+                    size={150}
+                  />
+                </Row>
+              }
+              title="二维码"
+            >
+              <Button>
+                <CaretDownFilled style={{ color: 'red', fontSize: '12px' }} />
+                反对
+              </Button>
+            </Popover>
           </Row>
         )}
         <div className="margin" />

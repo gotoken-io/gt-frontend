@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import AvatarList from '@/components/User/AvatarList';
 import { connect } from 'dva';
 import { Row, Col, Progress, Button, Spin, message } from 'antd';
 import {

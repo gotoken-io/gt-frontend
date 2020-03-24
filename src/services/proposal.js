@@ -181,6 +181,17 @@ export async function claimProposal(params) {
   });
 }
 
+export async function addTeam(params) {
+  console.log(params);
+  return request('/server/proposal_claim/team', {
+    method: 'POST',
+    headers: {
+      Authorization: getAuthority(),
+    },
+    data: params,
+  });
+}
+
 export async function cancelClaimProposal(params) {
   console.log(params);
   return request('/server/proposal_claim/', {
