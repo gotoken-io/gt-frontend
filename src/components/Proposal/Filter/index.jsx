@@ -13,16 +13,12 @@ const Filter = props => {
   // state
   const [category, setCategory] = useState('all');
   const [status, setStatus] = useState('all');
-  const [sort, setSort] = useState('all');
+  const [sort, setSort] = useState('createtime');
 
   // props
   const { match, zone_list, proposal_category, zone_id = null } = props;
 
   // clear filter select
-  useEffect(() => {
-    setCategory('all');
-    setStatus('all');
-  }, [window.location.href]);
 
   useEffect(() => {
     const { dispatch } = props;
@@ -34,12 +30,8 @@ const Filter = props => {
     }
 
     if (sort_name) {
-      setSort({
-        name: sort_name,
-        // by: sort_by,
-      });
-
-      console.log('sort', sort);
+      setSort(sort_name);
+      console.log('sort', sort_name);
     }
 
     if (dispatch) {
@@ -90,7 +82,7 @@ const Filter = props => {
       status: value,
     };
 
-    console.log(routeQuery);
+    console.log("routeQuery", routeQuery, status);
 
     router.push({
       pathname: window.location.pathname,
@@ -110,11 +102,9 @@ const Filter = props => {
     //     by = 'desc';
     //   }
     // }
+    console.log('sort', value);
 
-    setSort(
-      value,
-      // by,
-    );
+    setSort(value);
 
     const params = getPageQuery();
 
@@ -162,7 +152,7 @@ const Filter = props => {
   //     </Button>
   //   ));
   // };
-
+  console.log({ category, proposal_category, sort, sorts })
   return (
     <div className={styles.container}>
       {/* if set zone_id, hide proposal zone choose */}
@@ -231,7 +221,7 @@ const Filter = props => {
             placeholder='Newest'
             style={{ width: 200 }}
             onChange={onClickSort}
-            value={name}
+            value={sort}
           >
             <Option key="all" value="all">
               Newest

@@ -164,7 +164,7 @@ const Detail = props => {
                       <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
                     </div>
                   </div>
-                  <div>投票时间 <QuestionCircleOutlined /></div>
+                  {/* <div>投票时间 <QuestionCircleOutlined /></div> */}
                   {/* <Title level={3}>投票地址与权重</Title>
               <div className={styles.detail}>
                 <Paragraph>{vote_addr_weight_json}</Paragraph>
