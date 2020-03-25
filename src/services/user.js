@@ -58,3 +58,12 @@ export async function postResetPwd(params) {
     data: params,
   });
 }
+
+export async function searchUser(content) {
+  return request('/server/user/search?content=' + content, {
+    method: 'GET',
+    headers: {
+      Authorization: getAuthority(),
+    },
+  });
+}

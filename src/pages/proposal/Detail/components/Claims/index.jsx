@@ -7,9 +7,10 @@ import { getClaimStatusByKey, isClaimer, isClaimerByStatus } from '@/utils/propo
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import UserAvatar from '@/components/User/UserAvatar';
 import ClaimModal from '../ClaimModal';
+import ClaimTeamModal from '../ClaimTeamModal';
 import VerifyClaimModal from '../VerifyClaimModal';
 import SubmitClaimResultModal from '../SubmitClaimResultModal';
-
+import AvatarList from '@/components/User/AvatarList';
 import styles from './style.less';
 
 const { confirm } = Modal;
@@ -19,6 +20,8 @@ const { Meta } = Card;
 const Claims = props => {
   // state
   const [claimModalVisible, setClaimModalVisible] = useState(false);
+  const [claimTeamModalVisible, setClaimTeamModalVisible] = useState(false);
+
   const [submitClaimResultModalVisible, setSubmitClaimResultModalVisible] = useState(false);
 
   // verify
@@ -51,14 +54,22 @@ const Claims = props => {
     }
   }
 
-  const ClaimItem = ({ claim_id, claimer, reason, status_key, result }) => (
-    <Card>
-      <Meta
-        className={styles['claim-item']}
-        avatar={<UserAvatar {...claimer} />}
-        title={
-          <div className={styles.head}>
-            <span>{claimer.username}</span>
+  const ClaimItem = ({ claim_id, claimer, reason, status_key, result, plan, team }) => (
+    <Card className={styles['claim-item']}>
+      <Row>
+        <Col span={12}>
+          <div className={styles.user}>
+            <UserAvatar {...claimer} size={48} />
+            <div className="margin-sm"></div>
+            <Row>
+              <span className="subtitle">负责人</span>
+              <br />
+              <span>{claimer.username}</span>
+            </Row>
+          </div>
+        </Col>
+        <Col>
+          <Row type="flex" justify="end">
             <span className={styles.status}>
               <Tag color={getClaimStatusByKey(status_key).color}>
                 {getClaimStatusByKey(status_key).text}
@@ -77,24 +88,37 @@ const Claims = props => {
                 )}
               </span>
             )}
-          </div>
-        }
-        description={
-          <div className={styles.claimContent}>
-            <div className={styles.reason}>
-              <Divider>申领理由</Divider>
-              <p className={styles.reasonText}>{reason}</p>
-            </div>
+          </Row>
+        </Col>
+      </Row>
+      <div className="margin-l" />
+      <div className={styles.claimContent}>
+        <div className={styles.reason}>
+          <p className={styles.reasonText}>
+            <span className="highlight">申领理由：</span>
+            {reason}
+          </p>
+          <div className="margin-l" />
+          {plan && (
+            <p className={styles.reasonText}>
+              <span className="highlight">申领计划：</span>
+              {plan}
+            </p>
+          )}
+        </div>
 
-            {result && (
-              <div className={styles.result}>
-                <Divider>提交结果</Divider>
-                <p className={styles.resultText}>{result}</p>
-              </div>
-            )}
+        {result && (
+          <div className={styles.result}>
+            <Divider>提交结果</Divider>
+            <p className={styles.resultText}>{result}</p>
           </div>
-        }
-      />
+        )}
+      </div>
+      <div>
+        <span> 团队成员</span>
+        <div className="margin" />
+        <AvatarList userList={team.slice(1).map(teamInfo => teamInfo.staff)} showMax={10} />
+      </div>
     </Card>
   );
 
@@ -125,7 +149,7 @@ const Claims = props => {
       });
     }
   }
-
+  console.log({ claims });
   return (
     <div className={styles.container}>
       <div className={styles.actions}>
@@ -137,15 +161,26 @@ const Claims = props => {
             <ClaimModal
               id={id}
               visible={claimModalVisible}
-              onCancel={() => setClaimModalVisible(false)}
+              onCancel={() => claimModalVisible(false)}
             />
           </>
         )}
 
         {isClaimerByStatus(claims, currentUser, ['claiming']) === true && (
-          <Button type="primary" onClick={showCancelClaimConfirm}>
-            取消申领
-          </Button>
+          <Button.Group>
+            <Button type="primary" onClick={showCancelClaimConfirm}>
+              取消申领
+            </Button>
+            <Button type="primary" onClick={() => setClaimTeamModalVisible(true)}>
+              加入
+            </Button>
+            <ClaimTeamModal
+              id={id}
+              visible={claimTeamModalVisible}
+              claim={claims.find(claim => claim.user_id == currentUser.id)}
+              onCancel={() => setClaimTeamModalVisible(false)}
+            />
+          </Button.Group>
         )}
         {/* 可提交结果, 状态包括:申领通过, 结果提交中, 结果审核失败 */}
         {isClaimerByStatus(claims, currentUser, ['passed', 'submit_result', 'result_fail']) ===
@@ -178,7 +213,7 @@ const Claims = props => {
               {claims.map(
                 d =>
                   d.status_key !== 'cancel' && (
-                    <Col md={12} sm={24}>
+                    <Col md={8} sm={24}>
                       <ClaimItem {...d} />
                     </Col>
                   ),

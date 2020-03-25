@@ -1,6 +1,5 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import router from 'umi/router';
 import {
   createProposal,
   updateProposal,
@@ -27,6 +26,8 @@ import {
   verifyProposalClaim,
   submitProposalClaimResult,
   verifyProposalClaimResult,
+  addTeam,
+  deleteTeam,
 } from '@/services/proposal';
 
 import { showMsgReload, showMsgGoBack } from '@/utils/utils';
@@ -298,12 +299,56 @@ const ProposalModel = {
     },
 
     *claimProposal({ payload }, { call, put }) {
-      const response = yield call(claimProposal, payload);
-      if (response.status === 'success') {
-        showMsgReload('提案申领成功');
-
+      const response = yield call(claimProposal, {
+        reason: payload.reason,
+        payment_address: payload.payment_address,
+        plan: payload.plan,
+        proposal_id: payload.proposal_id,
+      });
+      if (response.status !== 'success') {
+        message.error('提案申领失败了');
         return true;
       }
+      const addTeamResponse = yield call(addTeam, {
+        claim_id: response.data.claim_id,
+        user_id: payload.owner_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (addTeamResponse.status !== 'success') {
+        message.error('提案申领失败了');
+        return true;
+      }
+      showMsgReload('提案申领成功');
+      return true;
+    },
+    *addTeamMember({ payload }, { call, put }) {
+      const addTeamResponse = yield call(addTeam, {
+        claim_id: payload.claim_id,
+        user_id: payload.user_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (addTeamResponse.status !== 'success') {
+        message.error('提案申领失败了');
+        return true;
+      }
+      showMsgReload('提案申领成功');
+      return true;
+    },
+    *deleteTeamMember({ payload }, { call, put }) {
+      const result = yield call(deleteTeam, {
+        id: payload.id,
+        user_id: payload.user_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (result.status !== 'success') {
+        message.error('提案删除失败了');
+        return true;
+      }
+      showMsgReload('提案删除成功');
+      return true;
     },
 
     *cancelClaimProposal({ payload }, { call, put }) {

@@ -49,45 +49,17 @@ export const proposalClaimStatus = [
 export const getClaimStatusByKey = key => proposalClaimStatus.find(d => d.key === key);
 
 export const isClaimer = (claims, currentUser) => {
-  let isClaimer;
-  if (!isEmpty(currentUser)) {
-    isClaimer = claims.find(d => {
-      let findItem;
-      if (d.claimer.id === currentUser.id.toString()) {
-        findItem = d;
-      }
-      return findItem;
-    });
-  } else {
+  if (isEmpty(currentUser)) {
     return undefined;
   }
 
-  if (isClaimer) {
-    return true;
-  }
-  return false;
+  return claims.some(d => d.claimer.id === currentUser.id.toString());
 };
 
 export const isClaimerByStatus = (claims, currentUser, status_keys = ['claiming']) => {
-  let isClaimerStatus;
-  if (!isEmpty(currentUser)) {
-    isClaimerStatus = claims.find(d => {
-      let findItem;
-      if (d.claimer.id === currentUser.id.toString()) {
-        status_keys.forEach(s_key => {
-          if (d.status_key === s_key) {
-            findItem = d;
-          }
-        });
-      }
-      return findItem;
-    });
-  } else {
+  if (isEmpty(currentUser)) {
     return undefined;
   }
 
-  if (isClaimerStatus) {
-    return true;
-  }
-  return false;
+  return claims.some(d => isClaimer(claims, currentUser) && status_keys.includes(d.status_key));
 };
