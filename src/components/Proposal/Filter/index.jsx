@@ -22,7 +22,6 @@ const Filter = props => {
   useEffect(() => {
     setCategory('all');
     setStatus('all');
-    setSort('all');
   }, [window.location.href]);
 
   useEffect(() => {

@@ -70,9 +70,15 @@ const Item = props => {
                 </div> */}
             {/* </div>
             </div> */}
+            <div>
+              <div className={styles.bz}>
+                <span>{amount}</span>
+                <span>{currency_unit.unit ? currency_unit.unit : 'GT'}</span>
+              </div>
+            </div>
 
             <div className={styles.cardTitle}>
-              <Title level={3} className={styles.title}>
+              <Title level={4} className={styles.title}>
                 <LinesEllipsis text={title} maxLine="2" />
               </Title>
               <div>

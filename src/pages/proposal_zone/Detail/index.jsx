@@ -158,10 +158,10 @@ const Detail = props => {
                   <div className={styles.detail}>
                     {/* <Paragraph>{vote_rule}</Paragraph> */}
                     <div>支持% <QuestionCircleOutlined /></div>
-                    <Progress type="line" percent="64" strokeColor="green" ></Progress>
+                    <Progress type="line" percent="64" strokeColor="#29cc7a" ></Progress>
                     <div className={styles.tpl}>
                       <div>最少投票率% <QuestionCircleOutlined /></div>
-                      <Progress type="line" percent="80" strokeColor="green"></Progress>
+                      <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
                     </div>
                   </div>
                   <div>投票时间 <QuestionCircleOutlined /></div>
