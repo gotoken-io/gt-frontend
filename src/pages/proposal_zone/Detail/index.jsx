@@ -11,7 +11,6 @@ import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
 
@@ -24,7 +23,13 @@ const ZoneCover = ({ id, name, cover }) => {
   return (
     <div className={styles.cardCover}>
       <Link to={`/proposal/list/${id}`}>
-        <div className={styles.image} style={{ background: `url(${getFielUrl(cardCoverSrc)}) center no-repeat`, backgroundSize: 'cover' }}></div>
+        <div
+          className={styles.image}
+          style={{
+            background: `url(${getFielUrl(cardCoverSrc)}) center no-repeat`,
+            backgroundSize: 'cover',
+          }}
+        ></div>
         {/* <Image name={name} src={cardCoverSrc} size={200}/> */}
       </Link>
     </div>
@@ -34,11 +39,11 @@ const ZoneCover = ({ id, name, cover }) => {
 const Detail = props => {
   // state
   const [collapse, setCollapse] = useState(true);
-  console.log(props)
+  console.log(props);
 
   // props
   const { dispatch, zone_detail, match, currentUser, proposal_category } = props;
-  console.log(2, proposal_category)
+  console.log(2, proposal_category);
 
   // get proposal id from url params
 
@@ -71,7 +76,7 @@ const Detail = props => {
           }
         });
       },
-      onCancel() { },
+      onCancel() {},
     });
   };
 
@@ -93,7 +98,7 @@ const Detail = props => {
 
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
 
-  const image = require('../../../../public/metamask.jpeg')
+  const image = require('../../../../public/metamask.jpeg');
 
   return (
     <GridContent>
@@ -115,23 +120,14 @@ const Detail = props => {
               <ZoneCover {...zone_detail} />
               <div className={styles.content}>
                 <div className={styles.summaryContent}>
-                  {/* <Link to={`/proposal/list/${id}`}>
-                  <Title level={2}>{title}</Title>
-                </Link> */}
-
-                  {/* <h3 className={styles.proposalTitle}>简称: {name}</h3> */}
-                  {/* <h3 className={styles.proposalTitle}>Token: {token}</h3> */}
-                  {/* <div className={styles.currency}>
-                  {currencies &&
-                    currencies.length > 0 &&
-                    currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
-                </div> */}
                   <div>
                     <Paragraph>{summary}</Paragraph>
                   </div>
                   <div className={styles.vote}>
                     <div className={styles.toup}>
-                      <span className={styles.num}>{proposals_count ? proposals_count.proposals_count : 0}</span>
+                      <span className={styles.num}>
+                        {proposals_count ? proposals_count.proposals_count : 0}
+                      </span>
                       <div>提案数</div>
                     </div>
                     <span>|</span>
@@ -146,7 +142,7 @@ const Detail = props => {
                   <Icon type={collapse ? 'down' : 'up'} />
                 </div>
                 {/* default is collapse */}
-                <Collapse isOpened={!collapse}>
+                {/* <Collapse isOpened={!collapse}>
                   <Title level={3}>介绍</Title>
                   <div className={styles.detail}>
                     <Paragraph>
@@ -157,24 +153,24 @@ const Detail = props => {
                   <Title level={3}>投票规则</Title>
                   <div className={styles.detail}>
                     {/* <Paragraph>{vote_rule}</Paragraph> */}
-                    <div>支持% <QuestionCircleOutlined /></div>
-                    <Progress type="line" percent="64" strokeColor="#29cc7a" ></Progress>
+                    <div>
+                      支持% <QuestionCircleOutlined />
+                    </div>
+                    <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
                     <div className={styles.tpl}>
-                      <div>最少投票率% <QuestionCircleOutlined /></div>
+                      <div>
+                        最少投票率% <QuestionCircleOutlined />
+                      </div>
                       <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
                     </div>
                   </div>
-                  {/* <div>投票时间 <QuestionCircleOutlined /></div> */}
-                  {/* <Title level={3}>投票地址与权重</Title>
-              <div className={styles.detail}>
-                <Paragraph>{vote_addr_weight_json}</Paragraph>
-              </div> */}
-                </Collapse>
+                </Collapse> */}
                 <div className={styles.voters}>
-                  <Button type="primary" size="small">加入专区</Button>
+                  <Button type="primary" size="small">
+                    加入专区
+                  </Button>
                 </div>
               </div>
-
             </div>
             {/* proposal list */}
             <ProposalList zone_id={id} match={match} />
@@ -186,7 +182,6 @@ const Detail = props => {
 };
 
 export default connect(props => {
-
   console.log(props);
   return {
     currentUser: props.user.currentUser,
@@ -194,5 +189,5 @@ export default connect(props => {
     proposal_category: props.proposal.proposal_category,
     fetchProposalZoneLoading: props.loading.effects['proposal/fetchProposalZone'],
     delProposalZoneLoading: props.loading.effects['proposal/deleteProposalZone'],
-  }
+  };
 })(Detail);
