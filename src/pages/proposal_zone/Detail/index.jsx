@@ -151,7 +151,7 @@ const Detail = props => {
                   </div> */}
 
                   <Title level={3}>投票规则</Title>
-                  <div className={styles.detail}>
+                  {/* <div className={styles.detail}>
                     <div>
                       支持% <QuestionCircleOutlined />
                     </div>
@@ -162,7 +162,7 @@ const Detail = props => {
                       </div>
                       <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
                     </div>
-                  </div>
+                  </div> */}
                 </Collapse>
                 <div className={styles.voters}>
                   <Button type="primary" size="small">
