@@ -99,7 +99,7 @@ const Detail = props => {
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
 
   const image = require('../../../../public/metamask.jpeg');
-
+  console.log({ zone_detail });
   return (
     <GridContent>
       {currentUser.admin && (
@@ -144,13 +144,25 @@ const Detail = props => {
                 {/* default is collapse */}
                 <Collapse isOpened={!collapse}>
                   <Title level={3}>介绍</Title>
-                  <div className={styles.detail}>
+                  {/* <div className={styles.detail}>
                     <Paragraph>
                       <div dangerouslySetInnerHTML={{ __html: detail }} />
                     </Paragraph>
-                  </div>
+                  </div> */}
 
                   <Title level={3}>投票规则</Title>
+                  <div className={styles.detail}>
+                    <div>
+                      支持% <QuestionCircleOutlined />
+                    </div>
+                    <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
+                    <div className={styles.tpl}>
+                      <div>
+                        最少投票率% <QuestionCircleOutlined />
+                      </div>
+                      <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
+                    </div>
+                  </div>
                 </Collapse>
                 <div className={styles.voters}>
                   <Button type="primary" size="small">
