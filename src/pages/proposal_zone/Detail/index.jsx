@@ -142,29 +142,7 @@ const Detail = props => {
                   <Icon type={collapse ? 'down' : 'up'} />
                 </div>
                 {/* default is collapse */}
-                {/* <Collapse isOpened={!collapse}>
-                  <Title level={3}>介绍</Title>
-                  <div className={styles.detail}>
-                    <Paragraph>
-                      <div dangerouslySetInnerHTML={{ __html: detail }} />
-                    </Paragraph>
-                  </div>
 
-                  <Title level={3}>投票规则</Title>
-                  <div className={styles.detail}>
-                    {/* <Paragraph>{vote_rule}</Paragraph> */}
-                    <div>
-                      支持% <QuestionCircleOutlined />
-                    </div>
-                    <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
-                    <div className={styles.tpl}>
-                      <div>
-                        最少投票率% <QuestionCircleOutlined />
-                      </div>
-                      <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
-                    </div>
-                  </div>
-                </Collapse> */}
                 <div className={styles.voters}>
                   <Button type="primary" size="small">
                     加入专区
