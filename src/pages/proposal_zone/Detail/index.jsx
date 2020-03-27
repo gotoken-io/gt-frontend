@@ -151,18 +151,18 @@ const Detail = props => {
                   </div>
 
                   <Title level={3}>投票规则</Title>
-                  {/* <div>
-                    <div>
+                  <div>
+                    <div className={styles.detail}>
                       支持% <QuestionCircleOutlined />
                     </div>
-                    <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
+                    {/* <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress> */}
                     <div className={styles.tpl}>
                       <div>
                         最少投票率% <QuestionCircleOutlined />
                       </div>
-                      <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
+                      {/* <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress> */}
                     </div>
-                  </div> */}
+                  </div>
                 </Collapse>
                 <div className={styles.voters}>
                   <Button size="small">加入专区</Button>
