@@ -142,7 +142,16 @@ const Detail = props => {
                   <Icon type={collapse ? 'down' : 'up'} />
                 </div>
                 {/* default is collapse */}
+                <Collapse isOpened={!collapse}>
+                  <Title level={3}>介绍</Title>
+                  <div className={styles.detail}>
+                    <Paragraph>
+                      <div dangerouslySetInnerHTML={{ __html: detail }} />
+                    </Paragraph>
+                  </div>
 
+                  <Title level={3}>投票规则</Title>
+                </Collapse>
                 <div className={styles.voters}>
                   <Button type="primary" size="small">
                     加入专区
