@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Progress, Popover, Button } from 'antd';
+import { Row, Col, Progress, Popover, Button, Icon } from 'antd';
 import QRCode from 'qrcode.react';
 import styles from './index.less';
 import { isEmpty } from 'lodash';
 import { deleteUndefined, toQueryString } from '@/utils/utils';
-import {
-  CaretDownFilled,
-  CaretUpFilled,
-  CheckCircleFilled,
-  CloseCircleFilled,
-} from '@ant-design/icons';
+
 import moment from 'moment';
 const VoteQrCode = props => {
   const { currentUser, detail, dispatch, wallet } = props;
@@ -112,7 +107,7 @@ const VoteQrCode = props => {
               title="二维码"
             >
               <Button>
-                <CaretUpFilled style={{ color: 'green', fontSize: '12px' }} />
+                <Icon type="caret-up" theme="filled" style={{ color: 'green', fontSize: '12px' }} />
                 支持
               </Button>
             </Popover>
@@ -131,7 +126,7 @@ const VoteQrCode = props => {
               title="二维码"
             >
               <Button>
-                <CaretDownFilled style={{ color: 'red', fontSize: '12px' }} />
+                <Icon type="caret-down" theme="filled" style={{ color: 'red', fontSize: '12px' }} />
                 反对
               </Button>
             </Popover>

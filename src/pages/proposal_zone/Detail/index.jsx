@@ -9,7 +9,6 @@ import Link from 'umi/link';
 import ProposalList from './components/ProposalList';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -153,14 +152,12 @@ const Detail = props => {
                   <Title level={3}>投票规则</Title>
                   <div>
                     <div>
-                      支持%
-                      <QuestionCircleOutlined />
+                      支持% <Icon type="question-circle" />
                     </div>
                     <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
                     <div className={styles.tpl}>
                       <div>
-                        最少投票率%
-                        <QuestionCircleOutlined />
+                        最少投票率% <Icon type="question-circle" />
                       </div>
                       <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
                     </div>

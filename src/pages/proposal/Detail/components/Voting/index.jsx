@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Progress, Button, Spin, message } from 'antd';
-import {
-  CaretDownFilled,
-  CaretUpFilled,
-  CheckCircleFilled,
-  CloseCircleFilled,
-} from '@ant-design/icons';
+import { Row, Col, Progress, Button, Spin, message, Icon } from 'antd';
 import styles from './index.less';
 import { VoteContract, VoteValueEnum } from '../../../../../services/voteContract';
 import { isEmpty } from 'lodash';
@@ -58,9 +52,10 @@ const Voting = props => {
         </Row>
         <div className="margin-l" />
 
-
         <Row type="flex" justify="center">
-          <span style={{ textAlign: "center" }}>为了获取投票信息，请首先启用Web3提供程序作为元掩码</span>
+          <span style={{ textAlign: 'center' }}>
+            为了获取投票信息，请首先启用Web3提供程序作为元掩码
+          </span>
           <div className="margin" />
 
           <Button
@@ -107,8 +102,8 @@ const Voting = props => {
               </Button>
             </div>
           ) : (
-              <span>提案尚未上链</span>
-            )}
+            <span>提案尚未上链</span>
+          )}
         </Row>
       </>
     );
@@ -124,7 +119,7 @@ const Voting = props => {
         {voteDetail.value}
         {voteDetail.value === VoteValueEnum.agree && (
           <div className="column center">
-            <CheckCircleFilled style={{ color: 'green', fontSize: '48px' }} />
+            <Icon type="check-circle" theme="filled" style={{ color: 'green', fontSize: '48px' }} />
             <div className="margin-sm" />
             <span>该提案已获批准</span>
           </div>
@@ -132,7 +127,7 @@ const Voting = props => {
         {voteDetail.value === VoteValueEnum.disagree && (
           <Row type="flex" justify="center">
             <div className="column center">
-              <CloseCircleFilled style={{ color: 'red', fontSize: '48px' }} />
+              <Icon type="close-circle" theme="filled" style={{ color: 'red', fontSize: '48px' }} />
               <div className="margin-sm" />
               <span>提案被拒绝</span>
             </div>
@@ -146,7 +141,7 @@ const Voting = props => {
     voteDetail.currentBlock > voteDetail.end_height
       ? 100
       : (100 * (voteDetail.currentBlock - voteDetail.start_height)) /
-      (voteDetail.end_height - voteDetail.start_height);
+        (voteDetail.end_height - voteDetail.start_height);
   const canVote =
     currentUser.id &&
     voteDetail.signers.includes((web3Info.account || '').toLowerCase()) &&
@@ -182,8 +177,8 @@ const Voting = props => {
           {progress !== 100 ? (
             <Progress percent={+progress.toFixed(2)} />
           ) : (
-              <span>投票已截止，未能达成决议</span>
-            )}
+            <span>投票已截止，未能达成决议</span>
+          )}
         </Row>
         <div className="margin" />
         {!web3Info.account && currentUser.id && (
@@ -214,13 +209,13 @@ const Voting = props => {
             <Button
               onClick={() => vote({ dispatch, detail, value: VoteValueEnum.agree, web3Info })}
             >
-              <CaretUpFilled style={{ color: 'green', fontSize: '12px' }} />
+              <Icon type="caret-up" theme="filled" style={{ color: 'green', fontSize: '12px' }} />
               支持
             </Button>
             <Button
               onClick={() => vote({ dispatch, detail, value: VoteValueEnum.disagree, web3Info })}
             >
-              <CaretDownFilled style={{ color: 'red', fontSize: '12px' }} />
+              <Icon type="caret-down" theme="filled" style={{ color: 'red', fontSize: '12px' }} />
               反对
             </Button>
           </Row>

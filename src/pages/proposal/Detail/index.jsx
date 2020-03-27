@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button, Modal, Spin, Tabs, Row, Col, Menu, Dropdown } from 'antd';
+import { Typography, Tag, Button, Modal, Spin, Tabs, Row, Col, Menu, Dropdown, Icon } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import Image from '@/components/Image';
 import { connect } from 'dva';
@@ -18,13 +18,6 @@ import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Claims from './components/Claims';
 import VoteQrCode from './components/VoteQrCode';
-import {
-  CaretDownOutlined,
-  SettingOutlined,
-  FormOutlined,
-  CloseCircleOutlined,
-  UndoOutlined,
-} from '@ant-design/icons';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -128,21 +121,19 @@ const Detail = props => {
       {isCreatorOrAdmin({ currentUser, creator }) && (
         <Menu.Item key="1">
           <Link to={`/proposal/update/${id}`}>
-            <FormOutlined />
-            编辑提案
+            <Icon type="form" /> 编辑提案
           </Link>
         </Menu.Item>
       )}
 
       {isAdmin({ currentUser }) && (
         <Menu.Item key="2" onClick={showDelConfirm}>
-          <CloseCircleOutlined />
-          删除提案
+          <Icon type="close-circle" /> 删除提案
         </Menu.Item>
       )}
       {isAdmin({ currentUser }) && (
         <Menu.Item key="3" onClick={() => setChangeStatusModalShow(true)}>
-          <UndoOutlined />
+          <Icon type="undo" />
           修改状态
           <ChangeStatusModal
             {...detail}
@@ -170,8 +161,7 @@ const Detail = props => {
                     {isCreatorOrAdmin({ currentUser, creator }) && (
                       <Dropdown overlay={menu}>
                         <Button size="small" className={styles.shezhi}>
-                          <SettingOutlined />
-                          <CaretDownOutlined />
+                          <Icon type="setting" />
                         </Button>
                       </Dropdown>
                     )}
