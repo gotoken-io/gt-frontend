@@ -120,6 +120,9 @@ const Detail = props => {
   const { fetchDetailLoading } = props;
   const { creator, zone } = detail;
 
+  console.log('detail', detail);
+  console.log(props);
+
   const menu = (
     <Menu>
       {isCreatorOrAdmin({ currentUser, creator }) && (
@@ -209,16 +212,16 @@ const Detail = props => {
                       <div className={styles.describe}>详情描述</div>
                       <div className={styles.details}>
                         <div className={styles.content}>
-                          {details.map((item, index) => {
-                            return (
-                              <div key={index}>
-                                <div className={styles.title}>{detail.title}</div>
-                                <Paragraph>
-                                  <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
-                                </Paragraph>
-                              </div>
-                            );
-                          })}
+                          {/* {details.map((item, index) => {
+                            return ( */}
+                          <div>
+                            <div className={styles.title}>{detail.title}</div>
+                            <Paragraph>
+                              <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
+                            </Paragraph>
+                          </div>
+                          {/* );
+                          })} */}
                         </div>
                       </div>
                     </div>
