@@ -13,7 +13,7 @@ const Filter = props => {
   // state
   const [category, setCategory] = useState('all');
   const [status, setStatus] = useState('all');
-  const [sort, setSort] = useState('createtime');
+  const [sort, setSort] = useState('all');
 
   // props
   const { match, zone_list, proposal_category, zone_id = null } = props;
@@ -82,7 +82,7 @@ const Filter = props => {
       status: value,
     };
 
-    console.log("routeQuery", routeQuery, status);
+    console.log('routeQuery', routeQuery, status);
 
     router.push({
       pathname: window.location.pathname,
@@ -152,7 +152,7 @@ const Filter = props => {
   //     </Button>
   //   ));
   // };
-  console.log({ category, proposal_category, sort, sorts })
+  console.log({ category, proposal_category, sort, sorts });
   return (
     <div className={styles.container}>
       {/* if set zone_id, hide proposal zone choose */}
@@ -176,7 +176,7 @@ const Filter = props => {
         <div className={styles.category}>
           <Select
             name="category"
-            placeholder='Core'
+            placeholder="Core"
             style={{ width: 200 }}
             onChange={onChangeCategory}
             value={category}
@@ -198,7 +198,7 @@ const Filter = props => {
         <div className={styles.status}>
           <Select
             name="status"
-            placeholder='In Progress'
+            placeholder="In Progress"
             style={{ width: 200 }}
             onChange={onChangeStatus}
             value={status}
@@ -218,7 +218,7 @@ const Filter = props => {
         <div className={styles.status}>
           <Select
             name="sort"
-            placeholder='Newest'
+            placeholder="Newest"
             style={{ width: 200 }}
             onChange={onClickSort}
             value={sort}

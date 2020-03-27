@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button, Modal, Spin, Tabs, Row, Col } from 'antd';
+import { Typography, Tag, Button, Modal, Spin, Tabs, Row, Col, Menu, Dropdown } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import Image from '@/components/Image';
 import { connect } from 'dva';
@@ -18,6 +18,13 @@ import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Claims from './components/Claims';
 import VoteQrCode from './components/VoteQrCode';
+import {
+  CaretDownOutlined,
+  SettingOutlined,
+  FormOutlined,
+  CloseCircleOutlined,
+  UndoOutlined,
+} from '@ant-design/icons';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -91,114 +98,82 @@ const Detail = props => {
           }
         });
       },
-      onCancel() { },
+      onCancel() {},
     });
   }
 
   const details = [
     {
-      title: "这里是标题",
-      contents: "我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大"
+      title: '这里是标题',
+      contents: '我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大',
     },
     {
-      title: "这里是标题2",
-      contents: "我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大"
+      title: '这里是标题2',
+      contents: '我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大',
     },
     {
-      title: "这里是标题3",
-      contents: "我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大"
-    }
-  ]
-
+      title: '这里是标题3',
+      contents: '我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大',
+    },
+  ];
 
   const { fetchDetailLoading } = props;
   const { creator, zone } = detail;
-  console.log(detail);
-  return (
-    <GridContent>
+
+  const menu = (
+    <Menu>
       {isCreatorOrAdmin({ currentUser, creator }) && (
-        <Link to={`/proposal/update/${id}`}>
-          <Button type="primary" className={styles.actionsBtn}>
-            修改提案
-          </Button>
-        </Link>
+        <Menu.Item key="1">
+          <Link to={`/proposal/update/${id}`}>
+            <FormOutlined />
+            编辑提案
+          </Link>
+        </Menu.Item>
       )}
 
       {isAdmin({ currentUser }) && (
-        <Button type="danger" className={styles.actionsBtn} onClick={showDelConfirm}>
+        <Menu.Item key="2" onClick={showDelConfirm}>
+          <CloseCircleOutlined />
           删除提案
-        </Button>
+        </Menu.Item>
       )}
-
       {isAdmin({ currentUser }) && (
-        <>
-          <Button className={styles.actionsBtn} onClick={() => setChangeStatusModalShow(true)}>
-            修改提案状态
-          </Button>
+        <Menu.Item key="3" onClick={() => setChangeStatusModalShow(true)}>
+          <UndoOutlined />
+          修改状态
           <ChangeStatusModal
             {...detail}
             visible={changeStatusModalShow}
             onCancel={() => setChangeStatusModalShow(false)}
           />
-        </>
+        </Menu.Item>
       )}
+    </Menu>
+  );
 
+  console.log(detail);
+  return (
+    <GridContent>
       <div className={styles.container}>
         <Spin spinning={fetchDetailLoading}>
           <Typography>
-            {/* <div className={styles.summaryCard}>
-              <ZoneCover {...zone} />
-
-              <div className={styles.summaryContent}>
-                <div className={styles.cardHead}>
-                  <div className={styles.left}>
-                    <Text>{zone && zone.name}</Text>
-                    &nbsp;&nbsp;
-                    {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
-                  </div>
-                  <div className={styles.right}>
-                    {proposalAmount > 0 && (
-                      <span
-                        style={zone.theme_color && { backgroundColor: zone.theme_color }}
-                        className={styles.proposalAmount}
-                      >
-                        {proposalAmount.toLocaleString()}&nbsp;
-                        {detail.currency_unit && detail.currency_unit.unit}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-
-                {detail.status_key && (
-                  <div className={styles.status}>
-                    <span className={styles[detail.status_key]}>
-                      {getStatusTextByKey(detail.status_key)}
-                    </span>
-                  </div>
-                )}
-
-                {detail.category && detail.category.id && (
-                  <span className={styles.category}>
-                    <Tag>{detail.category.name}</Tag>
-                  </span>
-                )}
-
-                
-
-
-                <div>
-                  标签:&nbsp;
-                  <Tags tag={detail.tag} />
-                </div>
-              </div>
-            </div> */}
             <Row>
               <Col span={17}>
                 <div className={styles.userList}>
-                  <Title level={2} className={styles.proposalTitle}>
-                    {detail.title}
-                  </Title>
+                  <Row type="flex" justify="space-between">
+                    <Title level={2} className={styles.proposalTitle}>
+                      {detail.title}
+                    </Title>
+                    {isCreatorOrAdmin({ currentUser, creator }) && (
+                      <Dropdown overlay={menu}>
+                        <Button size="small" className={styles.shezhi}>
+                          <SettingOutlined />
+                          <CaretDownOutlined />
+                        </Button>
+                      </Dropdown>
+                    )}
+                  </Row>
+
                   <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
                   <div className={styles.budget}>
                     <div>
@@ -206,43 +181,46 @@ const Detail = props => {
                       <div className={styles.zq}>项目预算</div>
                     </div>
                     <div>
-                      <div className={styles.weight2}>{(detail.estimated_hours) / 24}天</div>
+                      <div className={styles.weight2}>{detail.estimated_hours / 24}天</div>
                       <div className={styles.zq}>最大执行周期</div>
                     </div>
                     <div className={styles.user}>
-                      <UserAvatar {...detail.creator} />
-                      <div className={styles.userContent}>
-                        <Title level={4}>{detail.creator && detail.creator.username}</Title>
-                        <Paragraph className={styles.createtime}>
-                          提交时间: {moment.createTime(detail.created)}
-                        </Paragraph>
-                        {/* <Text>创建人</Text> */}
-                      </div>
+                      <UserAvatar {...detail.creator} size={48} />
+                      <div className="margin-sm"></div>
+                      <Row>
+                        <span className={styles.weight2}>
+                          {detail.creator && detail.creator.username}
+                        </span>
+                        <br />
+                        提交时间: {moment.createTime(detail.created)}
+                      </Row>
                     </div>
                   </div>
-
                 </div>
-                <Tabs size="large" className={styles.tabs} animated={false} defaultActiveKey="detail" onChange={() => { }}>
+                <Tabs
+                  size="large"
+                  className={styles.tabs}
+                  animated={false}
+                  defaultActiveKey="detail"
+                  onChange={() => {}}
+                >
                   <TabPane tab="详情描述" key="detail">
                     <div className={styles.detail}>
                       <div className={styles.describe}>详情描述</div>
                       <div className={styles.details}>
-
                         <div className={styles.content}>
-                          {
-                            details.map((item, index) => {
-                              return <div key={index}>
+                          {details.map((item, index) => {
+                            return (
+                              <div key={index}>
                                 <div className={styles.title}>{detail.title}</div>
                                 <Paragraph>
                                   <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
                                 </Paragraph>
                               </div>
-                            })
-                          }
-
+                            );
+                          })}
                         </div>
                       </div>
-
                     </div>
                   </TabPane>
 
@@ -261,9 +239,7 @@ const Detail = props => {
                   </TabPane>
 
                   <TabPane tab="协作看板" key="tasks">
-                    <div className={styles.logs}>
-
-                    </div>
+                    <div className={styles.logs}></div>
                   </TabPane>
 
                   <TabPane tab="评论" key="comments">
@@ -277,12 +253,11 @@ const Detail = props => {
                   {zone && zone.id == '2' ? (
                     <Voting detail={detail} />
                   ) : (
-                      <VoteQrCode detail={detail} />
-                    )}
+                    <VoteQrCode detail={detail} />
+                  )}
                 </div>
               </Col>
             </Row>
-
           </Typography>
         </Spin>
       </div>

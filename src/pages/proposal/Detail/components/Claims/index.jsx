@@ -115,9 +115,15 @@ const Claims = props => {
         )}
       </div>
       <div>
-        <span> 团队成员</span>
-        <div className="margin" />
-        <AvatarList userList={team.slice(1).map(teamInfo => teamInfo.staff)} showMax={10} />
+        {team ? (
+          <>
+            <span> 团队成员</span>
+            <div className="margin" />
+            <AvatarList userList={team.slice(1).map(teamInfo => teamInfo.staff)} showMax={10} />
+          </>
+        ) : (
+          undefined
+        )}
       </div>
     </Card>
   );
@@ -153,9 +159,10 @@ const Claims = props => {
   return (
     <div className={styles.container}>
       <div className={styles.actions}>
+        <div className="margin-l"></div>
         {isClaimer(claims, currentUser) === false && proposal_status_key === 'claiming' && (
           <>
-            <Button type="primary" onClick={() => setClaimModalVisible(true)}>
+            <Button type="primary" size="small" onClick={() => setClaimModalVisible(true)}>
               申领
             </Button>
             <ClaimModal
@@ -168,10 +175,10 @@ const Claims = props => {
 
         {isClaimerByStatus(claims, currentUser, ['claiming']) === true && (
           <Button.Group>
-            <Button type="primary" onClick={showCancelClaimConfirm}>
+            <Button type="primary" size="small" onClick={showCancelClaimConfirm}>
               取消申领
             </Button>
-            <Button type="primary" onClick={() => setClaimTeamModalVisible(true)}>
+            <Button type="primary" size="small" onClick={() => setClaimTeamModalVisible(true)}>
               加入
             </Button>
             <ClaimTeamModal
@@ -186,7 +193,11 @@ const Claims = props => {
         {isClaimerByStatus(claims, currentUser, ['passed', 'submit_result', 'result_fail']) ===
           true && (
           <>
-            <Button type="primary" onClick={() => setSubmitClaimResultModalVisible(true)}>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => setSubmitClaimResultModalVisible(true)}
+            >
               提交结果
             </Button>
             <SubmitClaimResultModal
