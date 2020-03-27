@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, Radio, Button, Spin, message } from 'antd';
+import { Form, Input, Select, Radio, Button, Spin, message, InputNumber } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
 import router from 'umi/router';
@@ -407,7 +407,7 @@ const ProposalForm = props => {
                     message: '请输入提案预算!',
                   },
                 ],
-              })(<Input style={{ width: 200 }} placeholder="请输入预算金额" />)}
+              })(<InputNumber style={{ width: 200 }} placeholder="请输入预算金额" />)}
 
               {getFieldDecorator('currency_id', {
                 rules: [],
@@ -433,8 +433,8 @@ const ProposalForm = props => {
           <InputDayHour settings={workHourSettings} values={workHour} onChange={onChangeWorkTime} />
         </Form.Item>
 
-        {/* <Form.Item label="提案投票持续时长">
-          // 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改.
+        <Form.Item label="提案投票持续时长">
+          {/* // 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改. */}
           <InputDayHour
             settings={voteDurationSettings}
             values={voteDuration}
@@ -448,7 +448,7 @@ const ProposalForm = props => {
               {convertToDayHourText(selectZone.vote_duration_max)}
             </span>
           )}
-        </Form.Item> */}
+        </Form.Item>
 
         {/* <Form.Item label="提案标签">
           {getFieldDecorator('tag')(

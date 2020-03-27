@@ -36,7 +36,7 @@ const Item = props => {
   const { Step } = Steps;
 
   const proposalAmount = parseInt(amount);
-  const img = require('../../../../public/metamask.jpeg')
+  const img = require('../../../../public/metamask.jpeg');
 
   const zoneCover = cover => {
     let cardCoverSrc = defaultCover;
@@ -44,6 +44,24 @@ const Item = props => {
       cardCoverSrc = cover;
     }
     return cardCoverSrc;
+  };
+
+  const currentStep = () => {
+    switch (status_key) {
+      case 'wait_to_vote':
+      case 'set_up_voting':
+        return 0;
+      case 'wait_to_vote':
+      case 'claiming':
+        return 1;
+      case 'under_way':
+      case 'checking':
+        return 2;
+      case 'success':
+        return 3;
+      default:
+        return 0;
+    }
   };
 
   return (
@@ -85,7 +103,6 @@ const Item = props => {
                 <Text>{zone.name}</Text>
               </div>
 
-
               {/* {category.id && <Tag>{category.name}</Tag>} */}
             </div>
             <div className={styles.author}>
@@ -108,7 +125,7 @@ const Item = props => {
               <span className={styles.datetime}>{moment.createTime(created)}</span>
             </div>
             <div className={styles.steps}>
-              <Steps size="small" current={1}>
+              <Steps size="small" current={currentStep()}>
                 <Step title="Claim" />
                 <Step title="Progress" />
                 <Step title="Test" />
@@ -122,15 +139,11 @@ const Item = props => {
               )}
             </div>
 
-
             {/* <Paragraph className={styles.summary}>
               <LinesEllipsis text={summary} maxLine="3" />
             </Paragraph> */}
 
             <div className={styles.bottom}>
-
-
-
               {/* 申领信息 */}
               {claim && (
                 <div className={styles['claim-info']}>
