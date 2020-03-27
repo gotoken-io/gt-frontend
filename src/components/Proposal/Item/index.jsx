@@ -45,9 +45,10 @@ const Item = props => {
     }
     return cardCoverSrc;
   };
+  let proposal_status_key = status_key || 'wait_to_vote';
 
   const currentStep = () => {
-    switch (status_key) {
+    switch (proposal_status_key) {
       case 'wait_to_vote':
       case 'set_up_voting':
         return 0;
@@ -69,25 +70,6 @@ const Item = props => {
       <Link to={`/proposal/detail/${id}`}>
         <Card className={claim ? styles['card-extra-height'] : styles.card} hoverable>
           <div className={styles.cardBody}>
-            {/* <div className={styles.cardHead}>
-              <div className={styles.left}> */}
-            {/* <Avatar className={styles.zoneLogo} shape="square" size={32} src={zoneCover(zone.cover)} /> */}
-            {/* <span className={styles.zoneLogo}>
-                  <Image shape="square" size={32} src={zoneCover(zone.cover)} />
-                </span> */}
-
-            {/* &nbsp;&nbsp; */}
-            {/* 如果存在 zone_proposal_id 才会显示 ID */}
-            {/* {zone_proposal_id && <Text>No.{zone_proposal_id}</Text>}
-                <div className={styles.right}>
-                  {proposalAmount > 0 && (
-                    <Tag color={zone.theme_color}>
-                      {proposalAmount.toLocaleString()} {currency_unit && currency_unit.unit}
-                    </Tag>
-                  )}
-                </div> */}
-            {/* </div>
-            </div> */}
             <div>
               <div className={styles.bz}>
                 <span>{amount}</span>
@@ -102,8 +84,6 @@ const Item = props => {
               <div>
                 <Text>{zone.name}</Text>
               </div>
-
-              {/* {category.id && <Tag>{category.name}</Tag>} */}
             </div>
             <div className={styles.author}>
               <div className={styles.info}>
@@ -113,14 +93,6 @@ const Item = props => {
                     <Text className={styles.byCreator}>{creator.username}</Text>
                   </div>
                 )}
-
-                {/* <div className={styles.iconList}>
-                  {comments_count > 0 && (
-                    <div className={styles.comment}>
-                      <IconFont type="icon-comment" style={{ fontSize: '18px' }} /> {comments_count}
-                    </div>
-                  )}
-                </div> */}
               </div>
               <span className={styles.datetime}>{moment.createTime(created)}</span>
             </div>
@@ -132,16 +104,12 @@ const Item = props => {
               </Steps>
             </div>
             <div className={styles.bystatus}>
-              {status_key && (
-                <div className={styles.status}>
-                  <span className={styles[status_key]}>{getStatusTextByKey(status_key)}</span>
-                </div>
-              )}
+              <div className={styles.status}>
+                <span className={styles[proposal_status_key]}>
+                  {getStatusTextByKey(proposal_status_key)}
+                </span>
+              </div>
             </div>
-
-            {/* <Paragraph className={styles.summary}>
-              <LinesEllipsis text={summary} maxLine="3" />
-            </Paragraph> */}
 
             <div className={styles.bottom}>
               {/* 申领信息 */}
