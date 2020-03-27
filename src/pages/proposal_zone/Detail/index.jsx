@@ -144,7 +144,7 @@ const Detail = props => {
                 {/* default is collapse */}
                 <Collapse isOpened={!collapse}>
                   <Title level={3}>介绍</Title>
-                  <div>
+                  <div className={styles.detail}>
                     <Paragraph>
                       <div dangerouslySetInnerHTML={{ __html: detail }} />
                     </Paragraph>
