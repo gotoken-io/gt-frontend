@@ -391,7 +391,7 @@ const ProposalModel = {
         yield put({
           type: 'saveVoteInfo',
           payload: {
-            error: "No Metamask"
+            error: 'No Metamask',
           },
         });
         return;

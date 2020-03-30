@@ -173,12 +173,14 @@ const Voting = props => {
         </Row>
         <div className="margin" />
 
-        <Row type="flex" justify="center">
-          {progress !== 100 ? (
-            <Progress percent={+progress.toFixed(2)} />
-          ) : (
-            <span>投票已截止，未能达成决议</span>
-          )}
+        <Row>
+          <Col span={20} offset={0}>
+            {progress !== 100 ? (
+              <Progress percent={+progress.toFixed(2)} />
+            ) : (
+              <span>投票已截止，未能达成决议</span>
+            )}
+          </Col>
         </Row>
         <div className="margin" />
         {!web3Info.account && currentUser.id && (

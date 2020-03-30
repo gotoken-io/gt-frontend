@@ -71,10 +71,14 @@ const Item = props => {
         <Card className={claim ? styles['card-extra-height'] : styles.card} hoverable>
           <div className={styles.cardBody}>
             <div>
-              <div className={styles.bz}>
-                <span>{amount}</span>
-                <span>{currency_unit.unit ? currency_unit.unit : 'GT'}</span>
-              </div>
+              {amount > 0 ? (
+                <div className={styles.bz}>
+                  <span>{amount}</span>
+                  <span>{currency_unit.unit ? currency_unit.unit : 'GT'}</span>
+                </div>
+              ) : (
+                <div style={{ height: '30px' }} />
+              )}
             </div>
 
             <div className={styles.cardTitle}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tooltip, Comment, Spin, Modal } from 'antd';
+import { Tooltip, Comment, Spin, Modal, Row, Col } from 'antd';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import CommentForm from '../CommnetForm';
@@ -128,18 +128,22 @@ const Comments = props => {
 
   return (
     <div className={styles.container}>
-      <CommentForm />
-      {loaddingCommentList && <Spin className={styles.loading} />}
-      {comment_list.map(comment => (
-        <CommentWrapper
-          key={comment.id}
-          data={comment}
-          currentUser={currentUser}
-          onClickReply={handleClickReply}
-          onClickDelete={handleDelete}
-          showReplyForm={isShowReplyForm(comment.id)}
-        />
-      ))}
+      <Row style={{}}>
+        <CommentForm />
+      </Row>
+      <Row>
+        {loaddingCommentList && <Spin className={styles.loading} />}
+        {comment_list.map(comment => (
+          <CommentWrapper
+            key={comment.id}
+            data={comment}
+            currentUser={currentUser}
+            onClickReply={handleClickReply}
+            onClickDelete={handleDelete}
+            showReplyForm={isShowReplyForm(comment.id)}
+          />
+        ))}
+      </Row>
     </div>
   );
 };

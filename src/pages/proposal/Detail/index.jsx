@@ -151,8 +151,9 @@ const Detail = props => {
       <div className={styles.container}>
         <Spin spinning={fetchDetailLoading}>
           <Typography>
-            <Row>
-              <Col span={17}>
+            <div className="margin-l"></div>
+            <Row gutter={[16, 16]} type="flex" align="middle">
+              <Col lg={{ span: 16, offset: 0 }} xs={{ span: 22, offset: 1 }}>
                 <div className={styles.userList}>
                   <Row type="flex" justify="space-between">
                     <Title level={2} className={styles.proposalTitle}>
@@ -168,28 +169,55 @@ const Detail = props => {
                   </Row>
 
                   <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
+
                   <div className={styles.budget}>
-                    <div>
-                      <div className={styles.weight}>{detail.amount}GOO</div>
-                      <div className={styles.zq}>项目预算</div>
-                    </div>
-                    <div>
-                      <div className={styles.weight2}>{detail.estimated_hours / 24}天</div>
-                      <div className={styles.zq}>最大执行周期</div>
-                    </div>
-                    <div className={styles.user}>
-                      <UserAvatar {...detail.creator} size={48} />
-                      <div className="margin-sm"></div>
-                      <Row>
-                        <span className={styles.weight2}>
-                          {detail.creator && detail.creator.username}
-                        </span>
-                        <br />
-                        提交时间: {moment.createTime(detail.created)}
-                      </Row>
-                    </div>
+                    <Row gutter={[16, 16]}>
+                      <Col md={8} xs={24}>
+                        <div className={styles.user}>
+                          <UserAvatar {...detail.creator} size={48} />
+                          <div className="margin-sm"></div>
+                          <Row>
+                            <span className={styles.weight2}>
+                              {detail.creator && detail.creator.username}
+                            </span>
+                            <br />
+                            提交时间: {moment.createTime(detail.created)}
+                          </Row>
+                        </div>
+                      </Col>
+                      <Col md={4} xs={12}>
+                        <div>
+                          <div className={styles.weight}>{detail.amount}GOO</div>
+                          <div className={styles.zq}>项目预算</div>
+                        </div>
+                      </Col>
+                      <Col md={6} xs={12}>
+                        <div>
+                          <div className={styles.weight2}>
+                            {(detail.estimated_hours / 24).toFixed(2)}天
+                          </div>
+                          <div className={styles.zq}>最大执行周期</div>
+                        </div>
+                      </Col>
+                    </Row>
                   </div>
                 </div>
+              </Col>
+
+              <Col lg={{ span: 8, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+                <div className={styles.userList}>
+                  {zone && zone.id == '2' ? (
+                    <Voting detail={detail} />
+                  ) : (
+                    <VoteQrCode detail={detail} />
+                  )}
+                </div>
+              </Col>
+            </Row>
+            <div className="margin-l"></div>
+
+            <Row>
+              <Col lg={{ span: 24, offset: 0 }} xs={{ span: 22, offset: 1 }}>
                 <Tabs
                   size="large"
                   className={styles.tabs}
@@ -239,16 +267,6 @@ const Detail = props => {
                     <div className={styles.comments}>{detail && <Comments id={id} />}</div>
                   </TabPane>
                 </Tabs>
-              </Col>
-
-              <Col span={6} offset={1}>
-                <div className={styles.userList}>
-                  {zone && zone.id == '2' ? (
-                    <Voting detail={detail} />
-                  ) : (
-                    <VoteQrCode detail={detail} />
-                  )}
-                </div>
               </Col>
             </Row>
           </Typography>

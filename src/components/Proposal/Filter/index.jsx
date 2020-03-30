@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Spin, Select, Icon } from 'antd';
+import { Button, Spin, Select, Row, Col } from 'antd';
 import { connect } from 'dva';
 import { getPageQuery } from '@/utils/utils';
 import { proposalStatus } from '@/utils/proposal';
@@ -173,71 +173,76 @@ const Filter = props => {
       )}
 
       <div className={styles.filters}>
-        <div className={styles.category}>
-          <Select
-            name="category"
-            placeholder="Core"
-            style={{ width: 200 }}
-            onChange={onChangeCategory}
-            value={category}
-          >
-            <Option key="all" value="all">
-              Core
-            </Option>
-
-            {proposal_category &&
-              proposal_category.map(ctg => (
-                <Option key={ctg.id} value={ctg.id}>
-                  {ctg.name}
-                  {!zone_id && <span className={styles.count}>({ctg.proposals_count})</span>}
+        <Row gutter={[6, 16]}>
+          <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+            <div className={styles.category}>
+              <Select
+                name="category"
+                placeholder="Core"
+                style={{ width: '100%' }}
+                onChange={onChangeCategory}
+                value={category}
+              >
+                <Option key="all" value="all">
+                  Core
                 </Option>
-              ))}
-          </Select>
-        </div>
 
-        <div className={styles.status}>
-          <Select
-            name="status"
-            placeholder="In Progress"
-            style={{ width: 200 }}
-            onChange={onChangeStatus}
-            value={status}
-          >
-            <Option key="all" value="all">
-              In Progress
-            </Option>
+                {proposal_category &&
+                  proposal_category.map(ctg => (
+                    <Option key={ctg.id} value={ctg.id}>
+                      {ctg.name}
+                      {!zone_id && <span className={styles.count}>({ctg.proposals_count})</span>}
+                    </Option>
+                  ))}
+              </Select>
+            </div>
+          </Col>
+          <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+            <div className={styles.status}>
+              <Select
+                name="status"
+                placeholder="In Progress"
+                style={{ width: '100%' }}
+                onChange={onChangeStatus}
+                value={status}
+              >
+                <Option key="all" value="all">
+                  In Progress
+                </Option>
 
-            {proposalStatus.map(d => (
-              <Option key={d.key} value={d.key}>
-                {d.text}
-              </Option>
-            ))}
-          </Select>
-        </div>
+                {proposalStatus.map(d => (
+                  <Option key={d.key} value={d.key}>
+                    {d.text}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </Col>
+          <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+            <div className={styles.status}>
+              <Select
+                name="sort"
+                placeholder="Newest"
+                style={{ width: '100%' }}
+                onChange={onClickSort}
+                value={sort}
+              >
+                <Option key="all" value="all">
+                  Newest
+                </Option>
 
-        <div className={styles.status}>
-          <Select
-            name="sort"
-            placeholder="Newest"
-            style={{ width: 200 }}
-            onChange={onClickSort}
-            value={sort}
-          >
-            <Option key="all" value="all">
-              Newest
-            </Option>
-
-            {sorts.map(d => (
-              <Option key={d.key} value={d.key}>
-                {d.name}
-              </Option>
-            ))}
-          </Select>
-        </div>
-
-        {/* <div className={styles.sort}>
+                {sorts.map(d => (
+                  <Option key={d.key} value={d.key}>
+                    {d.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </Col>
+          {/* <div className={styles.sort}>
           <Button.Group>{sortButtons()}</Button.Group>
         </div> */}
+        </Row>
       </div>
     </div>
   );

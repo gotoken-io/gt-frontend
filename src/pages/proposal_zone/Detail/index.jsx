@@ -41,8 +41,7 @@ const Detail = props => {
   console.log(props);
 
   // props
-  const { dispatch, zone_detail, match, currentUser, proposal_category } = props;
-  console.log(2, proposal_category);
+  const { dispatch, zone_detail, match, currentUser } = props;
 
   // get proposal id from url params
 
@@ -90,10 +89,8 @@ const Detail = props => {
     vote_addr_weight_json,
     currencies,
     theme_color,
+    total_proposals,
   } = zone_detail;
-
-  const proposals_count = proposal_category.find(categoryInfo => categoryInfo.id == zone_detail.id);
-  console.log({ proposal_category, proposals_count });
 
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
 
@@ -124,14 +121,12 @@ const Detail = props => {
                   </div>
                   <div className={styles.vote}>
                     <div className={styles.toup}>
-                      <span className={styles.num}>
-                        {proposals_count ? proposals_count.proposals_count : 0}
-                      </span>
+                      <span className={styles.num}>{total_proposals}</span>
                       <div>提案数</div>
                     </div>
                     <span>|</span>
                     <div className={styles.toul}>
-                      <span className={styles.num}>2,468</span>
+                      <span className={styles.num}>0</span>
                       <div>参与人数</div>
                     </div>
                   </div>
@@ -182,7 +177,6 @@ export default connect(props => {
   return {
     currentUser: props.user.currentUser,
     zone_detail: props.proposal.zone_detail,
-    proposal_category: props.proposal.proposal_category,
     fetchProposalZoneLoading: props.loading.effects['proposal/fetchProposalZone'],
     delProposalZoneLoading: props.loading.effects['proposal/deleteProposalZone'],
   };

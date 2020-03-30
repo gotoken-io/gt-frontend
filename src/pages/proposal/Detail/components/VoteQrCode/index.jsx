@@ -77,7 +77,11 @@ const VoteQrCode = props => {
 
         <span>总 时 长：{detail.vote_duration_hours}小时</span>
         <div className="margin-l" />
-        <Progress percent={+progress.toFixed(2)} showInfo={false} />
+        <Row>
+          <Col span={20} offset={0}>
+            <Progress percent={+progress.toFixed(2)} showInfo={false} />
+          </Col>
+        </Row>
         <div className="margin-l" />
 
         {isEmpty(currentUser) && (

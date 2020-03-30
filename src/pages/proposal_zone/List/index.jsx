@@ -15,6 +15,9 @@ const List = props => {
       dispatch({
         type: 'proposal/fetchAllProposalZone',
       });
+      dispatch({
+        type: 'proposal/fetchAllCategory',
+      });
     }
   }, []);
 
