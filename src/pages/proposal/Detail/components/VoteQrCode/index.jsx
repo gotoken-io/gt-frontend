@@ -89,12 +89,12 @@ const VoteQrCode = props => {
             <span>首先登录</span>
           </Row>
         )}
-        {!!currentUser.id && !qrCodeData.voter && (
+        {/* {!!currentUser.id && !qrCodeData.voter && (
           <Row type="flex" justify="center">
             <span>找不到此区域中配置地址</span>
           </Row>
-        )}
-        {!!qrCodeData.voter && (
+        )} */}
+        {
           <Row type="flex" justify="space-between">
             <Popover
               content={
@@ -135,7 +135,7 @@ const VoteQrCode = props => {
               </Button>
             </Popover>
           </Row>
-        )}
+        }
         <div className="margin" />
       </div>
     </>

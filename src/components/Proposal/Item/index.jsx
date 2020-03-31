@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Icon, Tag, Badge, Divider, Progress, Steps } from 'antd';
+import { Card, Typography, Icon, Tag, Badge, Divider, Row, Steps } from 'antd';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Image from '@/components/Image';
 import LinesEllipsis from 'react-lines-ellipsis';
@@ -70,17 +70,6 @@ const Item = props => {
       <Link to={`/proposal/detail/${id}`}>
         <Card className={claim ? styles['card-extra-height'] : styles.card} hoverable>
           <div className={styles.cardBody}>
-            <div>
-              {amount > 0 ? (
-                <div className={styles.bz}>
-                  <span>{amount}</span>
-                  <span>{currency_unit.unit ? currency_unit.unit : 'GT'}</span>
-                </div>
-              ) : (
-                <div style={{ height: '30px' }} />
-              )}
-            </div>
-
             <div className={styles.cardTitle}>
               <Title level={4} className={styles.title}>
                 <LinesEllipsis text={title} maxLine="2" />
@@ -89,17 +78,25 @@ const Item = props => {
                 <Text>{zone.name}</Text>
               </div>
             </div>
-            <div className={styles.author}>
-              <div className={styles.info}>
-                {creator && (
-                  <div className={styles.creator}>
-                    <UserAvatar {...creator} />
-                    <Text className={styles.byCreator}>{creator.username}</Text>
-                  </div>
-                )}
+
+            <div className="margin" />
+
+            <Row type="flex" justify="space-between">
+              <div className={styles.creator}>
+                <UserAvatar {...creator} />
+                <Text className={styles.byCreator}>{creator.username}</Text>
+                <span className={styles.datetime}>{moment.createTime(created)}</span>
               </div>
-              <span className={styles.datetime}>{moment.createTime(created)}</span>
-            </div>
+              {amount > 0 ? (
+                <div className={styles.bz}>
+                  <span>{amount}</span>
+                  <span>{currency_unit.unit ? currency_unit.unit : 'GT'}</span>
+                </div>
+              ) : (
+                <div />
+              )}
+            </Row>
+
             <div className={styles.steps}>
               <Steps size="small" current={currentStep()}>
                 <Step title="Claim" />
