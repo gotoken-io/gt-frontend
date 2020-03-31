@@ -185,12 +185,16 @@ const Detail = props => {
                           </Row>
                         </div>
                       </Col>
-                      <Col md={4} xs={12}>
-                        <div>
-                          <div className={styles.weight}>{detail.amount}GOO</div>
-                          <div className={styles.zq}>项目预算</div>
-                        </div>
-                      </Col>
+                      {detail.amount && !!detail.currency_unit > 0 && (
+                        <Col md={4} xs={12}>
+                          <div>
+                            <div className={styles.weight}>
+                              {detail.amount} {detail.currency_unit.unit}
+                            </div>
+                            <div className={styles.zq}>项目预算</div>
+                          </div>
+                        </Col>
+                      )}
                       <Col md={6} xs={12}>
                         <div>
                           <div className={styles.weight2}>

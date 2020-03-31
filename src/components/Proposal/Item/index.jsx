@@ -89,7 +89,7 @@ const Item = props => {
               </div>
               {amount > 0 ? (
                 <div className={styles.bz}>
-                  <span>{amount}</span>
+                  <span>{amount} </span>
                   <span>{currency_unit.unit ? currency_unit.unit : 'GT'}</span>
                 </div>
               ) : (

@@ -143,9 +143,9 @@ const Voting = props => {
       : (100 * (voteDetail.currentBlock - voteDetail.start_height)) /
         (voteDetail.end_height - voteDetail.start_height);
   const canVote =
-    currentUser.id &&
-    voteDetail.signers.includes((web3Info.account || '').toLowerCase()) &&
-    progress < 100;
+    // currentUser.id &&
+    // voteDetail.signers.includes((web3Info.account || '').toLowerCase()) &&
+    web3Info.account && progress < 100;
   console.log(voteDetail, web3Info);
   return (
     <>
@@ -183,7 +183,7 @@ const Voting = props => {
           </Col>
         </Row>
         <div className="margin" />
-        {!web3Info.account && currentUser.id && (
+        {!web3Info.account && (
           <Button
             size="large"
             className="login-form-button"

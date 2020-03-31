@@ -158,9 +158,9 @@ const Detail = props => {
                     </div>
                   </div>
                 </Collapse>
-                <div className={styles.voters}>
+                {/* <div className={styles.voters}>
                   <Button size="small">加入专区</Button>
-                </div>
+                </div> */}
               </div>
             </div>
             {/* proposal list */}

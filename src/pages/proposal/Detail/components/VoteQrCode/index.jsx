@@ -84,11 +84,11 @@ const VoteQrCode = props => {
         </Row>
         <div className="margin-l" />
 
-        {isEmpty(currentUser) && (
+        {/* {isEmpty(currentUser) && (
           <Row type="flex" justify="center">
             <span>首先登录</span>
           </Row>
-        )}
+        )} */}
         {/* {!!currentUser.id && !qrCodeData.voter && (
           <Row type="flex" justify="center">
             <span>找不到此区域中配置地址</span>

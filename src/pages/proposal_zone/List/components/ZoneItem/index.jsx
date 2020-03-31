@@ -46,9 +46,9 @@ const ZoneItem = props => {
                   </div>
                 </div>
               </span>
-              <Button size="small" type="primary">
+              {/* <Button size="small" type="primary">
                 加入专区
-              </Button>
+              </Button> */}
             </div>
             {/* <div className={styles.currency}>
               {currencies.length > 0 &&
