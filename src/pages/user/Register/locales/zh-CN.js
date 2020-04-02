@@ -70,5 +70,5 @@ export default {
   'userandregister.option.A': '同事甲',
   'userandregister.option.B': '同事乙',
   'userandregister.option.C': '同事丙',
-  'userandregister.navBar.lang': '语言',
+  'userandregister.app.lang': '语言',
 };

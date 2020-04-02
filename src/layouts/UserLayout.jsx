@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import { web3Connectors } from '@/services/web3';
 import Web3Provider from 'web3-react';
 import Web3 from 'web3';
+import { useEffect } from 'react';
 
 const UserLayout = props => {
   const {
@@ -31,6 +32,7 @@ const UserLayout = props => {
     formatMessage,
     ...props,
   });
+
   return (
     <>
       <Helmet>

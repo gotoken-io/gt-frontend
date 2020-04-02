@@ -1,6 +1,9 @@
 import React from 'react';
 import ProposalZoneForm from '../components/Form';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
-const Create = () => <ProposalZoneForm title="创建提案专区" />;
+const Create = () => (
+  <ProposalZoneForm title={<FormattedMessage id="proposal_zone.create_zone" />} />
+);
 
 export default Create;

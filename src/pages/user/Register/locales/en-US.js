@@ -74,5 +74,5 @@ export default {
   'userandregister.option.A': 'Colleague A',
   'userandregister.option.B': 'Colleague B',
   'userandregister.option.C': 'Colleague C',
-  'userandregister.navBar.lang': 'Languages',
+  'userandregister.app.lang': 'Languages',
 };

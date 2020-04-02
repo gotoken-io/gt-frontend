@@ -9,6 +9,7 @@ import Link from 'umi/link';
 import ProposalList from './components/ProposalList';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -101,10 +102,12 @@ const Detail = props => {
       {currentUser.admin && (
         <div className={styles.actionBtn}>
           <Link to={`/proposal/zone/update/${id}`}>
-            <Button type="primary">编辑</Button>
+            <Button type="primary">
+              <FormattedMessage id="app.edit" />
+            </Button>
           </Link>
           <Button onClick={handleDelete} type="danger">
-            删除
+            <FormattedMessage id="app.delete" />
           </Button>
         </div>
       )}
@@ -122,37 +125,51 @@ const Detail = props => {
                   <div className={styles.vote}>
                     <div className={styles.toup}>
                       <span className={styles.num}>{total_proposals}</span>
-                      <div>提案数</div>
+                      <div>
+                        <FormattedMessage id="proposal_zone.numberOfProposals" />
+                      </div>
                     </div>
                     <span>|</span>
                     <div className={styles.toul}>
                       <span className={styles.num}>0</span>
-                      <div>参与人数</div>
+                      <div>
+                        <FormattedMessage id="proposal_zone.numberOfParticipants" />
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className={styles.collapse} onClick={() => setCollapse(!collapse)}>
-                  <span>{!collapse ? '收起全部' : '显示全部'}</span>
+                  <span>
+                    <FormattedMessage
+                      id={!collapse ? 'proposal_zone.collapseAll' : 'proposal_zone.displayAll'}
+                    />
+                  </span>
                   <Icon type={collapse ? 'down' : 'up'} />
                 </div>
                 {/* default is collapse */}
                 <Collapse isOpened={!collapse}>
-                  <Title level={3}>介绍</Title>
+                  <Title level={3}>
+                    <FormattedMessage id="proposal_zone.introduce" />
+                  </Title>
                   <div className={styles.detail}>
                     <Paragraph>
                       <div dangerouslySetInnerHTML={{ __html: detail }} />
                     </Paragraph>
                   </div>
 
-                  <Title level={3}>投票规则</Title>
+                  <Title level={3}>
+                    <FormattedMessage id="proposal_zone.vote_rule" />
+                  </Title>
                   <div>
                     <div>
-                      支持% <Icon type="question-circle" />
+                      <FormattedMessage id="proposal_zone.support%" />
+                      <Icon type="question-circle" />
                     </div>
                     <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
                     <div className={styles.tpl}>
                       <div>
-                        最少投票率% <Icon type="question-circle" />
+                        <FormattedMessage id="proposal_zone.minimumVote%" />
+                        <Icon type="question-circle" />
                       </div>
                       <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
                     </div>

@@ -2,6 +2,8 @@ import { parse } from 'querystring';
 import { message } from 'antd';
 import pathRegexp from 'path-to-regexp';
 import router from 'umi/router';
+import { formatMessage } from 'umi-plugin-react/locale';
+
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -63,7 +65,14 @@ export const converHoursToDayAndHour = hours => ({
   hour: Math.floor(hours) % 24,
 });
 
-export const convertToDayHourText = obj => `${obj.day}天${obj.hour}小时`;
+export const convertToDayHourText = obj =>
+  formatMessage(
+    { id: 'app.dayAndHour' },
+    {
+      day: obj.day,
+      hour: obj.hour,
+    },
+  );
 
 export const converHoursToDayHourText = hours => {
   const obj = converHoursToDayAndHour(hours);

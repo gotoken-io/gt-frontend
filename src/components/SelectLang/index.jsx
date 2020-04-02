@@ -42,7 +42,7 @@ const SelectLang = props => {
         <Icon
           type="global"
           title={formatMessage({
-            id: 'navBar.lang',
+            id: 'app.lang',
           })}
         />
       </span>

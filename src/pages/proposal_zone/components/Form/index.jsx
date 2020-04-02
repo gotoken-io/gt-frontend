@@ -12,6 +12,7 @@ import BraftEditor from 'braft-editor';
 import Image from '@/components/Image';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -244,39 +245,43 @@ const ProposalZoneForm = props => {
   const FormContent = (
     <div className={styles.container}>
       <Form className={styles.formContainer} {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item label="提案专区简称">
+        <Form.Item label={<FormattedMessage id="proposal_zone.name" />}>
           {getFieldDecorator('name', {
             rules: [
               {
                 required: true,
-                message: '请输入提案专区简称',
+                message: <FormattedMessage id="proposal_zone.name.required" />,
               },
             ],
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label="提案专区标题">
+        <Form.Item label={<FormattedMessage id="proposal_zone.title" />}>
           {getFieldDecorator('title', {
             rules: [
               {
                 required: true,
-                message: '请输入提案专区标题',
+                message: <FormattedMessage id="proposal_zone.title.required" />,
               },
             ],
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label="提案专区token">
+        <Form.Item label={<FormattedMessage id="proposal_zone.currency" />}>
           {/* now only support single choice */}
           {getFieldDecorator('currency_id', {
             rules: [
               {
                 required: true,
-                message: '请输入提案专区标题',
+                message: <FormattedMessage id="proposal_zone.currency.required" />,
               },
             ],
           })(
-            <Select name="budget-unit" placeholder="请选择token单位" style={{ width: 200 }}>
+            <Select
+              name="budget-unit"
+              placeholder={<FormattedMessage id="proposal_zone.currency.placeholder" />}
+              style={{ width: 200 }}
+            >
               {currency_list &&
                 currency_list.map(currency => (
                   <Option key={currency.id} value={currency.id}>
@@ -287,18 +292,18 @@ const ProposalZoneForm = props => {
           )}
         </Form.Item>
 
-        <Form.Item label="提案专区简介">
+        <Form.Item label={<FormattedMessage id="proposal_zone.summary" />}>
           {getFieldDecorator('summary', {
             rules: [
               {
                 required: true,
-                message: '请输入提案专区简介!',
+                message: <FormattedMessage id="proposal_zone.summary.required" />,
               },
             ],
           })(<TextArea rows={4} />)}
         </Form.Item>
 
-        <Form.Item label="提案专区详情">
+        <Form.Item label={<FormattedMessage id="proposal_zone.detail" />}>
           {getFieldDecorator('detail', {
             validateTrigger: 'onBlur',
             rules: [
@@ -306,7 +311,7 @@ const ProposalZoneForm = props => {
                 required: true,
                 validator: (_, value, callback) => {
                   if (value.isEmpty()) {
-                    callback('请输入提案专区详情内容');
+                    callback(<FormattedMessage id="proposal_zone.detail.required" />);
                   } else {
                     callback();
                   }
@@ -315,14 +320,15 @@ const ProposalZoneForm = props => {
             ],
           })(
             <BraftEditor
+              language={getLocale().includes('en') ? 'en' : 'zh'}
               className={styles.richEditor}
               controls={controls}
-              placeholder="请输入提案专区详情内容"
+              placeholder={<FormattedMessage id="proposal_zone.detail.placeholder" />}
             />,
           )}
         </Form.Item>
 
-        <Form.Item label="上传提案专区封面">
+        <Form.Item label={<FormattedMessage id="proposal_zone.cover" />}>
           {coverStream && (
             <div>
               <Image base64={coverStream} src={cover} size={200} />
@@ -338,11 +344,11 @@ const ProposalZoneForm = props => {
             >
               <Button type="primary" loading={uploading}>
                 {uploading ? (
-                  '上传中...'
+                  <FormattedMessage id="app.uploading" />
                 ) : (
                   <span>
                     <Icon type="upload" />
-                    选择封面
+                    <FormattedMessage id="app.cover.placeholder" />
                   </span>
                 )}
               </Button>
@@ -352,17 +358,17 @@ const ProposalZoneForm = props => {
 
         <Divider />
 
-        <Form.Item label="提案专区风格(css)">
+        <Form.Item label={<FormattedMessage id="proposal_zone.zone_color" />}>
           <div className={styles.colorPicker}>
             <ColorPicker animation="slide-up" color={themeColor} onChange={changeHandler} />
           </div>
         </Form.Item>
 
-        <Form.Item label="投票规则">
+        <Form.Item label={<FormattedMessage id="proposal_zone.vote_rule" />}>
           {getFieldDecorator('vote_rule')(<TextArea placeholder="" rows={4} />)}
         </Form.Item>
 
-        <Form.Item label="投票持续时间(小时)">
+        <Form.Item label={<FormattedMessage id="proposal_zone.vote_duration" />}>
           {getFieldDecorator('vote_duration')(
             <Slider
               range
@@ -380,7 +386,7 @@ const ProposalZoneForm = props => {
           </div>
         </Form.Item>
 
-        <Form.Item label="可投票地址权重分配">
+        <Form.Item label={<FormattedMessage id="proposal_zone.vote_addresses_weights" />}>
           {getFieldDecorator('vote_addr_weight_json')(<TextArea placeholder="" rows={4} />)}
         </Form.Item>
 
@@ -391,10 +397,12 @@ const ProposalZoneForm = props => {
             htmlType="submit"
             loading={id ? props.submitingUpdate : props.submitingCreate}
           >
-            提交
+            <FormattedMessage id="app.submit" />
           </Button>
 
-          <Button size="large">取消</Button>
+          <Button size="large">
+            <FormattedMessage id="app.cancel" />
+          </Button>
         </Form.Item>
       </Form>
     </div>

@@ -74,10 +74,7 @@ const AvatarView = props => {
         >
           <div className={styles.button_view}>
             <Button icon="upload">
-              <FormattedMessage
-                id="userandaccountsettings.basic.change-avatar"
-                defaultMessage="Change avatar"
-              />
+              <FormattedMessage id="userandaccountsettings.basic.change-avatar" />
             </Button>
           </div>
         </Upload>

@@ -6,8 +6,8 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import { getFielUrl } from '@/utils/upload';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
-import Zone from '@/components/Proposal/Zone';
 import { connect } from 'dva';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { Title, Paragraph } = Typography;
 
@@ -41,8 +41,12 @@ const ZoneItem = props => {
                     <LinesEllipsis text={title} maxLine="1" />
                   </Title>
                   <div className={styles.text}>
-                    {total_proposals}个提案·
-                    {/* ·3600人参与 */}
+                    <FormattedMessage
+                      id="proposal_zone.total_proposals"
+                      values={{ total_proposals }}
+                    />
+                    ·
+                    {/* ·3600 <FormattedMessage id="proposal_zone.total_participants"  values={{ total_participants: 3600}} /> */}
                   </div>
                 </div>
               </span>
@@ -54,7 +58,9 @@ const ZoneItem = props => {
               {currencies.length > 0 &&
                 currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
             </div> */}
-            <div className={styles.zxxm}>最新项目</div>
+            <div className={styles.zxxm}>
+              <FormattedMessage id="proposal_zone.newest_proposal" />
+            </div>
             <Paragraph className={styles.summary}>
               <LinesEllipsis text={summary} maxLine="1" ellipsis="..." trimRight />
             </Paragraph>

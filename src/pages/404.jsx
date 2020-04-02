@@ -11,15 +11,13 @@ export default () => (
       background: 'none',
     }}
     subTitle={formatMessage({
-      id: 'exception404.description.404',
-      defaultMessage: 'Sorry, the page you visited does not exist.',
+      id: 'app.error_404',
     })}
     extra={
       <Link to="/">
         <Button type="primary">
           {formatMessage({
-            id: 'exception404.exception.back',
-            defaultMessage: 'Back Home',
+            id: 'app.back_home',
           })}
         </Button>
       </Link>

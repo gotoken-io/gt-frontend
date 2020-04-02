@@ -1,6 +1,7 @@
 import React from 'react';
 import { InputNumber } from 'antd';
 import styles from './style.less';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 const InputDayHour = props => {
   const { settings, values, disabled } = props;
@@ -14,8 +15,8 @@ const InputDayHour = props => {
           value={values.day}
           onChange={val => props.onChange(val, 'day')}
           disabled={disabled}
-        />{' '}
-        天
+        />
+        <FormattedMessage id="app.day" />
       </span>
       <span>
         <InputNumber
@@ -24,8 +25,8 @@ const InputDayHour = props => {
           value={values.hour}
           onChange={val => props.onChange(val, 'hour')}
           disabled={disabled}
-        />{' '}
-        小时
+        />
+        <FormattedMessage id="app.hour" />
       </span>
     </div>
   );
