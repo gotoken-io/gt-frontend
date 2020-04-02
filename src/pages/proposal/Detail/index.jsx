@@ -102,21 +102,6 @@ const Detail = props => {
     });
   }
 
-  const details = [
-    {
-      title: '这里是标题',
-      contents: '我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大',
-    },
-    {
-      title: '这里是标题2',
-      contents: '我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大',
-    },
-    {
-      title: '这里是标题3',
-      contents: '我们大胆奥纠结啊啊啊那看看是萨拉南卡买啊那大胆阿訇 纳丹嗲很大',
-    },
-  ];
-
   const { fetchDetailLoading } = props;
   const { creator, zone } = detail;
 
