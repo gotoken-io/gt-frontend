@@ -6,8 +6,7 @@ import { connect } from 'dva';
 import styles from './index.less';
 import layoutStyles from '@/layouts/style.less';
 import MetamaskLogin from './utils/MetamaskLogin';
-import Register from '../Register/index'
-
+import Register from '../Register/index';
 
 const { TabPane } = Tabs;
 @connect(({ login, loading }) => ({
@@ -112,8 +111,8 @@ class Login extends React.Component {
                     className="login-form-button"
                     block
                   >
-                    SIGN IN
-                </Button>
+                    Sign In
+                  </Button>
                 </Form.Item>
 
                 <Form.Item>
@@ -131,7 +130,6 @@ class Login extends React.Component {
                 <Register />
               </TabPane>
             </Tabs>
-
           </Form>
         </div>
       </div>

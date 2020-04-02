@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Progress, Popover, Button } from 'antd';
+import { Row, Col, Progress, Popover, Button, Icon } from 'antd';
 import QRCode from 'qrcode.react';
 import styles from './index.less';
 import { isEmpty } from 'lodash';
 import { deleteUndefined, toQueryString } from '@/utils/utils';
-import {
-  CaretDownFilled,
-  CaretUpFilled,
-  CheckCircleFilled,
-  CloseCircleFilled,
-} from '@ant-design/icons';
+
 import moment from 'moment';
 const VoteQrCode = props => {
   const { currentUser, detail, dispatch, wallet } = props;
@@ -82,20 +77,24 @@ const VoteQrCode = props => {
 
         <span>总 时 长：{detail.vote_duration_hours}小时</span>
         <div className="margin-l" />
-        <Progress percent={+progress.toFixed(2)} showInfo={false} />
+        <Row>
+          <Col span={20} offset={0}>
+            <Progress percent={+progress.toFixed(2)} showInfo={false} />
+          </Col>
+        </Row>
         <div className="margin-l" />
 
-        {isEmpty(currentUser) && (
+        {/* {isEmpty(currentUser) && (
           <Row type="flex" justify="center">
             <span>首先登录</span>
           </Row>
-        )}
-        {!!currentUser.id && !qrCodeData.voter && (
+        )} */}
+        {/* {!!currentUser.id && !qrCodeData.voter && (
           <Row type="flex" justify="center">
             <span>找不到此区域中配置地址</span>
           </Row>
-        )}
-        {!!qrCodeData.voter && (
+        )} */}
+        {
           <Row type="flex" justify="space-between">
             <Popover
               content={
@@ -112,7 +111,7 @@ const VoteQrCode = props => {
               title="二维码"
             >
               <Button>
-                <CaretUpFilled style={{ color: 'green', fontSize: '12px' }} />
+                <Icon type="caret-up" theme="filled" style={{ color: 'green', fontSize: '12px' }} />
                 支持
               </Button>
             </Popover>
@@ -131,12 +130,12 @@ const VoteQrCode = props => {
               title="二维码"
             >
               <Button>
-                <CaretDownFilled style={{ color: 'red', fontSize: '12px' }} />
+                <Icon type="caret-down" theme="filled" style={{ color: 'red', fontSize: '12px' }} />
                 反对
               </Button>
             </Popover>
           </Row>
-        )}
+        }
         <div className="margin" />
       </div>
     </>

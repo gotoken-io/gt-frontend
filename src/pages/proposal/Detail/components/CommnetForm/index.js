@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Row, Col } from 'antd';
 import { connect } from 'dva';
 import UserAvatar from '@/components/User/UserAvatar';
 
@@ -9,7 +9,7 @@ const { TextArea } = Input;
 
 const CommentForm = props => {
   const { getFieldDecorator, getFieldsError, resetFields } = props.form;
-  const { submittingCreate } = props;
+  const { submittingCreate, currentUser } = props;
 
   const hasErrors = fieldsError => Object.keys(fieldsError).some(field => fieldsError[field]);
 
@@ -34,29 +34,41 @@ const CommentForm = props => {
       }
     });
   };
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div className={styles.container}>
-      <Form onSubmit={handleSubmit} className={styles.content}>
-        {/* <UserAvatar {...creator} /> */}
-        <Form.Item className={styles.input}>
-          {getFieldDecorator('text', {
-            rules: [
-              { required: true, message: '请输入评论内容' },
-              { max: 250, message: '评论内容最多250字符' },
-            ],
-          })(<Input allowClear />)}
-        </Form.Item>
-
-        <Form.Item className={styles.button}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={hasErrors(getFieldsError()) || submittingCreate}
-          >
-            提交
-          </Button>
-        </Form.Item>
+      <Form onSubmit={handleSubmit}>
+        <Row gutter={[16, 16]}>
+          <Col lg={{ span: 1 }} xs={{ span: 4 }}>
+            <Form.Item>
+              <UserAvatar {...currentUser} />
+            </Form.Item>
+          </Col>
+          <Col lg={{ span: 8 }} xs={{ span: 14 }}>
+            <Form.Item>
+              {getFieldDecorator('text', {
+                rules: [
+                  { required: true, message: '请输入评论内容' },
+                  { max: 250, message: '评论内容最多250字符' },
+                ],
+              })(<Input allowClear style={{ width: '100%' }} />)}
+            </Form.Item>
+          </Col>
+          <Col lg={{ span: 2 }} xs={{ span: 2 }}>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={hasErrors(getFieldsError()) || submittingCreate}
+              >
+                提交
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </div>
   );
