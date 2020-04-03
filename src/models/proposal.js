@@ -70,9 +70,7 @@ const ProposalModel = {
     *createCategory({ payload }, { call, put }) {
       const response = yield call(createCategory, payload);
       if (response.status === 'success') {
-        message.success(
-          formatMessage({ id: 'proposal.models.create_proposal_classification_success' }),
-        );
+        message.success(formatMessage({ id: 'proposal.models.category_success' }));
         yield put({
           type: 'createCategoryList',
           payload: response.data,
@@ -87,9 +85,7 @@ const ProposalModel = {
     *updateCategory({ payload }, { call, put }) {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
-        message.success(
-          formatMessage({ id: 'proposal.models.edit_proposal_classification_success' }),
-        );
+        message.success(formatMessage({ id: 'proposal.models.category_updated' }));
         yield put({
           type: 'updateCategoryList',
           payload,
@@ -104,9 +100,7 @@ const ProposalModel = {
     *deleteCategory({ payload }, { call, put }) {
       const response = yield call(deleteCategory, payload);
       if (response.status === 'success') {
-        message.success(
-          formatMessage({ id: 'proposal.models.delete_proposal_classification_success' }),
-        );
+        message.success(formatMessage({ id: 'proposal.models.delete_category' }));
         yield put({
           type: 'deleteCategoryList',
           payload,
@@ -198,7 +192,7 @@ const ProposalModel = {
 
     *createProposal({ payload }, { call, put }) {
       const response = yield call(createProposal, payload);
-      if (response.status === 'success') { 
+      if (response.status === 'success') {
         message.success(formatMessage({ id: 'proposal.models.create_proposal_success' }));
         yield put(
           routerRedux.replace({
@@ -215,14 +209,14 @@ const ProposalModel = {
     *updateProposal({ payload }, { call, put }) {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
-        showMsgGoBack(formatMessage({ id: 'proposal.models.edit_proposal_success' }));
+        showMsgGoBack(formatMessage({ id: 'proposal.models.proposal_updated' }));
       }
     },
 
     *updateProposalStatus({ payload }, { call, _ }) {
       const response = yield call(updateProposalStatus, payload);
       if (response.status === 'success') {
-        showMsgReload(formatMessage({ id: 'proposal.models.edit_proposal_status_success' }));
+        showMsgReload(formatMessage({ id: 'proposal.models.proposal_status_updated' }));
         return true;
       }
     },
@@ -230,7 +224,7 @@ const ProposalModel = {
     *deleteProposal({ payload }, { call, put }) {
       const response = yield call(deleteProposal, payload);
       if (response.status === 'success') {
-        message.success(formatMessage({ id: 'proposal.models.delete_proposal_success' }));
+        message.success(formatMessage({ id: 'proposal.models.proposal_deleted' }));
         yield put(
           routerRedux.replace({
             pathname: '/',
@@ -264,7 +258,7 @@ const ProposalModel = {
 
       if (response.status === 'fail') {
         if (response.code === 409) {
-          message.error(formatMessage({ id: 'proposal.models.exist_same_name' }));
+          message.error(formatMessage({ id: 'proposal.models.proposal_zone_duplicated' }));
         }
       }
     },
@@ -288,7 +282,7 @@ const ProposalModel = {
     *updateProposalProgress({ payload }, { call, put }) {
       const response = yield call(updateProposalProgress, payload);
       if (response.status === 'success') {
-        showMsgReload(formatMessage({ id: 'proposal.models.update_proposal_success' }));
+        showMsgReload(formatMessage({ id: 'proposal.models.proposal_progress_updated' }));
 
         return true;
       }
@@ -313,7 +307,7 @@ const ProposalModel = {
         proposal_id: payload.proposal_id,
       });
       if (response.status !== 'success') {
-        message.error(formatMessage({ id: 'proposal.models.proposal_claims_unsuccess' }));
+        message.error(formatMessage({ id: 'proposal.models.claim_failed' }));
         return true;
       }
       const addTeamResponse = yield call(addTeam, {
@@ -323,10 +317,10 @@ const ProposalModel = {
       });
 
       if (addTeamResponse.status !== 'success') {
-        message.error(formatMessage({ id: 'proposal.models.proposal_claims_unsuccess' }));
+        message.error(formatMessage({ id: 'proposal.models.claim_failed' }));
         return true;
       }
-      showMsgReload(formatMessage({ id: 'proposal.models.proposal_claims_success' }));
+      showMsgReload(formatMessage({ id: 'proposal.models.claim_created' }));
       return true;
     },
     *addTeamMember({ payload }, { call, put }) {
@@ -337,10 +331,10 @@ const ProposalModel = {
       });
 
       if (addTeamResponse.status !== 'success') {
-        message.error(formatMessage({ id: 'proposal.models.proposal_claims_unsuccess' }));
+        message.error(formatMessage({ id: 'proposal.models.claim_failed' }));
         return true;
       }
-      showMsgReload(formatMessage({ id: 'proposal.models.proposal_claims_success' }));
+      showMsgReload(formatMessage({ id: 'proposal.models.claim_created' }));
       return true;
     },
     *deleteTeamMember({ payload }, { call, put }) {
@@ -351,17 +345,17 @@ const ProposalModel = {
       });
 
       if (result.status !== 'success') {
-        message.error(formatMessage({ id: 'proposal.models.delete_proposal_unsuccess' }));
+        message.error(formatMessage({ id: 'proposal.models.delete_team_member_failed' }));
         return true;
       }
-      showMsgReload(formatMessage({ id: 'proposal.models.delete_proposal_success' }));
+      showMsgReload(formatMessage({ id: 'proposal.models.team_member_deleted' }));
       return true;
     },
 
     *cancelClaimProposal({ payload }, { call, put }) {
       const response = yield call(cancelClaimProposal, payload);
       if (response.status === 'success') {
-        showMsgReload(formatMessage({ id: 'proposal.models.cancel_proposal_claims_success' }));
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_canceled' }));
 
         return true;
       }
@@ -370,7 +364,7 @@ const ProposalModel = {
     *verifyProposalClaim({ payload }, { call, put }) {
       const response = yield call(verifyProposalClaim, payload);
       if (response.status === 'success') {
-        showMsgReload(formatMessage({ id: 'proposal.models.audit_proposal_claims_success' }));
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_audited' }));
 
         return true;
       }
@@ -379,7 +373,7 @@ const ProposalModel = {
     *submitProposalClaimResult({ payload }, { call, put }) {
       const response = yield call(submitProposalClaimResult, payload);
       if (response.status === 'success') {
-        showMsgReload(formatMessage({ id: 'proposal.models.proposal_results_submit_success' }));
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_submit_result' }));
 
         return true;
       }
@@ -388,7 +382,7 @@ const ProposalModel = {
     *verifyProposalClaimResult({ payload }, { call, put }) {
       const response = yield call(verifyProposalClaimResult, payload);
       if (response.status === 'success') {
-        showMsgReload(formatMessage({ id: 'proposal.models.proposal_claims_submit_success' }));
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_result_verified' }));
         return true;
       }
     },
