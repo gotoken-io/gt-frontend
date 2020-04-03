@@ -6,6 +6,7 @@ import { proposalStatus } from '@/utils/proposal';
 import router from 'umi/router';
 import Link from 'umi/link';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { Option } = Select;
 
@@ -158,7 +159,7 @@ const Filter = props => {
       {/* if set zone_id, hide proposal zone choose */}
       {!zone_id && (
         <div className={styles.zone}>
-          <h3 className={styles.title}>提案专区：</h3>
+          <h3 className={styles.title}><FormattedMessage id="proposal.proposal_zone" />：</h3>
 
           <Spin spinning={props.loadingZone}>
             <div className={styles.zoneItems}>

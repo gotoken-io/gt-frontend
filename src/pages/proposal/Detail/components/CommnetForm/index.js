@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Input, Button, message, Row, Col } from 'antd';
 import { connect } from 'dva';
 import UserAvatar from '@/components/User/UserAvatar';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+
 
 import styles from './style.less';
 
@@ -29,7 +31,7 @@ const CommentForm = props => {
           // clear input value
           resetFields();
         } else {
-          message.error('请先登陆');
+          message.error(<FormattedMessage id="proposal.detail.comments.login" />);
         }
       }
     });
@@ -51,8 +53,8 @@ const CommentForm = props => {
             <Form.Item>
               {getFieldDecorator('text', {
                 rules: [
-                  { required: true, message: '请输入评论内容' },
-                  { max: 250, message: '评论内容最多250字符' },
+                  { required: true, message: <FormattedMessage id="proposal.detail.comments.comments_content" /> },
+                  { max: 250, message: <FormattedMessage id="proposal.detail.comments.content_max" /> },
                 ],
               })(<Input allowClear style={{ width: '100%' }} />)}
             </Form.Item>
@@ -64,7 +66,7 @@ const CommentForm = props => {
                 htmlType="submit"
                 loading={hasErrors(getFieldsError()) || submittingCreate}
               >
-                提交
+                <FormattedMessage id="app.submit" />
               </Button>
             </Form.Item>
           </Col>

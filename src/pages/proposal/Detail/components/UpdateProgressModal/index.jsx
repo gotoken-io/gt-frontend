@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal } from 'antd';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import { connect } from 'dva';
 
 const { TextArea } = Input;
@@ -42,19 +43,19 @@ const UpdateProgressModal = props => {
 
   return (
     <Modal
-      title="更新提案进度"
+      title={<FormattedMessage id="proposal.detail.claims.update_proposal_progress" />}
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
       onCancel={props.onCancel}
     >
       <Form>
-        <Form.Item label="提案进度概况">
+        <Form.Item label={<FormattedMessage id="proposal.detail.claims.progress_general_situation" />}>
           {getFieldDecorator('progress_content', {
             rules: [
               {
                 required: true,
-                message: '请输入提案进度概况!',
+                message: <FormattedMessage id="proposal.detail.claims.input_general_situation" />,
               },
             ],
           })(<TextArea rows={4} />)}

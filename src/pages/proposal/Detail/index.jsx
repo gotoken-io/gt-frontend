@@ -18,6 +18,8 @@ import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Claims from './components/Claims';
 import VoteQrCode from './components/VoteQrCode';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -74,10 +76,15 @@ const Detail = props => {
 
   function showDelConfirm() {
     confirm({
-      title: `确定删除提案 ${detail.zone.name} No.${detail.zone_proposal_id}?`,
-      content: '点击确定后，提案将删除',
-      okText: '确认',
-      cancelText: '取消',
+      title: (
+        <FormattedMessage
+          id="proposal.delete.title"
+          values={{ zone_name: detail.zone.name, zone_proposal_id: detail.zone_proposal_id }}
+        />
+      ),
+      content: <FormattedMessage id="proposal.detail.comments" />,
+      okText: <FormattedMessage id="app.confirm" />,
+      cancelText: <FormattedMessage id="app.cancel" />,
 
       onOk() {
         return new Promise((resolve, reject) => {
@@ -106,20 +113,20 @@ const Detail = props => {
       {isCreatorOrAdmin({ currentUser, creator }) && (
         <Menu.Item key="1">
           <Link to={`/proposal/update/${id}`}>
-            <Icon type="form" /> 编辑提案
+            <Icon type="form" /> <FormattedMessage id="proposal.detail.update" />
           </Link>
         </Menu.Item>
       )}
 
       {isAdmin({ currentUser }) && (
         <Menu.Item key="2" onClick={showDelConfirm}>
-          <Icon type="close-circle" /> 删除提案
+          <Icon type="close-circle" /> <FormattedMessage id="proposal.detail.delete" />
         </Menu.Item>
       )}
       {isAdmin({ currentUser }) && (
         <Menu.Item key="3" onClick={() => setChangeStatusModalShow(true)}>
           <Icon type="undo" />
-          修改状态
+          <FormattedMessage id="proposal.detail.modify" />
           <ChangeStatusModal
             {...detail}
             visible={changeStatusModalShow}
@@ -166,7 +173,8 @@ const Detail = props => {
                               {detail.creator && detail.creator.username}
                             </span>
                             <br />
-                            提交时间: {moment.createTime(detail.created)}
+                            <FormattedMessage id="proposal.detail.submit_time" />:{' '}
+                            {moment.createTime(detail.created)}
                           </Row>
                         </div>
                       </Col>
@@ -176,7 +184,9 @@ const Detail = props => {
                             <div className={styles.weight}>
                               {detail.amount} {detail.currency_unit.unit}
                             </div>
-                            <div className={styles.zq}>项目预算</div>
+                            <div className={styles.zq}>
+                              <FormattedMessage id="proposal.detail.project_budget" />
+                            </div>
                           </div>
                         </Col>
                       )}
@@ -185,7 +195,9 @@ const Detail = props => {
                           <div className={styles.weight2}>
                             {(detail.estimated_hours / 24).toFixed(2)}天
                           </div>
-                          <div className={styles.zq}>最大执行周期</div>
+                          <div className={styles.zq}>
+                            <FormattedMessage id="proposal.detail.max_lifecycle" />
+                          </div>
                         </div>
                       </Col>
                     </Row>
@@ -214,9 +226,14 @@ const Detail = props => {
                   defaultActiveKey="detail"
                   onChange={() => {}}
                 >
-                  <TabPane tab="详情描述" key="detail">
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.details_description" />}
+                    key="detail"
+                  >
                     <div className={styles.detail}>
-                      <div className={styles.describe}>详情描述</div>
+                      <div className={styles.describe}>
+                        <FormattedMessage id="proposal.detail.submit_time" />
+                      </div>
                       <div className={styles.details}>
                         <div className={styles.content}>
                           {/* {details.map((item, index) => {
@@ -234,7 +251,10 @@ const Detail = props => {
                     </div>
                   </TabPane>
 
-                  <TabPane tab="申领详情" key="claims">
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.claims_details" />}
+                    key="claims"
+                  >
                     <Claims
                       proposal_status_key={detail.status_key}
                       id={id}
@@ -242,17 +262,23 @@ const Detail = props => {
                     />
                   </TabPane>
 
-                  <TabPane tab="项目进度" key="logs">
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.project_schedule" />}
+                    key="logs"
+                  >
                     <div className={styles.logs}>
                       <Logs id={id} proposal_creator={creator} />
                     </div>
                   </TabPane>
 
-                  <TabPane tab="协作看板" key="tasks">
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.collaboration_kanban" />}
+                    key="tasks"
+                  >
                     <div className={styles.logs}></div>
                   </TabPane>
 
-                  <TabPane tab="评论" key="comments">
+                  <TabPane tab={<FormattedMessage id="proposal.detail.comments" />} key="comments">
                     <div className={styles.comments}>{detail && <Comments id={id} />}</div>
                   </TabPane>
                 </Tabs>

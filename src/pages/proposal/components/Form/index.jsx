@@ -324,7 +324,7 @@ const ProposalForm = props => {
           })(
             <Select
               style={{ width: 250 }}
-              placeholder={<FormattedMessage id="proposal.zone_id.placeholder" />}
+              placeholder={formatMessage({ id: 'proposal.zone_id.placeholder' })}
               name="proposal-zone"
               onSelect={onSelectProposalZone}
               disabled={!!id}
@@ -371,7 +371,7 @@ const ProposalForm = props => {
           })(
             <Select
               name="category"
-              placeholder={<FormattedMessage id="proposal.category.placeholder" />}
+              placeholder={ formatMessage({ id: 'proposal.category.placeholder' })}
               style={{ width: 200 }}
             >
               {proposal_category &&
@@ -423,7 +423,7 @@ const ProposalForm = props => {
               })(
                 <Select
                   name="budget-unit"
-                  placeholder={<FormattedMessage id="proposal.currency.placeholder" />}
+                  placeholder={ formatMessage({ id: 'proposal.currency.placeholder' })}
                   style={{ width: 200, marginLeft: 10 }}
                 >
                   {selectCurrency &&
@@ -490,7 +490,7 @@ const ProposalForm = props => {
               language={getLocale().includes('en') ? 'en' : 'zh'}
               className={styles.richEditor}
               controls={controls}
-              placeholder={<FormattedMessage id="proposal.detail.placeholder" />}
+              placeholder={formatMessage({ id: 'proposal.detail.placeholder' })}
             />,
           )}
         </Form.Item>

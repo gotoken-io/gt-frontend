@@ -12,6 +12,8 @@ import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import UserAvatar from '@/components/User/UserAvatar';
 import UpdateProposalProgress from '../UpdateProgressModal';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+
 
 const Logs = props => {
   // state
@@ -68,7 +70,7 @@ const Logs = props => {
           const link_to_user = <Link to={`/user/${to_value}`}>{to_value}</Link>;
           content = (
             <span>
-              审核{link_to_user}
+              <FormattedMessage id="proposal.detail.claims.audit" />{link_to_user}
               {getProposalEventTextByKey(event_key)}
             </span>
           );
@@ -90,7 +92,7 @@ const Logs = props => {
       {isCreatorOrAdmin({ currentUser, creator: proposal_creator }) && (
         <div className={styles.actions}>
           <Button type="primary" onClick={() => setUpdateProgressVisible(true)}>
-            更新项目进度
+          <FormattedMessage id="proposal.detail.comments.update_progress" />
           </Button>
           <UpdateProposalProgress
             id={id}

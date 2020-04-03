@@ -95,7 +95,6 @@ const Detail = props => {
 
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
 
-  const image = require('../../../../public/metamask.jpeg');
   console.log({ zone_detail });
   return (
     <GridContent>
@@ -124,7 +123,7 @@ const Detail = props => {
                   </div>
                   <div className={styles.vote}>
                     <div className={styles.toup}>
-                      <span className={styles.num}>{total_proposals}</span>
+                      <span className={styles.num}>{total_proposals?total_proposals:'0'}</span>
                       <div>
                         <FormattedMessage id="proposal_zone.numberOfProposals" />
                       </div>

@@ -5,6 +5,7 @@ import QRCode from 'qrcode.react';
 import styles from './index.less';
 import { isEmpty } from 'lodash';
 import { deleteUndefined, toQueryString } from '@/utils/utils';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 import moment from 'moment';
 const VoteQrCode = props => {
@@ -24,12 +25,12 @@ const VoteQrCode = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票情况</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote" /></span>
         </Row>
         <div className="margin-l" />
 
         <Row type="flex" justify="center">
-          <span>投票尚未配置</span>
+          <span><FormattedMessage id="proposal.detail.voteqrcode.vote_not_configuration" /></span>
         </Row>
       </>
     );
@@ -43,12 +44,12 @@ const VoteQrCode = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票情况</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote" /></span>
         </Row>
         <div className="margin-l" />
 
         <Row type="flex" justify="center">
-          <span>投票已截止，未能达成决议</span>
+          <span><FormattedMessage id="proposal.detail.voteqrcode.as_failed" /></span>
         </Row>
       </>
     );
@@ -69,13 +70,13 @@ const VoteQrCode = props => {
     <>
       <div>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票状况</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote_in" /></span>
         </Row>
         <div className="margin-sm" />
-        <span className={styles.votingTitle}>投票状况</span>
+        <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote_in" /></span>
         <div className="margin" />
 
-        <span>总 时 长：{detail.vote_duration_hours}小时</span>
+        <span><FormattedMessage id="proposal.detail.voteqrcode.total_length" />：{detail.vote_duration_hours}<FormattedMessage id="app.hour" /></span>
         <div className="margin-l" />
         <Row>
           <Col span={20} offset={0}>
@@ -108,11 +109,11 @@ const VoteQrCode = props => {
                   />
                 </Row>
               }
-              title="二维码"
+              title={<FormattedMessage id="proposal.detail.voteqrcode.qr_code" />}
             >
               <Button>
                 <Icon type="caret-up" theme="filled" style={{ color: 'green', fontSize: '12px' }} />
-                支持
+                <FormattedMessage id="proposal.detail.voteqrcode.support" />
               </Button>
             </Popover>
             <Popover
@@ -127,11 +128,11 @@ const VoteQrCode = props => {
                   />
                 </Row>
               }
-              title="二维码"
+              title={<FormattedMessage id="proposal.detail.voteqrcode.qr_code" />}
             >
               <Button>
                 <Icon type="caret-down" theme="filled" style={{ color: 'red', fontSize: '12px' }} />
-                反对
+                <FormattedMessage id="proposal.detail.voteqrcode.against" />
               </Button>
             </Popover>
           </Row>

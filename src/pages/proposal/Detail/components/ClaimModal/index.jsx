@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal, List, Skeleton } from 'antd';
 import { connect } from 'dva';
 import UserAvatar from '@/components/User/UserAvatar';
+import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
 
 import styles from './style.less';
 
@@ -39,32 +40,32 @@ const ClaimModal = props => {
 
   return (
     <Modal
-      title="申领提案"
+      title={<FormattedMessage id="proposal.detail.clsimd_proposal" />}
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
       onCancel={props.onCancel}
     >
       <Form>
-        <Form.Item label="申领理由">
+        <Form.Item label={<FormattedMessage id="proposal.claims_reason" />}>
           {getFieldDecorator('reason', {
             rules: [
               {
                 required: true,
-                message: '请输入申领此提案理由!',
+                message: <FormattedMessage id="proposal.detail.claims.input_fill_reason" />,
               },
             ],
-          })(<TextArea rows={4} placeholder="填写申领此提案理由" />)}
+          })(<TextArea rows={4} placeholder={formatMessage({id:"proposal.detail.claims.fill_reason"})} />)}
         </Form.Item>
-        <Form.Item label="安排时间">
+        <Form.Item label={<FormattedMessage id="proposal.detail.arrange_time" />}>
           {getFieldDecorator('plan', {
             rules: [
               {
                 required: true,
-                message: '请输入安排时间!',
+                message: <FormattedMessage id="proposal.detail.claims.input_arrange_time" />,
               },
             ],
-          })(<TextArea rows={4} placeholder="填写领安排时间" />)}
+          })(<TextArea rows={4} placeholder={formatMessage({id:"proposal.detail.claims.arrange_time"})} />)}
         </Form.Item>
         <div>
           <List
@@ -75,17 +76,17 @@ const ClaimModal = props => {
                 <Skeleton avatar loading={false} title={false} active>
                   <List.Item.Meta
                     avatar={<UserAvatar size={48} {...owner} />}
-                    title={'责任 ' + owner.email}
+                    title={<FormattedMessage id="proposal.detail.claims.responsibility" values={{owner_email: owner.email}}/> }
                     description={
                       <>
                         {getFieldDecorator('responsibility', {
                           rules: [
                             {
                               required: true,
-                              message: '请输入员负责内容!',
+                              message: <FormattedMessage id="proposal.detail.responsible_content" />,
                             },
                           ],
-                        })(<Input placeholder="填写领安排时间" style={{ width: '80%' }} />)}
+                        })(<Input placeholder={formatMessage({id:"proposal.detail.claims.input_arrange_time"})} style={{ width: '80%' }} />)}
                       </>
                     }
                   />
@@ -98,15 +99,15 @@ const ClaimModal = props => {
           />
         </div>
 
-        <Form.Item label="收币地址">
+        <Form.Item label={<FormattedMessage id="proposal.detail.claims.collect_address" />}>
           {getFieldDecorator('payment_address', {
             rules: [
               {
                 required: true,
-                message: '请输入收币地址!',
+                message: <FormattedMessage id="proposal.detail.claims.input_collect_address" />,
               },
             ],
-          })(<Input placeholder="填写收币地址" />)}
+          })(<Input placeholder={formatMessage({id:"proposal.detail.claims.fill_collect"}) } />)}
         </Form.Item>
       </Form>
     </Modal>

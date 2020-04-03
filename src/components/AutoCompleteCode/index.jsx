@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Select, Spin } from 'antd';
+import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
+
 export const AutoCompleteCode = props => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ export const AutoCompleteCode = props => {
       filterOption={(input, option) =>
         option.props.value.includes(input) || option.props.children.includes(input)
       }
-      placeholder={`请输入${label}昵称`}
+      placeholder={<FormattedMessage id="autocomplete.input_label" values={{label}} />}
       notFoundContent={list.length === 0 && loading ? <Spin size="small" /> : null}
       allowClear={true}
     >
