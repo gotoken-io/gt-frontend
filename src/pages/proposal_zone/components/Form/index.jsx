@@ -12,7 +12,7 @@ import BraftEditor from 'braft-editor';
 import Image from '@/components/Image';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage ,formatMessage} from 'umi-plugin-react/locale';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -279,7 +279,7 @@ const ProposalZoneForm = props => {
           })(
             <Select
               name="budget-unit"
-              placeholder={<FormattedMessage id="proposal_zone.currency.placeholder" />}
+              placeholder={formatMessage({id:"proposal_zone.currency.placeholder"})}
               style={{ width: 200 }}
             >
               {currency_list &&
@@ -323,7 +323,7 @@ const ProposalZoneForm = props => {
               language={getLocale().includes('en') ? 'en' : 'zh'}
               className={styles.richEditor}
               controls={controls}
-              placeholder={<FormattedMessage id="proposal_zone.detail.placeholder" />}
+              placeholder={formatMessage({id:"proposal_zone.detail.placeholder"})}
             />,
           )}
         </Form.Item>

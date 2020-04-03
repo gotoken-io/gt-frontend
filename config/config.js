@@ -55,15 +55,7 @@ const plugins = [
     },
   ],
 ]; // 针对 preview.pro.ant.design 的 GA 统计代码
-plugins.push([
-  {
-    locale: {
-      enable: true,
-      default: 'zh-CN',
-      baseNavigator: true,
-    },
-  },
-]);
+ 
 plugins.push([
   'umi-plugin-ga',
   {

@@ -5,6 +5,7 @@ import styles from './index.less';
 import { VoteContract, VoteValueEnum } from '../../../../../services/voteContract';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 import { useWeb3Context } from 'web3-react';
 
@@ -48,13 +49,13 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票情况</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote" /></span>
         </Row>
         <div className="margin-l" />
 
         <Row type="flex" justify="center">
           <span style={{ textAlign: 'center' }}>
-            为了获取投票信息，请首先启用Web3提供程序作为元掩码
+          <FormattedMessage id="proposal.detail.voting.enable_web3" />
           </span>
           <div className="margin" />
 
@@ -68,7 +69,7 @@ const Voting = props => {
             <Row type="flex" align="middle" justify="center">
               <>
                 <img src="/metamask.jpeg" className={styles.metamaskIcon} />
-                {`安装掩码`}
+                {<FormattedMessage id="proposal.detail.voting.installation_mask" />}
               </>
             </Row>
           </Button>
@@ -81,7 +82,7 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票情况</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote" /></span>
         </Row>
         <div className="margin" />
 
@@ -98,11 +99,11 @@ const Voting = props => {
                   }
                 }}
               >
-                创建投票合约
+                <FormattedMessage id="proposal.detail.voting.creact_contract" />
               </Button>
             </div>
           ) : (
-            <span>提案尚未上链</span>
+            <span><FormattedMessage id="proposal.detail.voting.not_chain" /></span>
           )}
         </Row>
       </>
@@ -113,7 +114,7 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票结果</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voting.vote_results" /></span>
         </Row>
         <div className="margin" />
         {voteDetail.value}
@@ -121,7 +122,7 @@ const Voting = props => {
           <div className="column center">
             <Icon type="check-circle" theme="filled" style={{ color: 'green', fontSize: '48px' }} />
             <div className="margin-sm" />
-            <span>该提案已获批准</span>
+            <span><FormattedMessage id="proposal.detail.voting.approval" /></span>
           </div>
         )}
         {voteDetail.value === VoteValueEnum.disagree && (
@@ -129,7 +130,7 @@ const Voting = props => {
             <div className="column center">
               <Icon type="close-circle" theme="filled" style={{ color: 'red', fontSize: '48px' }} />
               <div className="margin-sm" />
-              <span>提案被拒绝</span>
+              <span><FormattedMessage id="proposal.detail.voting.refused" /></span>
             </div>
           </Row>
         )}
@@ -151,7 +152,7 @@ const Voting = props => {
     <>
       <div>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}>投票状况</span>
+          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote_in" /></span>
         </Row>
         <div className="margin" />
         <Row>
@@ -162,13 +163,13 @@ const Voting = props => {
             </span>
           </Col> */}
           <Col span={18}>
-            <span>总 时 长：{detail.vote_duration_hours}小时</span>
+            <span><FormattedMessage id="proposal.detail.voteqrcode.total_length" />：{detail.vote_duration_hours}<FormattedMessage id="app.hour" /></span>
           </Col>
           <Col span={12}>
-            <span>起始区块： {voteDetail.start_height}</span>
+            <span><FormattedMessage id="proposal.detail.voting.starting_blocks" />： {voteDetail.start_height}</span>
           </Col>
           <Col span={12}>
-            <span>结束区块： {voteDetail.end_height}</span>
+            <span><FormattedMessage id="proposal.detail.voting.ending_blocks" />： {voteDetail.end_height}</span>
           </Col>
         </Row>
         <div className="margin" />
@@ -178,7 +179,7 @@ const Voting = props => {
             {progress !== 100 ? (
               <Progress percent={+progress.toFixed(2)} />
             ) : (
-              <span>投票已截止，未能达成决议</span>
+              <span><FormattedMessage id="proposal.detail.voteqrcode.as_failed" /></span>
             )}
           </Col>
         </Row>
@@ -201,7 +202,7 @@ const Voting = props => {
             <Row type="flex" align="middle" justify="center">
               <>
                 <img src="/metamask.jpeg" className={styles.metamaskIcon} />
-                {`连接Metamask`}
+                {<FormattedMessage id="proposal.detail.voting.connection_metamask" />}
               </>
             </Row>
           </Button>
@@ -212,13 +213,13 @@ const Voting = props => {
               onClick={() => vote({ dispatch, detail, value: VoteValueEnum.agree, web3Info })}
             >
               <Icon type="caret-up" theme="filled" style={{ color: 'green', fontSize: '12px' }} />
-              支持
+              <FormattedMessage id="proposal.detail.voteqrcode.support" />
             </Button>
             <Button
               onClick={() => vote({ dispatch, detail, value: VoteValueEnum.disagree, web3Info })}
             >
               <Icon type="caret-down" theme="filled" style={{ color: 'red', fontSize: '12px' }} />
-              反对
+              <FormattedMessage id="proposal.detail.voteqrcode.against" />
             </Button>
           </Row>
         )}
@@ -237,7 +238,7 @@ async function createVote({ dispatch, detail }) {
     type: 'proposal/fetchVoteInformation',
     payload: { zone: detail.zone, hash: detail.onchain_hash },
   });
-  message.info('交易已提交，请稍后检查Metamask确认交易结果');
+  message.info(<FormattedMessage id="proposal.detail.voting.trading_submit" />);
 }
 
 async function vote({ dispatch, value, detail, web3Info }) {
@@ -254,7 +255,7 @@ async function vote({ dispatch, value, detail, web3Info }) {
     type: 'proposal/fetchVoteInformation',
     payload: { zone: detail.zone, hash: detail.onchain_hash },
   });
-  message.info('交易已提交，请稍后检查Metamask确认交易结果');
+  message.info(<FormattedMessage id="proposal.detail.voting.trading_submit" />);
 }
 export default connect(data => {
   return {

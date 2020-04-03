@@ -9,6 +9,8 @@ import styles from './style.less';
 import UserAvatar from '@/components/User/UserAvatar';
 import { getClaimStatusByKey } from '@/utils/proposal_claim';
 import defaultCover from '@/assets/default_cover.png';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -130,13 +132,13 @@ const Item = props => {
 
                   <div className={styles.claimContent}>
                     <div className={styles.reason}>
-                      <Divider>申领理由</Divider>
+                      <Divider><FormattedMessage id="proposal.claims_reason" /></Divider>
                       <p className={styles.reasonText}>{claim.reason}</p>
                     </div>
 
                     {claim.result && (
                       <div className={styles.result}>
-                        <Divider>提交结果</Divider>
+                        <Divider><FormattedMessage id="proposal.submit_results" /></Divider>
                         <p className={styles.resultText}>{claim.result}</p>
                       </div>
                     )}

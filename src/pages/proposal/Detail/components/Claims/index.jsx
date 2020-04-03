@@ -12,6 +12,7 @@ import VerifyClaimModal from '../VerifyClaimModal';
 import SubmitClaimResultModal from '../SubmitClaimResultModal';
 import AvatarList from '@/components/User/AvatarList';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { confirm } = Modal;
 
@@ -62,7 +63,7 @@ const Claims = props => {
             <UserAvatar {...claimer} size={48} />
             <div className="margin-sm"></div>
             <Row>
-              <span className="subtitle">负责人</span>
+              <span className="subtitle"><FormattedMessage id="proposal.detail.claims.head" /></span>
               <br />
               <span>{claimer.username}</span>
             </Row>
@@ -83,7 +84,7 @@ const Claims = props => {
                     size="small"
                     onClick={() => handleVerify({ claim_id, claimer, status_key })}
                   >
-                    审核
+                    <FormattedMessage id="proposal.detail.claims.audit" />
                   </Button>
                 )}
               </span>
@@ -95,13 +96,13 @@ const Claims = props => {
       <div className={styles.claimContent}>
         <div className={styles.reason}>
           <p className={styles.reasonText}>
-            <span className="highlight">申领理由：</span>
+            <span className="highlight"><FormattedMessage id="proposal.claims_reason" />：</span>
             {reason}
           </p>
           <div className="margin-l" />
           {plan && (
             <p className={styles.reasonText}>
-              <span className="highlight">申领计划：</span>
+              <span className="highlight"><FormattedMessage id="proposal.detail.claims.claims_plan" />：</span>
               {plan}
             </p>
           )}
@@ -109,7 +110,7 @@ const Claims = props => {
 
         {result && (
           <div className={styles.result}>
-            <Divider>提交结果</Divider>
+            <Divider><FormattedMessage id="proposal.submit_results" /></Divider>
             <p className={styles.resultText}>{result}</p>
           </div>
         )}
@@ -117,7 +118,7 @@ const Claims = props => {
       <div>
         {team ? (
           <>
-            <span> 团队成员</span>
+            <span> <FormattedMessage id="proposal.detail.claims.team_members" /></span>
             <div className="margin" />
             <AvatarList userList={team.slice(1).map(teamInfo => teamInfo.staff)} showMax={10} />
           </>
@@ -130,11 +131,11 @@ const Claims = props => {
 
   function showCancelClaimConfirm() {
     confirm({
-      title: '确定要取消申领此提案吗?',
+      title: <FormattedMessage id="proposal.detail.claims.confirm_cancel" />,
       //   content: 'Some descriptions',
-      okText: '确定',
+      okText: <FormattedMessage id="app.confirm" />,
       okType: 'danger',
-      cancelText: '关闭',
+      cancelText: <FormattedMessage id="app.shutdown" />,
       onOk() {
         handleCancelClaim();
       },
@@ -163,12 +164,12 @@ const Claims = props => {
         {isClaimer(claims, currentUser) === false && proposal_status_key === 'claiming' && (
           <>
             <Button type="primary" size="small" onClick={() => setClaimModalVisible(true)}>
-              申领
+            <FormattedMessage id="proposal.detail.claims.claims" />
             </Button>
             <ClaimModal
               id={id}
               visible={claimModalVisible}
-              onCancel={() => claimModalVisible(false)}
+              onCancel={() => setClaimModalVisible(false)}
             />
           </>
         )}
@@ -176,10 +177,10 @@ const Claims = props => {
         {isClaimerByStatus(claims, currentUser, ['claiming']) === true && (
           <Button.Group>
             <Button type="primary" size="small" onClick={showCancelClaimConfirm}>
-              取消申领
+            <FormattedMessage id="proposal.detail.claims.claims_cancel" />
             </Button>
             <Button type="primary" size="small" onClick={() => setClaimTeamModalVisible(true)}>
-              加入
+              <FormattedMessage id="proposal.detail.claims.join" />
             </Button>
             <ClaimTeamModal
               id={id}
@@ -198,7 +199,7 @@ const Claims = props => {
               size="small"
               onClick={() => setSubmitClaimResultModalVisible(true)}
             >
-              提交结果
+               <FormattedMessage id="proposal.submit_results" />
             </Button>
             <SubmitClaimResultModal
               id={id}
@@ -232,7 +233,8 @@ const Claims = props => {
             </Row>
           </div>
         ) : (
-          <div className={styles.nodata}>当前无人申领</div>
+          <div className={styles.nodata}><FormattedMessage id="proposal.detail.claims.no_claims" />
+          </div>
         )}
       </Spin>
     </div>

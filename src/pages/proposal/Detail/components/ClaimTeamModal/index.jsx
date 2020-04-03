@@ -6,6 +6,8 @@ import { AutoCompleteCode } from '@/components/AutoCompleteCode';
 import styles from './style.less';
 import { searchUser } from '@/services/user';
 const { TextArea } = Input;
+import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
+
 
 const ClaimTeamModal = props => {
   // state
@@ -56,12 +58,12 @@ const ClaimTeamModal = props => {
   }
   return (
     <Modal
-      title="申领提案"
+      title={<FormattedMessage id="proposal.detail.clsimd_proposal" />}
       visible={visible}
       confirmLoading={submitting}
       onCancel={props.onCancel}
       onOk={handleOk}
-      okText={'加入员'}
+      okText={<FormattedMessage id="proposal.detail.join_members" />}
     >
       <div>
         <List
@@ -72,10 +74,10 @@ const ClaimTeamModal = props => {
               actions={[
                 teamMember.user_id !== claim.user_id ? (
                   <a key="list-delete" onClick={() => handleDelete(teamMember)}>
-                    删除
+                    <FormattedMessage id="app.delete" />
                   </a>
                 ) : (
-                  '责任'
+                  <FormattedMessage id="proposal.detail.responsibility" />
                 ),
               ]}
             >
@@ -92,13 +94,13 @@ const ClaimTeamModal = props => {
       </div>
       <div className="margin-l" />
       <Form>
-        加上新的员：
+      <FormattedMessage id="proposal.detail.join_new_members" />：
         <Row>
           <Col span={8}>
             <Row type="flex" justify="center" align="middle" style={{ height: '60px' }}>
               {getFieldDecorator('user_id', {})(
                 <AutoCompleteCode
-                  label="电子邮件"
+                  label={<FormattedMessage id="proposal.detail.email" />}
                   onAutoComplete={async content => {
                     const searchResult = await searchUser(content);
                     if (!searchResult.data) {
@@ -116,10 +118,10 @@ const ClaimTeamModal = props => {
                 rules: [
                   {
                     required: true,
-                    message: '请输入员负责内容!',
+                    message: <FormattedMessage id="proposal.detail.responsible_content" />,
                   },
                 ],
-              })(<Input placeholder="填写领安排时间" />)}
+              })(<Input placeholder={formatMessage({id:"proposal.detail.arrange_time"})} />)}
             </Row>
           </Col>
         </Row>
