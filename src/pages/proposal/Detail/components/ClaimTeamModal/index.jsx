@@ -6,8 +6,7 @@ import { AutoCompleteCode } from '@/components/AutoCompleteCode';
 import styles from './style.less';
 import { searchUser } from '@/services/user';
 const { TextArea } = Input;
-import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
-
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 const ClaimTeamModal = props => {
   // state
@@ -58,7 +57,7 @@ const ClaimTeamModal = props => {
   }
   return (
     <Modal
-      title={<FormattedMessage id="proposal.detail.clsimd_proposal" />}
+      title={<FormattedMessage id="proposal.detail.claim_proposal" />}
       visible={visible}
       confirmLoading={submitting}
       onCancel={props.onCancel}
@@ -94,7 +93,7 @@ const ClaimTeamModal = props => {
       </div>
       <div className="margin-l" />
       <Form>
-      <FormattedMessage id="proposal.detail.join_new_members" />：
+        <FormattedMessage id="proposal.detail.join_new_members" />：
         <Row>
           <Col span={8}>
             <Row type="flex" justify="center" align="middle" style={{ height: '60px' }}>
@@ -121,7 +120,7 @@ const ClaimTeamModal = props => {
                     message: <FormattedMessage id="proposal.detail.responsible_content" />,
                   },
                 ],
-              })(<Input placeholder={formatMessage({id:"proposal.detail.arrange_time"})} />)}
+              })(<Input placeholder={formatMessage({ id: 'proposal.detail.arrange_time' })} />)}
             </Row>
           </Col>
         </Row>

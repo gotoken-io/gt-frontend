@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal, List, Skeleton } from 'antd';
 import { connect } from 'dva';
 import UserAvatar from '@/components/User/UserAvatar';
-import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 import styles from './style.less';
 
@@ -40,7 +40,7 @@ const ClaimModal = props => {
 
   return (
     <Modal
-      title={<FormattedMessage id="proposal.detail.clsimd_proposal" />}
+      title={<FormattedMessage id="proposal.detail.claim_proposal" />}
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
@@ -55,7 +55,12 @@ const ClaimModal = props => {
                 message: <FormattedMessage id="proposal.detail.claims.input_fill_reason" />,
               },
             ],
-          })(<TextArea rows={4} placeholder={formatMessage({id:"proposal.detail.claims.fill_reason"})} />)}
+          })(
+            <TextArea
+              rows={4}
+              placeholder={formatMessage({ id: 'proposal.detail.claims.fill_reason' })}
+            />,
+          )}
         </Form.Item>
         <Form.Item label={<FormattedMessage id="proposal.detail.arrange_time" />}>
           {getFieldDecorator('plan', {
@@ -65,7 +70,12 @@ const ClaimModal = props => {
                 message: <FormattedMessage id="proposal.detail.claims.input_arrange_time" />,
               },
             ],
-          })(<TextArea rows={4} placeholder={formatMessage({id:"proposal.detail.claims.arrange_time"})} />)}
+          })(
+            <TextArea
+              rows={4}
+              placeholder={formatMessage({ id: 'proposal.detail.claims.arrange_time' })}
+            />,
+          )}
         </Form.Item>
         <div>
           <List
@@ -76,17 +86,31 @@ const ClaimModal = props => {
                 <Skeleton avatar loading={false} title={false} active>
                   <List.Item.Meta
                     avatar={<UserAvatar size={48} {...owner} />}
-                    title={<FormattedMessage id="proposal.detail.claims.responsibility" values={{owner_email: owner.email}}/> }
+                    title={
+                      <FormattedMessage
+                        id="proposal.detail.claims.responsibility"
+                        values={{ owner_email: owner.email }}
+                      />
+                    }
                     description={
                       <>
                         {getFieldDecorator('responsibility', {
                           rules: [
                             {
                               required: true,
-                              message: <FormattedMessage id="proposal.detail.responsible_content" />,
+                              message: (
+                                <FormattedMessage id="proposal.detail.responsible_content" />
+                              ),
                             },
                           ],
-                        })(<Input placeholder={formatMessage({id:"proposal.detail.claims.input_arrange_time"})} style={{ width: '80%' }} />)}
+                        })(
+                          <Input
+                            placeholder={formatMessage({
+                              id: 'proposal.detail.claims.input_arrange_time',
+                            })}
+                            style={{ width: '80%' }}
+                          />,
+                        )}
                       </>
                     }
                   />
@@ -107,7 +131,7 @@ const ClaimModal = props => {
                 message: <FormattedMessage id="proposal.detail.claims.input_collect_address" />,
               },
             ],
-          })(<Input placeholder={formatMessage({id:"proposal.detail.claims.fill_collect"}) } />)}
+          })(<Input placeholder={formatMessage({ id: 'proposal.detail.claims.fill_collect' })} />)}
         </Form.Item>
       </Form>
     </Modal>

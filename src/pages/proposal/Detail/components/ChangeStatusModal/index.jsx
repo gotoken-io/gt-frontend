@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Modal } from 'antd';
 import { proposalStatus } from '@/utils/proposal';
-import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 import { connect } from 'dva';
 import styles from './style.less';
@@ -50,7 +50,7 @@ const ChangeStatusModal = props => {
 
   return (
     <Modal
-      title={<FormattedMessage id="proposal.detail.modify_proposal" values={{title}}/>}
+      title={<FormattedMessage id="proposal.detail.modify_proposal" values={{ title }} />}
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
@@ -66,7 +66,10 @@ const ChangeStatusModal = props => {
               },
             ],
           })(
-            <Select style={{ width: 250 }} placeholder={formatMessage({ id: 'proposal.detail.select_change_status' })}>
+            <Select
+              style={{ width: 250 }}
+              placeholder={formatMessage({ id: 'proposal.detail.select_proposal_status.placeholder' })}
+            >
               {proposalStatus.map(d => (
                 <Option key={d.key} value={d.key}>
                   {d.text}

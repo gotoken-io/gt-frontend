@@ -4,8 +4,7 @@ import { Row, Col, Progress, Button, Spin, message, Icon } from 'antd';
 import styles from './index.less';
 import { VoteContract, VoteValueEnum } from '../../../../../services/voteContract';
 import { isEmpty } from 'lodash';
-import moment from 'moment';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 import { useWeb3Context } from 'web3-react';
 
@@ -49,13 +48,15 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote" /></span>
+          <span className={styles.votingTitle}>
+            <FormattedMessage id="proposal.detail.voteqrcode.vote" />
+          </span>
         </Row>
         <div className="margin-l" />
 
         <Row type="flex" justify="center">
           <span style={{ textAlign: 'center' }}>
-          <FormattedMessage id="proposal.detail.voting.enable_web3" />
+            <FormattedMessage id="proposal.detail.voting.enable_web3" />
           </span>
           <div className="margin" />
 
@@ -82,7 +83,9 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote" /></span>
+          <span className={styles.votingTitle}>
+            <FormattedMessage id="proposal.detail.voteqrcode.vote" />
+          </span>
         </Row>
         <div className="margin" />
 
@@ -99,11 +102,13 @@ const Voting = props => {
                   }
                 }}
               >
-                <FormattedMessage id="proposal.detail.voting.creact_contract" />
+                <FormattedMessage id="proposal.detail.voting.create_contract" />
               </Button>
             </div>
           ) : (
-            <span><FormattedMessage id="proposal.detail.voting.not_chain" /></span>
+            <span>
+              <FormattedMessage id="proposal.detail.voting.not_chain" />
+            </span>
           )}
         </Row>
       </>
@@ -114,7 +119,9 @@ const Voting = props => {
     return (
       <>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voting.vote_results" /></span>
+          <span className={styles.votingTitle}>
+            <FormattedMessage id="proposal.detail.voting.vote_results" />
+          </span>
         </Row>
         <div className="margin" />
         {voteDetail.value}
@@ -122,7 +129,9 @@ const Voting = props => {
           <div className="column center">
             <Icon type="check-circle" theme="filled" style={{ color: 'green', fontSize: '48px' }} />
             <div className="margin-sm" />
-            <span><FormattedMessage id="proposal.detail.voting.approval" /></span>
+            <span>
+              <FormattedMessage id="proposal.detail.voting.approval" />
+            </span>
           </div>
         )}
         {voteDetail.value === VoteValueEnum.disagree && (
@@ -130,7 +139,9 @@ const Voting = props => {
             <div className="column center">
               <Icon type="close-circle" theme="filled" style={{ color: 'red', fontSize: '48px' }} />
               <div className="margin-sm" />
-              <span><FormattedMessage id="proposal.detail.voting.refused" /></span>
+              <span>
+                <FormattedMessage id="proposal.detail.voting.refused" />
+              </span>
             </div>
           </Row>
         )}
@@ -152,7 +163,9 @@ const Voting = props => {
     <>
       <div>
         <Row type="flex" justify="center">
-          <span className={styles.votingTitle}><FormattedMessage id="proposal.detail.voteqrcode.vote_in" /></span>
+          <span className={styles.votingTitle}>
+            <FormattedMessage id="proposal.detail.voteqrcode.vote_in" />
+          </span>
         </Row>
         <div className="margin" />
         <Row>
@@ -163,13 +176,23 @@ const Voting = props => {
             </span>
           </Col> */}
           <Col span={18}>
-            <span><FormattedMessage id="proposal.detail.voteqrcode.total_length" />：{detail.vote_duration_hours}<FormattedMessage id="app.hour" /></span>
+            <span>
+              <FormattedMessage id="proposal.detail.voteqrcode.total_length" />：
+              {detail.vote_duration_hours}
+              <FormattedMessage id="app.hour" />
+            </span>
           </Col>
           <Col span={12}>
-            <span><FormattedMessage id="proposal.detail.voting.starting_blocks" />： {voteDetail.start_height}</span>
+            <span>
+              <FormattedMessage id="proposal.detail.voting.starting_blocks" />：{' '}
+              {voteDetail.start_height}
+            </span>
           </Col>
           <Col span={12}>
-            <span><FormattedMessage id="proposal.detail.voting.ending_blocks" />： {voteDetail.end_height}</span>
+            <span>
+              <FormattedMessage id="proposal.detail.voting.ending_blocks" />：{' '}
+              {voteDetail.end_height}
+            </span>
           </Col>
         </Row>
         <div className="margin" />
@@ -179,7 +202,9 @@ const Voting = props => {
             {progress !== 100 ? (
               <Progress percent={+progress.toFixed(2)} />
             ) : (
-              <span><FormattedMessage id="proposal.detail.voteqrcode.as_failed" /></span>
+              <span>
+                <FormattedMessage id="proposal.detail.voteqrcode.as_failed" />
+              </span>
             )}
           </Col>
         </Row>
@@ -238,7 +263,7 @@ async function createVote({ dispatch, detail }) {
     type: 'proposal/fetchVoteInformation',
     payload: { zone: detail.zone, hash: detail.onchain_hash },
   });
-  message.info(<FormattedMessage id="proposal.detail.voting.trading_submit" />);
+  message.info(formatMessage({ id: 'proposal.detail.voting.trading_submit' }));
 }
 
 async function vote({ dispatch, value, detail, web3Info }) {
@@ -255,7 +280,7 @@ async function vote({ dispatch, value, detail, web3Info }) {
     type: 'proposal/fetchVoteInformation',
     payload: { zone: detail.zone, hash: detail.onchain_hash },
   });
-  message.info(<FormattedMessage id="proposal.detail.voting.trading_submit" />);
+  message.info(formatMessage({ id: 'proposal.detail.voting.trading_submit' }));
 }
 export default connect(data => {
   return {

@@ -4,7 +4,6 @@ import { connect } from 'dva';
 import UserAvatar from '@/components/User/UserAvatar';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
-
 import styles from './style.less';
 
 const { TextArea } = Input;
@@ -31,7 +30,7 @@ const CommentForm = props => {
           // clear input value
           resetFields();
         } else {
-          message.error(<FormattedMessage id="proposal.detail.comments.login" />);
+          message.error(formatMessage({ id: 'proposal.detail.comments.login' }));
         }
       }
     });
@@ -53,8 +52,14 @@ const CommentForm = props => {
             <Form.Item>
               {getFieldDecorator('text', {
                 rules: [
-                  { required: true, message: <FormattedMessage id="proposal.detail.comments.comments_content" /> },
-                  { max: 250, message: <FormattedMessage id="proposal.detail.comments.content_max" /> },
+                  {
+                    required: true,
+                    message: <FormattedMessage id="proposal.detail.comments.comments_content" />,
+                  },
+                  {
+                    max: 250,
+                    message: <FormattedMessage id="proposal.detail.comments.content_max" />,
+                  },
                 ],
               })(<Input allowClear style={{ width: '100%' }} />)}
             </Form.Item>

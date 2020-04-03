@@ -9,7 +9,7 @@ import Item from '@/components/Proposal/Item';
 import Filter from '@/components/Proposal/Filter';
 import styles from './style.less';
 import { FormattedMessage } from 'umi-plugin-react/locale';
-
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const List = props => {
   const {
@@ -60,7 +60,7 @@ const List = props => {
     if (currentUser.id) {
       router.push('/proposal/create');
     } else {
-      message.error(<FormattedMessage id="proposal.detail.comments.login" />);
+      message.error(formatMessage({ id: 'proposal.detail.comments.login' }));
     }
   };
 
@@ -88,7 +88,7 @@ const List = props => {
 
       <div className={styles.actions}>
         <Button onClick={handleCreateProposal} type="primary">
-        <FormattedMessage id="proposal.detail.creact_proposal" />
+          <FormattedMessage id="proposal.detail.create_proposal" />
         </Button>
       </div>
       <Spin spinning={fetchProposalListLoading}>

@@ -1,47 +1,48 @@
 import { isEmpty } from './utils';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 // status
 export const proposalClaimStatus = [
   {
     key: 'claiming',
     value: 100,
-    text: '申领中',
+    text: formatMessage({ id: 'proposal.claim_status.claiming' }),
     color: 'orange',
   },
   {
     key: 'passed',
     value: 200,
-    text: '申领通过',
+    text: formatMessage({ id: 'proposal.claim_status.passed' }),
     color: 'green',
   },
   {
     key: 'fail',
     value: 300,
-    text: '申领不通过',
+    text: formatMessage({ id: 'proposal.claim_status.fail' }),
     color: 'red',
   },
   {
     key: 'cancel',
     value: 400,
-    text: '撤销申领',
+    text: formatMessage({ id: 'proposal.claim_status.cancel' }),
     color: 'lime',
   },
   {
     key: 'submit_result',
     value: 500,
-    text: '结果已提交',
+    text: formatMessage({ id: 'proposal.claim_status.submit_result' }),
     color: 'lime',
   },
   {
     key: 'result_approve',
     value: 600,
-    text: '结果审核通过',
+    text: formatMessage({ id: 'proposal.claim_status.result_approve' }),
     color: 'green',
   },
   {
     key: 'result_fail',
     value: 700,
-    text: '结果审核不通过',
+    text: formatMessage({ id: 'proposal.claim_status.result_fail' }),
     color: 'red',
   },
 ];

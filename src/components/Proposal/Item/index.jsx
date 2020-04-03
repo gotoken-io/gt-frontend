@@ -11,7 +11,6 @@ import { getClaimStatusByKey } from '@/utils/proposal_claim';
 import defaultCover from '@/assets/default_cover.png';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
-
 const { Title, Paragraph, Text } = Typography;
 
 const IconFont = Icon.createFromIconfontCN({
@@ -54,7 +53,6 @@ const Item = props => {
       case 'wait_to_vote':
       case 'set_up_voting':
         return 0;
-      case 'wait_to_vote':
       case 'claiming':
         return 1;
       case 'under_way':
@@ -74,7 +72,7 @@ const Item = props => {
           <div className={styles.cardBody}>
             <div className={styles.cardTitle}>
               <Title level={4} className={styles.title}>
-                <LinesEllipsis text={title} maxLine="2" />
+                <LinesEllipsis text={title} maxLine="1" />
               </Title>
               <div>
                 <Text>{zone.name}</Text>
@@ -101,9 +99,9 @@ const Item = props => {
 
             <div className={styles.steps}>
               <Steps size="small" current={currentStep()}>
-                <Step title="Claim" />
-                <Step title="Progress" />
-                <Step title="Test" />
+                <Step title={<FormattedMessage id="proposal.status.wait_to_vote" />} />
+                <Step title={<FormattedMessage id="proposal.status.under_way" />} />
+                <Step title={<FormattedMessage id="proposal.status.success" />} />
               </Steps>
             </div>
             <div className={styles.bystatus}>
@@ -132,13 +130,17 @@ const Item = props => {
 
                   <div className={styles.claimContent}>
                     <div className={styles.reason}>
-                      <Divider><FormattedMessage id="proposal.claims_reason" /></Divider>
+                      <Divider>
+                        <FormattedMessage id="proposal.claims_reason" />
+                      </Divider>
                       <p className={styles.reasonText}>{claim.reason}</p>
                     </div>
 
                     {claim.result && (
                       <div className={styles.result}>
-                        <Divider><FormattedMessage id="proposal.submit_results" /></Divider>
+                        <Divider>
+                          <FormattedMessage id="proposal.submit_results" />
+                        </Divider>
                         <p className={styles.resultText}>{claim.result}</p>
                       </div>
                     )}

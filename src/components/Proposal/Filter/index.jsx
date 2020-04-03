@@ -6,7 +6,7 @@ import { proposalStatus } from '@/utils/proposal';
 import router from 'umi/router';
 import Link from 'umi/link';
 import styles from './style.less';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 const { Option } = Select;
 
@@ -14,7 +14,7 @@ const Filter = props => {
   // state
   const [category, setCategory] = useState('all');
   const [status, setStatus] = useState('all');
-  const [sort, setSort] = useState('all');
+  const [sort, setSort] = useState('createtime');
 
   // props
   const { match, zone_list, proposal_category, zone_id = null } = props;
@@ -123,9 +123,9 @@ const Filter = props => {
     });
   };
   const sorts = [
-    { key: 'createtime', name: '创建时间' },
-    { key: 'amount', name: '提案金额' },
-    { key: 'comments', name: '评论数' },
+    { key: 'createtime', name: formatMessage({ id: 'proposal.filter.createtime' }) },
+    { key: 'amount', name: formatMessage({ id: 'proposal.filter.amount' }) },
+    { key: 'comments', name: formatMessage({ id: 'proposal.filter.comments' }) },
   ];
   // const showSortArrow = key => {
   //   if (key === sort.name) {
@@ -159,7 +159,9 @@ const Filter = props => {
       {/* if set zone_id, hide proposal zone choose */}
       {!zone_id && (
         <div className={styles.zone}>
-          <h3 className={styles.title}><FormattedMessage id="proposal.proposal_zone" />：</h3>
+          <h3 className={styles.title}>
+            <FormattedMessage id="proposal.proposal_zone" />：
+          </h3>
 
           <Spin spinning={props.loadingZone}>
             <div className={styles.zoneItems}>
@@ -185,7 +187,7 @@ const Filter = props => {
                 value={category}
               >
                 <Option key="all" value="all">
-                  Core
+                  <FormattedMessage id="app.all" />
                 </Option>
 
                 {proposal_category &&
@@ -202,13 +204,12 @@ const Filter = props => {
             <div className={styles.status}>
               <Select
                 name="status"
-                placeholder="In Progress"
                 style={{ width: '100%' }}
                 onChange={onChangeStatus}
                 value={status}
               >
                 <Option key="all" value="all">
-                  In Progress
+                  <FormattedMessage id="app.all" />
                 </Option>
 
                 {proposalStatus.map(d => (
@@ -221,17 +222,7 @@ const Filter = props => {
           </Col>
           <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
             <div className={styles.status}>
-              <Select
-                name="sort"
-                placeholder="Newest"
-                style={{ width: '100%' }}
-                onChange={onClickSort}
-                value={sort}
-              >
-                <Option key="all" value="all">
-                  Newest
-                </Option>
-
+              <Select name="sort" style={{ width: '100%' }} onChange={onClickSort} value={sort}>
                 {sorts.map(d => (
                   <Option key={d.key} value={d.key}>
                     {d.name}

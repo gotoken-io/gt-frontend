@@ -20,7 +20,6 @@ import Claims from './components/Claims';
 import VoteQrCode from './components/VoteQrCode';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
-
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
 
@@ -178,7 +177,7 @@ const Detail = props => {
                           </Row>
                         </div>
                       </Col>
-                      {detail.amount && !!detail.currency_unit > 0 && (
+                      {detail.amount && detail.currency_unit > 0 && (
                         <Col md={4} xs={12}>
                           <div>
                             <div className={styles.weight}>
@@ -193,7 +192,8 @@ const Detail = props => {
                       <Col md={6} xs={12}>
                         <div>
                           <div className={styles.weight2}>
-                            {(detail.estimated_hours / 24).toFixed(2)}天
+                            {(detail.estimated_hours / 24).toFixed(2)}{' '}
+                            <FormattedMessage id="app.day" />
                           </div>
                           <div className={styles.zq}>
                             <FormattedMessage id="proposal.detail.max_lifecycle" />
@@ -263,7 +263,7 @@ const Detail = props => {
                   </TabPane>
 
                   <TabPane
-                    tab={<FormattedMessage id="proposal.detail.project_schedule" />}
+                    tab={<FormattedMessage id="proposal.detail.project_progress" />}
                     key="logs"
                   >
                     <div className={styles.logs}>
