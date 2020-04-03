@@ -5,6 +5,7 @@ import { setAuthority, removeAuthority } from '@/utils/authority';
 import { removeCurrentUser } from '@/utils/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const md5 = require('md5');
 const myWeb3 = global.web3;
@@ -19,7 +20,7 @@ const Model = {
       const { status } = response;
 
       if (status === 'success') {
-        message.success('注册成功');
+        message.success(formatMessage({id:'models.login.registered_success'}));
 
         yield put({
           type: 'setLoginStatus',
@@ -47,7 +48,7 @@ const Model = {
 
         yield put(routerRedux.replace(redirect || '/'));
       } else if (status === 409) {
-        message.error('注册邮箱或用户名已经存在，请直接登陆');
+        message.error(formatMessage({id:'models.login.email_exist_login'}));
       }
     },
 
@@ -55,14 +56,14 @@ const Model = {
       const response = yield call(login, payload);
       const { status } = response;
       if (status === 401) {
-        message.error('邮箱或密码错误！');
+        message.error(formatMessage({id:'models.login.password_error'}));
         return;
       }
       if (status !== 'success') {
-        message.error('内部服务器错误');
+        message.error(formatMessage({id:'models.login.internal_server_error'}));
         return;
       }
-      message.success('登陆成功');
+      message.success(formatMessage({id:'models.login.landing_success'}));
       yield put({
         type: 'setLoginStatus',
         payload: { ...response, noExpire: payload.remember }, // 默认保存账号
@@ -91,12 +92,12 @@ const Model = {
     *loginWithAddress({ payload }, { call, put }) {
       const nonceResponse = yield call(getAddressNonce, { address: payload.address });
       if (nonceResponse.status === 404) {
-        message.error('找不到地址！');
+        message.error(formatMessage({id:'models.login.notfound_address'}));
         return;
       }
 
       if (nonceResponse.status !== 'success') {
-        message.error('服务器出问题');
+        message.error(formatMessage({id:'models.login.internal_problem'}));
         return;
       }
 
@@ -111,7 +112,7 @@ const Model = {
         ),
       );
       if (!signature) {
-        message.info('操作已取消');
+        message.info(formatMessage({id:'models.login.operation_cancelled'}));
         return;
       }
       const response = yield call(loginWithAddress, {
@@ -121,10 +122,10 @@ const Model = {
       const { status } = response;
 
       if (status !== 'success') {
-        message.error('内部服务器错误');
+        message.error(formatMessage({id:'models.login.internal_server_error'}));
         return;
       }
-      message.success('登陆成功');
+      message.success(formatMessage({id:'models.login.landing_success'}));
       console.log(response);
 
       yield put({
@@ -133,12 +134,12 @@ const Model = {
       });
       // Login successfully
       if (status === 404) {
-        message.error('找不到地址！');
+        message.error(formatMessage({id:'models.login.notfound_address'}));
         return;
       }
 
       if (status === 401) {
-        message.error('找不到地址！');
+        message.error(formatMessage({id:'models.login.notfound_address'}));
         return;
       }
       const urlParams = new URL(window.location.href);
@@ -169,7 +170,7 @@ const Model = {
       }); // Logout successfully
 
       if (response.status === 'success') {
-        message.success('注销登陆');
+        message.success(formatMessage({id:'models.login.cancellation_landing'}));
 
         const { redirect } = getPageQuery(); // redirect
 
