@@ -93,11 +93,7 @@ const Model = {
     *loginWithAddress({ payload }, { call, put }) {
       const nonceResponse = yield call(getAddressNonce, { address: payload.address });
       if (nonceResponse.status === 404) {
-        message.error(formatMessage({ id: 'user.address_login.not_found' }));
         return;
-      }
-
-      if (nonceResponse.status !== 'success') {
         message.error(formatMessage({ id: 'app.server_error' }));
         return;
       }
@@ -143,7 +139,6 @@ const Model = {
         type: 'setLoginStatus',
         payload: { ...response, noExpire: payload.remember }, // 默认保存账号
       });
-
       const urlParams = new URL(window.location.href);
       const params = getPageQuery();
       let { redirect } = params;

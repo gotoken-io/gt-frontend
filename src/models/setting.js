@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import defaultSettings from '../../config/defaultSettings';
 import themeColorClient from '../components/SettingDrawer/themeColorClient';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const updateTheme = newPrimaryColor => {
   if (newPrimaryColor) {

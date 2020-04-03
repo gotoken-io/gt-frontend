@@ -68,7 +68,9 @@ const ChangeStatusModal = props => {
           })(
             <Select
               style={{ width: 250 }}
-              placeholder={formatMessage({ id: 'proposal.detail.select_proposal_status.placeholder' })}
+              placeholder={formatMessage({
+                id: 'proposal.detail.select_proposal_status.placeholder',
+              })}
             >
               {proposalStatus.map(d => (
                 <Option key={d.key} value={d.key}>

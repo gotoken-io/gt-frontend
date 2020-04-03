@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card, Typography, Icon, Tag, Badge, Divider, Row, Steps } from 'antd';
+import { Card, Icon, Tag, Typography, Divider, Row, Steps } from 'antd';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Image from '@/components/Image';
-import LinesEllipsis from 'react-lines-ellipsis';
 import Link from 'umi/link';
 import moment from '@/utils/moment';
 import styles from './style.less';
@@ -72,7 +71,7 @@ const Item = props => {
           <div className={styles.cardBody}>
             <div className={styles.cardTitle}>
               <Title level={4} className={styles.title}>
-                <LinesEllipsis text={title} maxLine="1" />
+                <Paragraph ellipsis>{title}</Paragraph>
               </Title>
               <div>
                 <Text>{zone.name}</Text>

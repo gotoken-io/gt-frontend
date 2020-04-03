@@ -1,6 +1,7 @@
 import { postComment, putComment, deleteComment, queryProposalComment } from '@/services/comment';
 import { getCurrentUser } from '@/utils/user';
 import { message } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const Model = {
   namespace: 'comment',
@@ -37,7 +38,7 @@ const Model = {
     *deleteComment({ payload }, { call, put }) {
       const response = yield call(deleteComment, payload);
       if (response.status === 'success') {
-        message.success('删除成功');
+        message.success(formatMessage({id:'models.comment.delete_success'}));
         yield put({
           type: 'saveDeleteComment',
           payload,
