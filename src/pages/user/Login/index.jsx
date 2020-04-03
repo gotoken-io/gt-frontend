@@ -43,14 +43,18 @@ class Login extends React.Component {
         <div className={styles.contom}>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Tabs>
-              <TabPane tab="SIGN IN" key="1" style={{ marginTop: 20 }}>
+              <TabPane
+                tab={<FormattedMessage id="user.sign_in" />}
+                key="1"
+                style={{ marginTop: 20 }}
+              >
                 <Form.Item>
                   {getFieldDecorator('email', {
                     rules: [
                       {
                         required: true,
                         message: formatMessage({
-                          id: 'userandregister.email.required',
+                          id: 'user.email_or_username.required',
                         }),
                       },
                     ],
@@ -65,7 +69,7 @@ class Login extends React.Component {
                           }}
                         />
                       }
-                      placeholder="email 或 用户名"
+                      placeholder={formatMessage({ id: 'user.email_or_username.placeholder' })}
                     />,
                   )}
                 </Form.Item>
@@ -75,7 +79,7 @@ class Login extends React.Component {
                       {
                         required: true,
                         message: formatMessage({
-                          id: 'userandregister.password.required',
+                          id: 'user.password.required',
                         }),
                       },
                     ],
@@ -91,7 +95,7 @@ class Login extends React.Component {
                         />
                       }
                       type="password"
-                      placeholder="密码"
+                      placeholder={formatMessage({ id: 'user.password.placeholder' })}
                     />,
                   )}
                 </Form.Item>
@@ -100,7 +104,11 @@ class Login extends React.Component {
                   {getFieldDecorator('remember', {
                     valuePropName: 'checked',
                     initialValue: true,
-                  })(<Checkbox>记住密码</Checkbox>)}
+                  })(
+                    <Checkbox>
+                      <FormattedMessage id="user.password.remember" />
+                    </Checkbox>,
+                  )}
                 </Form.Item>
 
                 <Form.Item>
@@ -111,13 +119,15 @@ class Login extends React.Component {
                     className="login-form-button"
                     block
                   >
-                    Sign In
+                    <FormattedMessage id="user.sign_in" />
                   </Button>
                 </Form.Item>
 
                 <Form.Item>
                   <div className={styles.links}>
-                    <Link to="/forget-password">忘记密码</Link>
+                    <Link to="/forget-password">
+                      <FormattedMessage id="user.password.forgotten" />
+                    </Link>
                     {/* <Link to="/register">注册</Link> */}
                   </div>
                 </Form.Item>
@@ -126,7 +136,11 @@ class Login extends React.Component {
                   <MetamaskLogin onLogin={address => this.loginWithAddress(address)} />
                 </Form.Item>
               </TabPane>
-              <TabPane tab="SIGN UP" key="2" style={{ marginTop: 20 }}>
+              <TabPane
+                tab={<FormattedMessage id="user.sign_up" />}
+                key="2"
+                style={{ marginTop: 20 }}
+              >
                 <Register />
               </TabPane>
             </Tabs>

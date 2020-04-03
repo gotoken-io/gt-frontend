@@ -4,18 +4,19 @@ import AvatarDropdown from './AvatarDropdown';
 import styles from './index.less';
 import { Menu, Dropdown, Row } from 'antd';
 import { setLocale, FormattedMessage } from 'umi-plugin-react/locale';
-
+import moment from 'moment';
 const LanguageSwitch = () => {
   return (
     <Dropdown
       overlay={
         <Menu
           onClick={({ key }) => {
+            moment.locale(key);
             setLocale(key, true);
           }}
         >
-          <Menu.Item key="en-US">English</Menu.Item>
-          <Menu.Item key="zh-CN">中文</Menu.Item>
+          <Menu.Item key="en-US">🇺🇸English</Menu.Item>
+          <Menu.Item key="zh-CN">🇨🇳简体中文</Menu.Item>
         </Menu>
       }
     >
@@ -36,10 +37,13 @@ const GlobalHeaderRight = props => {
 
   return (
     <div className={className}>
-      <Row type="flex" gutter={[12, 12]}>
+      <div className="margin-xs" />
+
+      <Row type="flex" gutter={[6, 6]}>
         <AvatarDropdown />
-        <div className="margin" />
+        <div className="margin-xs" />
         <LanguageSwitch />
+        <div className="margin" />
       </Row>
     </div>
   );

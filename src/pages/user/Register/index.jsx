@@ -4,23 +4,22 @@ import React, { Component } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import styles from './style.less';
-import layoutStyles from '@/layouts/style.less';
 
 const FormItem = Form.Item;
 const passwordStatusMap = {
   ok: (
     <div className={styles.success}>
-      <FormattedMessage id="userandregister.strength.strong" />
+      <FormattedMessage id="user.password.strong" />
     </div>
   ),
   pass: (
     <div className={styles.warning}>
-      <FormattedMessage id="userandregister.strength.medium" />
+      <FormattedMessage id="user.password.medium" />
     </div>
   ),
   poor: (
     <div className={styles.error}>
-      <FormattedMessage id="userandregister.strength.short" />
+      <FormattedMessage id="user.password.short" />
     </div>
   ),
 };
@@ -79,7 +78,7 @@ class Register extends Component {
     if (value && value !== form.getFieldValue('password')) {
       callback(
         formatMessage({
-          id: 'userandregister.password.twice',
+          id: 'user.password.twice',
         }),
       );
     } else {
@@ -93,7 +92,7 @@ class Register extends Component {
     if (!value) {
       this.setState({
         help: formatMessage({
-          id: 'userandregister.password.required',
+          id: 'user.password.required',
         }),
         visible: !!value,
       });
@@ -155,13 +154,13 @@ class Register extends Component {
               {
                 required: true,
                 message: formatMessage({
-                  id: 'userandregister.email.required',
+                  id: 'user.email.required',
                 }),
               },
               {
                 type: 'email',
                 message: formatMessage({
-                  id: 'userandregister.email.wrong-format',
+                  id: 'user.email.wrong_format',
                 }),
               },
             ],
@@ -169,7 +168,7 @@ class Register extends Component {
             <Input
               size="large"
               placeholder={formatMessage({
-                id: 'userandregister.email.placeholder',
+                id: 'user.email.placeholder',
               })}
             />,
           )}
@@ -180,12 +179,14 @@ class Register extends Component {
             rules: [
               {
                 pattern: /^[a-z0-9]+$/,
-                message: '仅支持输入小写字母(a-z)和数字(0-9)',
+                message: formatMessage({
+                  id: 'user.username.wrong_format',
+                }),
               },
               {
                 required: true,
                 message: formatMessage({
-                  id: 'userandregister.userName.required',
+                  id: 'user.username.required',
                 }),
               },
             ],
@@ -193,7 +194,7 @@ class Register extends Component {
             <Input
               size="large"
               placeholder={formatMessage({
-                id: 'userandregister.login.userName',
+                id: 'user.username.placeholder',
               })}
             />,
           )}
@@ -221,7 +222,7 @@ class Register extends Component {
                     marginTop: 10,
                   }}
                 >
-                  <FormattedMessage id="userandregister.strength.msg" />
+                  <FormattedMessage id="user.password.strength" />
                 </div>
               </div>
             }
@@ -242,7 +243,7 @@ class Register extends Component {
                 size="large"
                 type="password"
                 placeholder={formatMessage({
-                  id: 'userandregister.password.placeholder',
+                  id: 'user.password.placeholder',
                 })}
               />,
             )}
@@ -254,7 +255,7 @@ class Register extends Component {
               {
                 required: true,
                 message: formatMessage({
-                  id: 'userandregister.confirm-password.required',
+                  id: 'user.password.confirm_required',
                 }),
               },
               {
@@ -266,7 +267,7 @@ class Register extends Component {
               size="large"
               type="password"
               placeholder={formatMessage({
-                id: 'userandregister.confirm-password.placeholder',
+                id: 'user.password.confirm',
               })}
             />,
           )}
@@ -279,7 +280,7 @@ class Register extends Component {
             type="primary"
             htmlType="submit"
           >
-            <FormattedMessage id="userandregister.register.register" />
+            <FormattedMessage id="user.sign_up" />
           </Button>
 
           {/* <Link className={styles.login} to="/login">

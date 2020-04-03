@@ -41,11 +41,11 @@ const noMatch = (
 const menuData = [
   {
     path: '/proposal/zone/list',
-    name: '生态专区',
+    name: formatMessage({ id: 'app.menu.proposal_zone' }),
   },
   {
     path: '/proposal/list',
-    name: '所有项目',
+    name: formatMessage({ id: 'app.menu.proposal_list' }),
   },
 ];
 
@@ -137,7 +137,6 @@ const BasicLayout = props => {
       }}
       footerRender={footerRender}
       menuDataRender={() => menuData}
-      formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
       {...settings}

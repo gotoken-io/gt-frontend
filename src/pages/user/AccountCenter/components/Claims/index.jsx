@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Spin, Card, Row, Col, Modal, Tag } from 'antd';
 import { connect } from 'dva';
-import Link from 'umi/link';
-import moment from '@/utils/moment';
-import { getClaimStatusByKey } from '@/utils/proposal_claim';
 import ProposalItem from '@/components/Proposal/Item';
-import UserAvatar from '@/components/User/UserAvatar';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { Meta } = Card;
 
@@ -40,7 +37,9 @@ const Claims = props => {
             </Row>
           </div>
         ) : (
-          <div className={styles.nodata}>还没有申领任何提案</div>
+          <div className={styles.nodata}>
+            <FormattedMessage id="user.claims.noData" />
+          </div>
         )}
       </Spin>
     </div>

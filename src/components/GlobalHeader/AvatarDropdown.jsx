@@ -10,9 +10,14 @@ import styles from './index.less';
 
 const LoginAndRegister = () => (
   <div>
-    <Link to="/login">登录</Link>
+    <Link to="/login">
+      <FormattedMessage id="user.sign_in" />
+    </Link>
     <em>|</em>
-    <Link to="/login">注册</Link>
+    <Link to="/login">
+      {' '}
+      <FormattedMessage id="user.sign_up" />
+    </Link>
   </div>
 );
 
@@ -49,7 +54,7 @@ class AvatarDropdown extends React.Component {
       >
         <Menu.Item key="account">
           <Icon type="user" />
-          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
+          <FormattedMessage id="app.menu.account" />
         </Menu.Item>
 
         <Menu.Item key="settings">

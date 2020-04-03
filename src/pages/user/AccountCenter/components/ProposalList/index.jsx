@@ -3,6 +3,7 @@ import { Row, Col, Spin } from 'antd';
 import { connect } from 'dva';
 import Item from '@/components/Proposal/Item';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const ProposalList = props => {
   const { proposals, fetchUserProposals, dispatch, username, p_type } = props;
@@ -21,14 +22,16 @@ const ProposalList = props => {
       <Spin spinning={fetchUserProposals}>
         {proposals[p_type].items.length > 0 ? (
           <Row>
-            {proposals[p_type].items.map(item => (
-              <Col lg={12} md={24}>
+            {proposals[p_type].items.map((item, index) => (
+              <Col lg={12} md={24} key={index}>
                 <Item {...item} />
               </Col>
             ))}
           </Row>
         ) : (
-          <div className={styles.nodata}>还没有创建任何提案</div>
+          <div className={styles.nodata}>
+            <FormattedMessage id="还没有创建任何提案" />
+          </div>
         )}
       </Spin>
     </div>

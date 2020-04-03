@@ -9,17 +9,17 @@ import layoutStyles from '@/layouts/style.less';
 const passwordStatusMap = {
   ok: (
     <div className={styles.success}>
-      <FormattedMessage id="userandregister.strength.strong" />
+      <FormattedMessage id="user.password.strong" />
     </div>
   ),
   pass: (
     <div className={styles.warning}>
-      <FormattedMessage id="userandregister.strength.medium" />
+      <FormattedMessage id="user.password.medium" />
     </div>
   ),
   poor: (
     <div className={styles.error}>
-      <FormattedMessage id="userandregister.strength.short" />
+      <FormattedMessage id="user.password.short" />
     </div>
   ),
 };
@@ -77,7 +77,7 @@ const ResetPwd = props => {
     if (value && value !== form.getFieldValue('password')) {
       callback(
         formatMessage({
-          id: 'userandregister.password.twice',
+          id: 'user.password.twice',
         }),
       );
     } else {
@@ -89,7 +89,7 @@ const ResetPwd = props => {
     if (!value) {
       setHelp(
         formatMessage({
-          id: 'userandregister.password.required',
+          id: 'user.password.required',
         }),
       );
       setVisible(!!value);
@@ -134,7 +134,9 @@ const ResetPwd = props => {
 
   return (
     <div className={layoutStyles.userMain}>
-      <h3>重置密码</h3>
+      <h3>
+        <FormattedMessage id="user.reset_password" />
+      </h3>
 
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
@@ -143,13 +145,13 @@ const ResetPwd = props => {
               {
                 required: true,
                 message: formatMessage({
-                  id: 'userandregister.email.required',
+                  id: 'user.email.required',
                 }),
               },
               {
                 type: 'email',
                 message: formatMessage({
-                  id: 'userandregister.email.wrong-format',
+                  id: 'user.email.wrong_format',
                 }),
               },
             ],
@@ -191,7 +193,7 @@ const ResetPwd = props => {
                     marginTop: 10,
                   }}
                 >
-                  <FormattedMessage id="userandregister.strength.msg" />
+                  <FormattedMessage id="user.password.strength" />
                 </div>
               </div>
             }
@@ -212,7 +214,7 @@ const ResetPwd = props => {
                 size="large"
                 type="password"
                 placeholder={formatMessage({
-                  id: 'userandregister.password.placeholder',
+                  id: 'user.password.placeholder',
                 })}
               />,
             )}
@@ -224,7 +226,7 @@ const ResetPwd = props => {
               {
                 required: true,
                 message: formatMessage({
-                  id: 'userandregister.confirm-password.required',
+                  id: 'user.password.confirm_required',
                 }),
               },
               {
@@ -236,7 +238,7 @@ const ResetPwd = props => {
               size="large"
               type="password"
               placeholder={formatMessage({
-                id: 'userandregister.confirm-password.placeholder',
+                id: 'user.password.confirm',
               })}
             />,
           )}
@@ -251,15 +253,14 @@ const ResetPwd = props => {
             className="login-form-button"
             block
           >
-            提交
+            <FormattedMessage id="app.submit" />
           </Button>
         </Form.Item>
         <Form.Item className={styles.center}>
           <Link to="/">
             <Button type="link">
               {formatMessage({
-                id: 'exception404.exception.back',
-                defaultMessage: 'Back Home',
+                id: 'app.back_home',
               })}
             </Button>
           </Link>

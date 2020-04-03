@@ -17,6 +17,7 @@ import { routerRedux } from 'dva/router';
 import { setCurrentUser, removeCurrentUser } from '@/utils/user';
 import { setAuthority, removeAuthority } from '@/utils/authority';
 import { message } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const UserModel = {
   namespace: 'user',
@@ -129,7 +130,7 @@ const UserModel = {
     *addUserWallet({ payload }, { call, put }) {
       const response = yield call(addUserWallet, payload);
       if (response.status === 'success') {
-        message.success('添加钱包地址成功');
+        message.success(formatMessage({ id: 'user.wallet.success' }));
         window.location.reload();
       }
     },
@@ -137,7 +138,7 @@ const UserModel = {
     *updateUserWallet({ payload }, { call, put }) {
       const response = yield call(updateUserWallet, payload);
       if (response.status === 'success') {
-        message.success('修改钱包地址成功');
+        message.success(formatMessage({ id: 'user.wallet.success' }));
         window.location.reload();
       }
     },
@@ -145,7 +146,7 @@ const UserModel = {
     *postUserAvatar({ payload }, { call, put }) {
       const response = yield call(updateUserAvatar, payload);
       if (response.status === 'success') {
-        message.success('用户头像更新成功');
+        message.success(formatMessage({ id: 'user.avatar.success' }));
         window.location.reload();
         // yield put({
         //   type: 'changeUserAvatar',
@@ -157,7 +158,7 @@ const UserModel = {
     *postUserInfo({ payload }, { call, put }) {
       const response = yield call(updateUserInfo, payload);
       if (response.status === 'success') {
-        message.success('更新个人信息成功');
+        message.success(formatMessage({ id: 'user.update.success' }));
 
         yield put({
           type: 'saveCurrentUser',
@@ -169,13 +170,17 @@ const UserModel = {
     *postForgetPwd({ payload }, { call, put }) {
       const response = yield call(postForgetPwd, payload);
       if (response.status === 'success') {
-        message.success(`已发送邮件到${payload.email}, 请注意查收`);
+        message.success(
+          formatMessage({ id: 'user.password_forgotten.success' }, { email: payload.email }),
+        );
         return true;
       }
 
       if (response.status === 'fail') {
         if (response.code === 404) {
-          message.error(`${payload.email} 不存在, 请再次确认`);
+          message.error(
+            formatMessage({ id: 'user.password_forgotten.fail' }, { email: payload.email }),
+          );
         }
       }
 
@@ -185,8 +190,7 @@ const UserModel = {
     *postResetPwd({ payload }, { call, put }) {
       const response = yield call(postResetPwd, payload);
       if (response.status === 'success') {
-        message.success('密码重置成功，请重新登陆');
-
+        message.success(formatMessage({ id: 'user.password_reset.success' }));
         yield put(
           routerRedux.replace({
             pathname: '/login',
@@ -196,11 +200,13 @@ const UserModel = {
 
       if (response.status === 'fail') {
         if (response.message === 'SignatureExpired') {
-          message.error('重置链接过期，请重新发送');
+          message.error(formatMessage({ id: 'user.password_reset.expired' }));
         } else if (response.message === 'DoubleCheckError') {
-          message.error(`${payload.email} 错误, 请再次确认邮箱`);
+          message.error(
+            formatMessage({ id: 'user.password_reset.check_error' }, { email: payload.email }),
+          );
         } else {
-          message.error('密码重置失败');
+          message.error(formatMessage({ id: 'user.password_reset.fail' }));
         }
       }
     },

@@ -7,6 +7,7 @@ import Claims from './components/Claims';
 
 import UserAvatar from '@/components/User/UserAvatar';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { TabPane } = Tabs;
 
@@ -39,9 +40,14 @@ const AccountCenter = props => {
               <div>
                 <div className={styles.avatarHolder}>
                   <UserAvatar size={100} {...userDetail} />
-                  <div className={styles.name}>用户名：{userDetail.username}</div>
+                  <div className={styles.name}>
+                    <FormattedMessage id="user.account.username" />
+                    {userDetail.username}
+                  </div>
                   {userDetail.nickname && (
-                    <div className={styles.nickname}>昵称：{userDetail.nickname}</div>
+                    <div className={styles.nickname}>
+                      <FormattedMessage id="user.account.nickName" /> {userDetail.nickname}
+                    </div>
                   )}
                   {userDetail.sign && (
                     <div className={styles.sign}>
@@ -55,11 +61,11 @@ const AccountCenter = props => {
         </Col>
         <Col lg={17} md={24}>
           <Tabs size="large" animated={false} defaultActiveKey="detail" onChange={() => {}}>
-            <TabPane tab="创建的提案" key="created">
+            <TabPane tab={<FormattedMessage id="user.proposals.title" />} key="created">
               <ProposalList username={match.params.username} p_type="created" />
             </TabPane>
 
-            <TabPane tab="申领的提案" key="claim">
+            <TabPane tab={<FormattedMessage id="user.claims.title" />} key="claim">
               <Claims username={match.params.username} page={match.params.page} />
             </TabPane>
           </Tabs>

@@ -5,8 +5,8 @@ import themeColorClient from '../components/SettingDrawer/themeColorClient';
 const updateTheme = newPrimaryColor => {
   if (newPrimaryColor) {
     const timeOut = 0;
-    const hideMessage = message.loading('正在切换主题！', timeOut);
-    themeColorClient.changeColor(newPrimaryColor).finally(() => hideMessage());
+    // const hideMessage = message.loading('正在切换主题！', timeOut);
+    // themeColorClient.changeColor(newPrimaryColor).finally(() => hideMessage());
   }
 };
 

@@ -3,6 +3,7 @@ import { Form, Input, Modal } from 'antd';
 
 import { connect } from 'dva';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const EditAddressModal = props => {
   // state
@@ -18,18 +19,28 @@ const EditAddressModal = props => {
   }, [visible]);
 
   function renderTitle() {
-    let action;
+    if (!(zone && currency)) {
+      return ``;
+    }
     if (type === 'update') {
-      action = '修改';
+      return (
+        <FormattedMessage
+          id="user.wallet.edit"
+          values={{ zone_name: zone.name, currency_unit: currency.unit }}
+        />
+      );
     }
 
     if (type === 'add') {
-      action = '添加';
+      return (
+        <FormattedMessage
+          id="user.wallet.add"
+          values={{ zone_name: zone.name, currency_unit: currency.unit }}
+        />
+      );
     }
 
-    if (action && zone && currency) {
-      return `${action}${zone.name}专区${currency.unit}地址`;
-    }
+    return '';
   }
 
   function handleOk() {
@@ -80,10 +91,10 @@ const EditAddressModal = props => {
             rules: [
               {
                 required: true,
-                message: '请输入钱包地址',
+                message: <FormattedMessage id="user.wallet_address.required" />,
               },
             ],
-          })(<Input placeholder="请输入钱包地址" />)}
+          })(<Input placeholder={<FormattedMessage id="user.wallet_address.placeholder" />} />)}
         </Form.Item>
       </Form>
     </Modal>
