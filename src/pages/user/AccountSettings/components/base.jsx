@@ -58,7 +58,7 @@ class BaseView extends Component {
           <Form layout="vertical" hideRequiredMark>
             <FormItem
               label={formatMessage({
-                id: 'userandaccountsettings.basic.email',
+                id: 'user.account.email',
               })}
             >
               {getFieldDecorator('email', {
@@ -67,7 +67,7 @@ class BaseView extends Component {
                     required: true,
                     message: formatMessage(
                       {
-                        id: 'userandaccountsettings.basic.email-message',
+                        id: 'user.account.email.required',
                       },
                       {},
                     ),
@@ -77,45 +77,25 @@ class BaseView extends Component {
             </FormItem>
             <FormItem
               label={formatMessage({
-                id: 'userandaccountsettings.basic.nickname',
+                id: 'user.account.nickName',
               })}
             >
               {getFieldDecorator('nickname', {
-                rules: [
-                  // {
-                  //   required: true,
-                  //   message: formatMessage(
-                  //     {
-                  //       id: 'userandaccountsettings.basic.nickname-message',
-                  //     },
-                  //     {},
-                  //   ),
-                  // },
-                ],
+                rules: [],
               })(<Input />)}
             </FormItem>
 
             <FormItem
               label={formatMessage({
-                id: 'userandaccountsettings.basic.profile',
+                id: 'user.account.profile',
               })}
             >
               {getFieldDecorator('sign', {
-                rules: [
-                  // {
-                  //   required: true,
-                  //   message: formatMessage(
-                  //     {
-                  //       id: 'userandaccountsettings.basic.profile-message',
-                  //     },
-                  //     {},
-                  //   ),
-                  // },
-                ],
+                rules: [],
               })(
                 <Input.TextArea
                   placeholder={formatMessage({
-                    id: 'userandaccountsettings.basic.profile-placeholder',
+                    id: 'user.account.profile.placeholder',
                   })}
                   rows={4}
                 />,
@@ -123,10 +103,7 @@ class BaseView extends Component {
             </FormItem>
 
             <Button type="primary" onClick={this.handlerSubmit}>
-              <FormattedMessage
-                id="userandaccountsettings.basic.update"
-                defaultMessage="Update Information"
-              />
+              <FormattedMessage id="user.account.update" />
             </Button>
           </Form>
         </div>

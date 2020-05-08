@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Modal } from 'antd';
 import { connect } from 'dva';
+import { FormattedMessage,formatMessage } from 'umi-plugin-react/locale';
 import styles from './style.less';
 
 const { Option } = Select;
@@ -69,14 +70,14 @@ const VerifyClaimModal = props => {
   function modalConfig() {
     if (verifyType() === 'verify') {
       return {
-        title: '审核提案申领',
+        title: <FormattedMessage id="proposal.detail.verifyclaims.audit_claims" />,
         submiting: submitingVerify,
       };
     }
 
     if (verifyType() === 'verifyResult') {
       return {
-        title: '审核申领结果',
+        title: <FormattedMessage id="proposal.detail.verifyclaims.audit_claims_results" />,
         submiting: submitingVerifyResult,
       };
     }
@@ -99,14 +100,14 @@ const VerifyClaimModal = props => {
         {/* {claim_id}
         {status_key} */}
 
-        {claimer && <Form.Item label="审核对象">{claimer.username}</Form.Item>}
-        <Form.Item label="审核结果">
+        {claimer && <Form.Item label={<FormattedMessage id="proposal.detail.verifyclaims.audit_object" />}>{claimer.username}</Form.Item>}
+        <Form.Item label={<FormattedMessage id="proposal.detail.verifyclaims.audit_results" />}>
           {getFieldDecorator('approve', {
-            rules: [{ required: true, message: '请选择审核结果!' }],
+            rules: [{ required: true, message: <FormattedMessage id="proposal.detail.verifyclaims.select_audit_results" /> }],
           })(
-            <Select placeholder="请选择审核结果">
-              <Option value>通过</Option>
-              <Option value={false}>不通过</Option>
+            <Select placeholder={formatMessage({id:"proposal.detail.verifyclaims.select_audit_results"})}>
+              <Option value><FormattedMessage id="proposal.detail.verifyclaims.through" /></Option>
+              <Option value={false}><FormattedMessage id="proposal.detail.verifyclaims.not_through" /></Option>
             </Select>,
           )}
         </Form.Item>

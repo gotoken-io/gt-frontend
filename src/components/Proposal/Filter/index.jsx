@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Spin, Select, Icon } from 'antd';
+import { Button, Spin, Select, Row, Col } from 'antd';
 import { connect } from 'dva';
 import { getPageQuery } from '@/utils/utils';
 import { proposalStatus } from '@/utils/proposal';
 import router from 'umi/router';
 import Link from 'umi/link';
 import styles from './style.less';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 const { Option } = Select;
 
@@ -13,36 +14,25 @@ const Filter = props => {
   // state
   const [category, setCategory] = useState('all');
   const [status, setStatus] = useState('all');
-  const [sort, setSort] = useState({
-    name: 'createtime',
-    by: 'desc',
-  });
+  const [sort, setSort] = useState('createtime');
 
   // props
   const { match, zone_list, proposal_category, zone_id = null } = props;
 
   // clear filter select
-  useEffect(() => {
-    setCategory('all');
-    setStatus('all');
-  }, [match.params.zone_id]);
 
   useEffect(() => {
     const { dispatch } = props;
 
-    const { c, status, sort_name, sort_by } = getPageQuery();
+    const { c, status, sort_name } = getPageQuery();
 
     if (status) {
       setStatus(status);
     }
 
-    if (sort_name && sort_by) {
-      setSort({
-        name: sort_name,
-        by: sort_by,
-      });
-
-      console.log('sort', sort);
+    if (sort_name) {
+      setSort(sort_name);
+      console.log('sort', sort_name);
     }
 
     if (dispatch) {
@@ -75,7 +65,7 @@ const Filter = props => {
       c: value,
     };
 
-    console.log(routeQuery);
+    console.log(3, routeQuery);
 
     router.push({
       pathname: window.location.pathname,
@@ -93,7 +83,7 @@ const Filter = props => {
       status: value,
     };
 
-    console.log(routeQuery);
+    console.log('routeQuery', routeQuery, status);
 
     router.push({
       pathname: window.location.pathname,
@@ -102,29 +92,27 @@ const Filter = props => {
   };
 
   const onClickSort = value => {
-    let by = 'desc';
+    // let by = 'desc';
 
-    if (value === sort.name) {
-      if (sort.by === 'desc') {
-        by = 'asc';
-      }
+    // if (value === sort.name) {
+    //   if (sort.by === 'desc') {
+    //     by = 'asc';
+    //   }
 
-      if (sort.by === 'asc') {
-        by = 'desc';
-      }
-    }
+    //   if (sort.by === 'asc') {
+    //     by = 'desc';
+    //   }
+    // }
+    console.log('sort', value);
 
-    setSort({
-      name: value,
-      by,
-    });
+    setSort(value);
 
     const params = getPageQuery();
 
     const routeQuery = {
       ...params,
       sort_name: value,
-      sort_by: by,
+      // sort_by: by,
     };
 
     console.log(routeQuery);
@@ -134,40 +122,46 @@ const Filter = props => {
       query: routeQuery,
     });
   };
+  const sorts = [
+    { key: 'createtime', name: formatMessage({ id: 'proposal.filter.createtime' }) },
+    { key: 'amount', name: formatMessage({ id: 'proposal.filter.amount' }) },
+    { key: 'comments', name: formatMessage({ id: 'proposal.filter.comments' }) },
+  ];
+  // const showSortArrow = key => {
+  //   if (key === sort.name) {
+  //     if (sort.by === 'desc') {
+  //       return <Icon type="arrow-down" />;
+  //     }
+  //     if (sort.by === 'asc') {
+  //       return <Icon type="arrow-up" />;
+  //     }
+  //   }
 
-  const showSortArrow = key => {
-    if (key === sort.name) {
-      if (sort.by === 'desc') {
-        return <Icon type="arrow-down" />;
-      }
-      if (sort.by === 'asc') {
-        return <Icon type="arrow-up" />;
-      }
-    }
+  //   return null;
+  // };
 
-    return null;
-  };
+  // const sortButtons = () => {
+  //   const sorts = [
+  //     { key: 'createtime', name: '创建时间' },
+  //     { key: 'amount', name: '提案金额' },
+  //     { key: 'comments', name: '评论数' },
+  //   ];
 
-  const sortButtons = () => {
-    const sorts = [
-      { key: 'createtime', name: '创建时间' },
-      { key: 'amount', name: '提案金额' },
-      { key: 'comments', name: '评论数' },
-    ];
-
-    return sorts.map(item => (
-      <Button onClick={() => onClickSort(item.key)}>
-        {item.name} {showSortArrow(item.key)}
-      </Button>
-    ));
-  };
-
+  //   return sorts.map(item => (
+  //     <Button onClick={() => onClickSort(item.key)}>
+  //       {item.name} {showSortArrow(item.key)}
+  //     </Button>
+  //   ));
+  // };
+  console.log({ category, proposal_category, sort, sorts });
   return (
     <div className={styles.container}>
       {/* if set zone_id, hide proposal zone choose */}
       {!zone_id && (
         <div className={styles.zone}>
-          <h3 className={styles.title}>提案专区：</h3>
+          <h3 className={styles.title}>
+            <FormattedMessage id="proposal.proposal_zone" />：
+          </h3>
 
           <Spin spinning={props.loadingZone}>
             <div className={styles.zoneItems}>
@@ -182,54 +176,65 @@ const Filter = props => {
       )}
 
       <div className={styles.filters}>
-        <div className={styles.category}>
-          <h3 className={styles.title}>提案分类：</h3>
-          <Select
-            name="category"
-            placeholder="请选择提案分类"
-            style={{ width: 200 }}
-            onChange={onChangeCategory}
-            value={category}
-          >
-            <Option key="all" value="all">
-              全部
-            </Option>
-
-            {proposal_category &&
-              proposal_category.map(ctg => (
-                <Option key={ctg.id} value={ctg.id}>
-                  {ctg.name}
-                  {!zone_id && <span className={styles.count}>({ctg.proposals_count})</span>}
+        <Row gutter={[6, 16]}>
+          <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+            <div className={styles.category}>
+              <Select
+                name="category"
+                placeholder="Core"
+                style={{ width: '100%' }}
+                onChange={onChangeCategory}
+                value={category}
+              >
+                <Option key="all" value="all">
+                  <FormattedMessage id="app.all" />
                 </Option>
-              ))}
-          </Select>
-        </div>
 
-        <div className={styles.status}>
-          <h3 className={styles.title}>提案状态：</h3>
-          <Select
-            name="status"
-            placeholder="请选择提案状态"
-            style={{ width: 200 }}
-            onChange={onChangeStatus}
-            value={status}
-          >
-            <Option key="all" value="all">
-              全部
-            </Option>
+                {proposal_category &&
+                  proposal_category.map(ctg => (
+                    <Option key={ctg.id} value={ctg.id}>
+                      {ctg.name}
+                      {!zone_id && <span className={styles.count}>({ctg.proposals_count})</span>}
+                    </Option>
+                  ))}
+              </Select>
+            </div>
+          </Col>
+          <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+            <div className={styles.status}>
+              <Select
+                name="status"
+                style={{ width: '100%' }}
+                onChange={onChangeStatus}
+                value={status}
+              >
+                <Option key="all" value="all">
+                  <FormattedMessage id="app.all" />
+                </Option>
 
-            {proposalStatus.map(d => (
-              <Option key={d.key} value={d.key}>
-                {d.text}
-              </Option>
-            ))}
-          </Select>
-        </div>
-
-        <div className={styles.sort}>
-          <h3 className={styles.title}>排序：</h3>
+                {proposalStatus.map(d => (
+                  <Option key={d.key} value={d.key}>
+                    {d.text}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </Col>
+          <Col lg={{ span: 6, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+            <div className={styles.status}>
+              <Select name="sort" style={{ width: '100%' }} onChange={onClickSort} value={sort}>
+                {sorts.map(d => (
+                  <Option key={d.key} value={d.key}>
+                    {d.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </Col>
+          {/* <div className={styles.sort}>
           <Button.Group>{sortButtons()}</Button.Group>
-        </div>
+        </div> */}
+        </Row>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, Radio, Button, Spin, message } from 'antd';
+import { Form, Input, Select, Radio, Button, Spin, message, InputNumber } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import BraftEditor from 'braft-editor';
 import router from 'umi/router';
@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import InputDayHour from '@/components/Proposal/InputDayHour';
 import 'braft-editor/dist/index.css';
 import styles from './style.less';
+import { FormattedMessage, formatMessage, getLocale } from 'umi-plugin-react/locale';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -312,18 +313,18 @@ const ProposalForm = props => {
   const FormContent = (
     <div className={styles.container}>
       <Form className={styles.formContainer} {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item label="提案专区">
+        <Form.Item label={<FormattedMessage id="proposal.zone_id" />}>
           {getFieldDecorator('zone_id', {
             rules: [
               {
                 required: true,
-                message: '请选择提案专区!',
+                message: <FormattedMessage id="proposal.zone_id.required" />,
               },
             ],
           })(
             <Select
               style={{ width: 250 }}
-              placeholder="请选择要发布在哪个提案专区"
+              placeholder={formatMessage({ id: 'proposal.zone_id.placeholder' })}
               name="proposal-zone"
               onSelect={onSelectProposalZone}
               disabled={!!id}
@@ -337,27 +338,42 @@ const ProposalForm = props => {
           )}
         </Form.Item>
 
-        <Form.Item label="提案名称">
+        <Form.Item label={<FormattedMessage id="proposal.title" />}>
           {getFieldDecorator('title', {
             rules: [
               {
                 required: true,
-                message: '请输入提案名称!',
+                message: <FormattedMessage id="proposal.title.required" />,
               },
             ],
-          })(<Input />)}
+          })(<Input placeholder={formatMessage({ id: 'proposal.title.placeholder' })} />)}
         </Form.Item>
 
-        <Form.Item label="提案分类">
+        <Form.Item label={<FormattedMessage id="proposal.introduction" />}>
+          {getFieldDecorator('summary', {
+            rules: [
+              {
+                required: true,
+                message: <FormattedMessage id="proposal.introduction.required" />,
+              },
+            ],
+          })(<TextArea rows={4} />)}
+        </Form.Item>
+
+        <Form.Item label={<FormattedMessage id="proposal.category" />}>
           {getFieldDecorator('category_id', {
             rules: [
               //   {
               //     required: true,
-              //     message: '请选择提案分类',
+              //     message:<FormattedMessage id="proposal.category.required" />,
               //   },
             ],
           })(
-            <Select name="category" placeholder="请选择提案分类" style={{ width: 200 }}>
+            <Select
+              name="category"
+              placeholder={ formatMessage({ id: 'proposal.category.placeholder' })}
+              style={{ width: 200 }}
+            >
               {proposal_category &&
                 proposal_category.map(ctg => (
                   <Option key={ctg.id} value={ctg.id}>
@@ -371,29 +387,22 @@ const ProposalForm = props => {
           </Button> */}
         </Form.Item>
 
-        <Form.Item label="提案简介">
-          {getFieldDecorator('summary', {
-            rules: [
-              {
-                required: true,
-                message: '请输入提案简介!',
-              },
-            ],
-          })(<TextArea rows={4} />)}
-        </Form.Item>
-
-        <Form.Item label="提案预算">
+        <Form.Item label={<FormattedMessage id="proposal.budget" />}>
           {getFieldDecorator('has-budget', {
             rules: [
               {
                 required: true,
-                message: '请选择提案预算!',
+                message: <FormattedMessage id="proposal.budget.required" />,
               },
             ],
           })(
             <Radio.Group name="has-budget" onChange={handleChange}>
-              <Radio value={0}>无预算</Radio>
-              <Radio value={1}>有预算</Radio>
+              <Radio value={0}>
+                <FormattedMessage id="proposal.budget.no_budget" />
+              </Radio>
+              <Radio value={1}>
+                <FormattedMessage id="proposal.budget.has_budget" />
+              </Radio>
             </Radio.Group>,
           )}
 
@@ -404,17 +413,17 @@ const ProposalForm = props => {
                 rules: [
                   {
                     required: true,
-                    message: '请输入提案预算!',
+                    message: <FormattedMessage id="proposal.budge_amount.required" />,
                   },
                 ],
-              })(<Input style={{ width: 200 }} placeholder="请输入预算金额" />)}
+              })(<InputNumber style={{ width: 200 }} placeholder="请输入预算金额" />)}
 
               {getFieldDecorator('currency_id', {
                 rules: [],
               })(
                 <Select
                   name="budget-unit"
-                  placeholder="请选择token单位"
+                  placeholder={ formatMessage({ id: 'proposal.currency.placeholder' })}
                   style={{ width: 200, marginLeft: 10 }}
                 >
                   {selectCurrency &&
@@ -429,12 +438,12 @@ const ProposalForm = props => {
           )}
         </Form.Item>
 
-        <Form.Item label="提案预计工时">
+        <Form.Item label={<FormattedMessage id="proposal.work_duration" />}>
           <InputDayHour settings={workHourSettings} values={workHour} onChange={onChangeWorkTime} />
         </Form.Item>
 
-        <Form.Item label="提案投票持续时长">
-          {/* 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改. */}
+        <Form.Item label={<FormattedMessage id="proposal.vote_duration" />}>
+          {/* // 未来,提案创建后,会上链,投票持续时长也会上链,所以不能修改. */}
           <InputDayHour
             settings={voteDurationSettings}
             values={voteDuration}
@@ -443,22 +452,25 @@ const ProposalForm = props => {
           />
           {selectZone && (
             <span>
-              当前专区:{selectZone.name}, 投票持续时长限制为:{' '}
+              <FormattedMessage
+                id="proposal.zone_vote_duration"
+                values={{ zone_name: selectZone.name }}
+              />
               {convertToDayHourText(selectZone.vote_duration_min)} ~{' '}
               {convertToDayHourText(selectZone.vote_duration_max)}
             </span>
           )}
         </Form.Item>
 
-        <Form.Item label="提案标签">
+        {/* <Form.Item label="提案标签">
           {getFieldDecorator('tag')(
             <Select mode="tags" style={{ width: '100%' }} placeholder="提案标签">
-              {/* {children} */}
+              // {children}
             </Select>,
           )}
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item label="提案详情">
+        <Form.Item label={<FormattedMessage id="proposal.detail" />}>
           {getFieldDecorator('detail', {
             validateTrigger: 'onBlur',
             rules: [
@@ -466,7 +478,7 @@ const ProposalForm = props => {
                 required: true,
                 validator: (_, value, callback) => {
                   if (value.isEmpty()) {
-                    callback('请输入正文内容');
+                    callback(<FormattedMessage id="proposal.detail.required" />);
                   } else {
                     callback();
                   }
@@ -475,9 +487,10 @@ const ProposalForm = props => {
             ],
           })(
             <BraftEditor
+              language={getLocale().includes('en') ? 'en' : 'zh'}
               className={styles.richEditor}
               controls={controls}
-              placeholder="请输入正文内容"
+              placeholder={formatMessage({ id: 'proposal.detail.placeholder' })}
             />,
           )}
         </Form.Item>
@@ -488,10 +501,12 @@ const ProposalForm = props => {
             htmlType="submit"
             loading={id ? props.submitingUpdate : props.submitingCreate}
           >
-            提交
+            <FormattedMessage id="proposal.create" />
           </Button>
 
-          <Button onClick={() => router.go(-1)}>取消</Button>
+          <Button onClick={() => router.go(-1)}>
+            <FormattedMessage id="app.cancel" />
+          </Button>
         </Form.Item>
       </Form>
     </div>

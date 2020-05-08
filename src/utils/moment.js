@@ -14,7 +14,23 @@ function fromNow(time) {
     .fromNow();
 }
 
+function createTime(time) {
+  const stillUtc = moment.utc(time).toDate();
+  return moment(stillUtc)
+    .local()
+    .format("MMMM D");
+}
+
+function TimeLine(time) {
+  const stillUtc = moment.utc(time).toDate();
+  return moment(stillUtc)
+    .local()
+    .format("MMMM DD,YYYY");
+}
+
 export default {
   datetime,
   fromNow,
+  createTime,
+  TimeLine
 };

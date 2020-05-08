@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import styles from './style.less';
 
 const { TextArea } = Input;
@@ -42,19 +43,19 @@ const SubmitClaimResultModal = props => {
 
   return (
     <Modal
-      title="提交结果"
+      title={<FormattedMessage id="proposal.submit_results" />}
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
       onCancel={props.onCancel}
     >
       <Form>
-        <Form.Item label="提案完成结果">
+        <Form.Item label={<FormattedMessage id="proposal.detail.claims.proposal_done_results" />}>
           {getFieldDecorator('result', {
             rules: [
               {
                 required: true,
-                message: '请输入提案完成结果!',
+                message: <FormattedMessage id="proposal.detail.claims.proposal_done" />,
               },
             ],
           })(<TextArea rows={4} />)}

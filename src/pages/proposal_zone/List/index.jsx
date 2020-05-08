@@ -5,6 +5,7 @@ import { GridContent } from '@ant-design/pro-layout';
 import Link from 'umi/link';
 import ZoneItem from './components/ZoneItem';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const List = props => {
   const { zone_list, currentUser } = props;
@@ -15,6 +16,9 @@ const List = props => {
       dispatch({
         type: 'proposal/fetchAllProposalZone',
       });
+      dispatch({
+        type: 'proposal/fetchAllCategory',
+      });
     }
   }, []);
 
@@ -24,7 +28,9 @@ const List = props => {
     <GridContent>
       {currentUser.admin && (
         <Link to="/proposal/zone/create">
-          <Button type="primary">创建提案专区</Button>
+          <Button type="primary">
+            <FormattedMessage id="proposal_zone.created_zone" />
+          </Button>
         </Link>
       )}
       <Spin spinning={fetchProposalZoneLoading}>

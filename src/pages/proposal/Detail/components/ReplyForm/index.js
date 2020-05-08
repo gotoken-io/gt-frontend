@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { Form, message, Input, Button } from 'antd';
 import { connect } from 'dva';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import styles from './style.less';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const { TextArea } = Input;
 
@@ -27,7 +29,7 @@ const ReplyForm = props => {
 
           resetFields();
         } else {
-          message.error('请先登陆');
+          message.error(formatMessage({ id: 'proposal.detail.comments.login' }));
         }
       }
     });
@@ -39,8 +41,11 @@ const ReplyForm = props => {
         <Form.Item>
           {getFieldDecorator('text', {
             rules: [
-              { required: true, message: '请输入评论内容' },
-              { max: 250, message: '评论内容最多250字符' },
+              {
+                required: true,
+                message: <FormattedMessage id="proposal.detail.comments.comments_content" />,
+              },
+              { max: 250, message: <FormattedMessage id="proposal.detail.comments.content_max" /> },
             ],
           })(<TextArea rows={4} />)}
         </Form.Item>

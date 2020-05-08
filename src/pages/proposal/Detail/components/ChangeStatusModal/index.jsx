@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Modal } from 'antd';
 import { proposalStatus } from '@/utils/proposal';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 import { connect } from 'dva';
 import styles from './style.less';
@@ -49,23 +50,28 @@ const ChangeStatusModal = props => {
 
   return (
     <Modal
-      title={`修改提案: ${title} 状态`}
+      title={<FormattedMessage id="proposal.detail.modify_proposal" values={{ title }} />}
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
       onCancel={props.onCancel}
     >
       <Form>
-        <Form.Item label="提案状态">
+        <Form.Item label={<FormattedMessage id="proposal.detail.proposal_status" />}>
           {getFieldDecorator('status_key', {
             rules: [
               {
                 required: true,
-                message: '请选择提案状态',
+                message: <FormattedMessage id="proposal.detail.select_proposal_status" />,
               },
             ],
           })(
-            <Select style={{ width: 250 }} placeholder="请选择要改变成的状态">
+            <Select
+              style={{ width: 250 }}
+              placeholder={formatMessage({
+                id: 'proposal.detail.select_proposal_status.placeholder',
+              })}
+            >
               {proposalStatus.map(d => (
                 <Option key={d.key} value={d.key}>
                   {d.text}

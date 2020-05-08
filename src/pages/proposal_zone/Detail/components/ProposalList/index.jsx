@@ -11,7 +11,6 @@ import styles from './style.less';
 
 const ProposalList = props => {
   const { dispatch, proposal_list, match, loading } = props;
-
   useEffect(() => {
     console.log('match', match);
 
@@ -36,7 +35,7 @@ const ProposalList = props => {
         });
       }
     }
-  }, [match.params]);
+  }, [window.location.href]);
 
   const handleFetchProposals = page => {
     const params = getPageQuery();
@@ -64,7 +63,7 @@ const ProposalList = props => {
         <div className={styles.list}>
           <Row>
             {proposal_list.items.map(item => (
-              <Col md={8} sm={24}>
+              <Col md={12} sm={24}>
                 <Item key={item.id} {...item} />
               </Col>
             ))}

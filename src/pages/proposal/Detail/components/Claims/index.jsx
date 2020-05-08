@@ -7,10 +7,12 @@ import { getClaimStatusByKey, isClaimer, isClaimerByStatus } from '@/utils/propo
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import UserAvatar from '@/components/User/UserAvatar';
 import ClaimModal from '../ClaimModal';
+import ClaimTeamModal from '../ClaimTeamModal';
 import VerifyClaimModal from '../VerifyClaimModal';
 import SubmitClaimResultModal from '../SubmitClaimResultModal';
-
+import AvatarList from '@/components/User/AvatarList';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { confirm } = Modal;
 
@@ -19,6 +21,8 @@ const { Meta } = Card;
 const Claims = props => {
   // state
   const [claimModalVisible, setClaimModalVisible] = useState(false);
+  const [claimTeamModalVisible, setClaimTeamModalVisible] = useState(false);
+
   const [submitClaimResultModalVisible, setSubmitClaimResultModalVisible] = useState(false);
 
   // verify
@@ -51,14 +55,22 @@ const Claims = props => {
     }
   }
 
-  const ClaimItem = ({ claim_id, claimer, reason, status_key, result }) => (
-    <Card>
-      <Meta
-        className={styles['claim-item']}
-        avatar={<UserAvatar {...claimer} />}
-        title={
-          <div className={styles.head}>
-            <span>{claimer.username}</span>
+  const ClaimItem = ({ claim_id, claimer, reason, status_key, result, plan, team }) => (
+    <Card className={styles['claim-item']}>
+      <Row>
+        <Col span={12}>
+          <div className={styles.user}>
+            <UserAvatar {...claimer} size={48} />
+            <div className="margin-sm"></div>
+            <Row>
+              <span className="subtitle"><FormattedMessage id="proposal.detail.claims.head" /></span>
+              <br />
+              <span>{claimer.username}</span>
+            </Row>
+          </div>
+        </Col>
+        <Col>
+          <Row type="flex" justify="end">
             <span className={styles.status}>
               <Tag color={getClaimStatusByKey(status_key).color}>
                 {getClaimStatusByKey(status_key).text}
@@ -72,39 +84,58 @@ const Claims = props => {
                     size="small"
                     onClick={() => handleVerify({ claim_id, claimer, status_key })}
                   >
-                    审核
+                    <FormattedMessage id="proposal.detail.claims.audit" />
                   </Button>
                 )}
               </span>
             )}
-          </div>
-        }
-        description={
-          <div className={styles.claimContent}>
-            <div className={styles.reason}>
-              <Divider>申领理由</Divider>
-              <p className={styles.reasonText}>{reason}</p>
-            </div>
+          </Row>
+        </Col>
+      </Row>
+      <div className="margin-l" />
+      <div className={styles.claimContent}>
+        <div className={styles.reason}>
+          <p className={styles.reasonText}>
+            <span className="highlight"><FormattedMessage id="proposal.claims_reason" />：</span>
+            {reason}
+          </p>
+          <div className="margin-l" />
+          {plan && (
+            <p className={styles.reasonText}>
+              <span className="highlight"><FormattedMessage id="proposal.detail.claims.claims_plan" />：</span>
+              {plan}
+            </p>
+          )}
+        </div>
 
-            {result && (
-              <div className={styles.result}>
-                <Divider>提交结果</Divider>
-                <p className={styles.resultText}>{result}</p>
-              </div>
-            )}
+        {result && (
+          <div className={styles.result}>
+            <Divider><FormattedMessage id="proposal.submit_results" /></Divider>
+            <p className={styles.resultText}>{result}</p>
           </div>
-        }
-      />
+        )}
+      </div>
+      <div>
+        {team ? (
+          <>
+            <span> <FormattedMessage id="proposal.detail.claims.team_members" /></span>
+            <div className="margin" />
+            <AvatarList userList={team.slice(1).map(teamInfo => teamInfo.staff)} showMax={10} />
+          </>
+        ) : (
+          undefined
+        )}
+      </div>
     </Card>
   );
 
   function showCancelClaimConfirm() {
     confirm({
-      title: '确定要取消申领此提案吗?',
+      title: <FormattedMessage id="proposal.detail.claims.confirm_cancel" />,
       //   content: 'Some descriptions',
-      okText: '确定',
+      okText: <FormattedMessage id="app.confirm" />,
       okType: 'danger',
-      cancelText: '关闭',
+      cancelText: <FormattedMessage id="app.shutdown" />,
       onOk() {
         handleCancelClaim();
       },
@@ -125,36 +156,52 @@ const Claims = props => {
       });
     }
   }
-
+  console.log({ claims });
   return (
     <div className={styles.container}>
       <div className={styles.actions}>
+        <div className="margin-l"></div>
         {(isClaimer(claims, currentUser) === false ||
           isClaimerByStatus(claims, currentUser, ['cancel'])) &&
           proposal_status_key === 'claiming' && (
-            <>
-              <Button type="primary" onClick={() => setClaimModalVisible(true)}>
-                申领
-              </Button>
-              <ClaimModal
-                id={id}
-                visible={claimModalVisible}
-                onCancel={() => setClaimModalVisible(false)}
-              />
-            </>
-          )}
+          <>
+            <Button type="primary" size="small" onClick={() => setClaimModalVisible(true)}>
+            <FormattedMessage id="proposal.detail.claims.claims" />
+            </Button>
+            <ClaimModal
+              id={id}
+              visible={claimModalVisible}
+              onCancel={() => setClaimModalVisible(false)}
+            />
+          </>
+        )}
 
         {isClaimerByStatus(claims, currentUser, ['claiming']) === true && (
-          <Button type="primary" onClick={showCancelClaimConfirm}>
-            取消申领
-          </Button>
+          <Button.Group>
+            <Button type="primary" size="small" onClick={showCancelClaimConfirm}>
+            <FormattedMessage id="proposal.detail.claims.claims_cancel" />
+            </Button>
+            <Button type="primary" size="small" onClick={() => setClaimTeamModalVisible(true)}>
+              <FormattedMessage id="proposal.detail.claims.join" />
+            </Button>
+            <ClaimTeamModal
+              id={id}
+              visible={claimTeamModalVisible}
+              claim={claims.find(claim => claim.user_id == currentUser.id)}
+              onCancel={() => setClaimTeamModalVisible(false)}
+            />
+          </Button.Group>
         )}
         {/* 可提交结果, 状态包括:申领通过, 结果提交中, 结果审核失败 */}
         {isClaimerByStatus(claims, currentUser, ['passed', 'submit_result', 'result_fail']) ===
           true && (
           <>
-            <Button type="primary" onClick={() => setSubmitClaimResultModalVisible(true)}>
-              提交结果
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => setSubmitClaimResultModalVisible(true)}
+            >
+               <FormattedMessage id="proposal.submit_results" />
             </Button>
             <SubmitClaimResultModal
               id={id}
@@ -180,7 +227,7 @@ const Claims = props => {
               {claims.map(
                 d =>
                   d.status_key !== 'cancel' && (
-                    <Col md={12} sm={24}>
+                    <Col md={8} sm={24}>
                       <ClaimItem {...d} />
                     </Col>
                   ),
@@ -188,7 +235,8 @@ const Claims = props => {
             </Row>
           </div>
         ) : (
-          <div className={styles.nodata}>当前无人申领</div>
+          <div className={styles.nodata}><FormattedMessage id="proposal.detail.claims.no_claims" />
+          </div>
         )}
       </Spin>
     </div>

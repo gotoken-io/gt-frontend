@@ -4,23 +4,22 @@ import React, { Component } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import styles from './style.less';
-import layoutStyles from '@/layouts/style.less';
 
 const FormItem = Form.Item;
 const passwordStatusMap = {
   ok: (
     <div className={styles.success}>
-      <FormattedMessage id="userandregister.strength.strong" />
+      <FormattedMessage id="user.password.strong" />
     </div>
   ),
   pass: (
     <div className={styles.warning}>
-      <FormattedMessage id="userandregister.strength.medium" />
+      <FormattedMessage id="user.password.medium" />
     </div>
   ),
   poor: (
     <div className={styles.error}>
-      <FormattedMessage id="userandregister.strength.short" />
+      <FormattedMessage id="user.password.short" />
     </div>
   ),
 };
@@ -79,7 +78,7 @@ class Register extends Component {
     if (value && value !== form.getFieldValue('password')) {
       callback(
         formatMessage({
-          id: 'userandregister.password.twice',
+          id: 'user.password.twice',
         }),
       );
     } else {
@@ -93,7 +92,7 @@ class Register extends Component {
     if (!value) {
       this.setState({
         help: formatMessage({
-          id: 'userandregister.password.required',
+          id: 'user.password.required',
         }),
         visible: !!value,
       });
@@ -147,121 +146,96 @@ class Register extends Component {
     const { getFieldDecorator } = form;
     const { help, visible } = this.state;
     return (
-      <div className={layoutStyles.userMain}>
-        <h3>
-          <FormattedMessage id="userandregister.register.register" />
-        </h3>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('email', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'userandregister.email.required',
-                  }),
-                },
-                {
-                  type: 'email',
-                  message: formatMessage({
-                    id: 'userandregister.email.wrong-format',
-                  }),
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={formatMessage({
-                  id: 'userandregister.email.placeholder',
-                })}
-              />,
-            )}
-          </FormItem>
+      // <div className={layoutStyles.userMain}>
+      <Form onSubmit={this.handleSubmit}>
+        <FormItem>
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                required: true,
+                message: formatMessage({
+                  id: 'user.email.required',
+                }),
+              },
+              {
+                type: 'email',
+                message: formatMessage({
+                  id: 'user.email.wrong_format',
+                }),
+              },
+            ],
+          })(
+            <Input
+              size="large"
+              placeholder={formatMessage({
+                id: 'user.email.placeholder',
+              })}
+            />,
+          )}
+        </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('username', {
-              rules: [
-                {
-                  pattern: /^[a-z0-9]+$/,
-                  message: '仅支持输入小写字母(a-z)和数字(0-9)',
-                },
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'userandregister.userName.required',
-                  }),
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={formatMessage({
-                  id: 'userandregister.login.userName',
-                })}
-              />,
-            )}
-          </FormItem>
+        <FormItem>
+          {getFieldDecorator('username', {
+            rules: [
+              {
+                pattern: /^[a-z0-9]+$/,
+                message: formatMessage({
+                  id: 'user.username.wrong_format',
+                }),
+              },
+              {
+                required: true,
+                message: formatMessage({
+                  id: 'user.username.required',
+                }),
+              },
+            ],
+          })(
+            <Input
+              size="large"
+              placeholder={formatMessage({
+                id: 'user.username.placeholder',
+              })}
+            />,
+          )}
+        </FormItem>
 
-          <FormItem help={help}>
-            <Popover
-              getPopupContainer={node => {
-                if (node && node.parentNode) {
-                  return node.parentNode;
-                }
+        <FormItem help={help}>
+          <Popover
+            getPopupContainer={node => {
+              if (node && node.parentNode) {
+                return node.parentNode;
+              }
 
-                return node;
-              }}
-              content={
+              return node;
+            }}
+            content={
+              <div
+                style={{
+                  padding: '4px 0',
+                }}
+              >
+                {passwordStatusMap[this.getPasswordStatus()]}
+                {this.renderPasswordProgress()}
                 <div
                   style={{
-                    padding: '4px 0',
+                    marginTop: 10,
                   }}
                 >
-                  {passwordStatusMap[this.getPasswordStatus()]}
-                  {this.renderPasswordProgress()}
-                  <div
-                    style={{
-                      marginTop: 10,
-                    }}
-                  >
-                    <FormattedMessage id="userandregister.strength.msg" />
-                  </div>
+                  <FormattedMessage id="user.password.strength" />
                 </div>
-              }
-              overlayStyle={{
-                width: 240,
-              }}
-              placement="right"
-              visible={visible}
-            >
-              {getFieldDecorator('password', {
-                rules: [
-                  {
-                    validator: this.checkPassword,
-                  },
-                ],
-              })(
-                <Input
-                  size="large"
-                  type="password"
-                  placeholder={formatMessage({
-                    id: 'userandregister.password.placeholder',
-                  })}
-                />,
-              )}
-            </Popover>
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('confirm', {
+              </div>
+            }
+            overlayStyle={{
+              width: 240,
+            }}
+            placement="right"
+            visible={visible}
+          >
+            {getFieldDecorator('password', {
               rules: [
                 {
-                  required: true,
-                  message: formatMessage({
-                    id: 'userandregister.confirm-password.required',
-                  }),
-                },
-                {
-                  validator: this.checkConfirm,
+                  validator: this.checkPassword,
                 },
               ],
             })(
@@ -269,28 +243,52 @@ class Register extends Component {
                 size="large"
                 type="password"
                 placeholder={formatMessage({
-                  id: 'userandregister.confirm-password.placeholder',
+                  id: 'user.password.placeholder',
                 })}
               />,
             )}
-          </FormItem>
-          <FormItem>
-            <Button
+          </Popover>
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('confirm', {
+            rules: [
+              {
+                required: true,
+                message: formatMessage({
+                  id: 'user.password.confirm_required',
+                }),
+              },
+              {
+                validator: this.checkConfirm,
+              },
+            ],
+          })(
+            <Input
               size="large"
-              loading={submitting}
-              className={styles.submit}
-              type="primary"
-              htmlType="submit"
-            >
-              <FormattedMessage id="userandregister.register.register" />
-            </Button>
+              type="password"
+              placeholder={formatMessage({
+                id: 'user.password.confirm',
+              })}
+            />,
+          )}
+        </FormItem>
+        <FormItem>
+          <Button
+            size="large"
+            loading={submitting}
+            className={styles.submit}
+            type="primary"
+            htmlType="submit"
+          >
+            <FormattedMessage id="user.sign_up" />
+          </Button>
 
-            <Link className={styles.login} to="/login">
+          {/* <Link className={styles.login} to="/login">
               <FormattedMessage id="userandregister.register.sign-in" />
-            </Link>
-          </FormItem>
-        </Form>
-      </div>
+            </Link> */}
+        </FormItem>
+      </Form>
+      // </div>
     );
   }
 }

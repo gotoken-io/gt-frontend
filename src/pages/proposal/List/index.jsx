@@ -8,6 +8,8 @@ import { getPageQuery } from '@/utils/utils';
 import Item from '@/components/Proposal/Item';
 import Filter from '@/components/Proposal/Filter';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const List = props => {
   const {
@@ -33,6 +35,7 @@ const List = props => {
   //     });
   //   }
   // }, []);
+  console.log({ propsoalList: props });
 
   useEffect(() => {
     console.log('match', match);
@@ -40,22 +43,24 @@ const List = props => {
     const params = getPageQuery();
     console.log('params', params);
 
-    if (dispatch) {
-      const payload = { ...match.params, ...params };
-      console.log('payload', payload);
-
-      dispatch({
-        type: 'proposal/fetchAllProposal',
-        payload,
-      });
+    if (!dispatch) {
+      return;
     }
-  }, [match.params]);
+
+    const payload = { ...match.params, ...params };
+    console.log('payload', payload);
+
+    dispatch({
+      type: 'proposal/fetchAllProposal',
+      payload,
+    });
+  }, [window.location.href]);
 
   const handleCreateProposal = () => {
     if (currentUser.id) {
       router.push('/proposal/create');
     } else {
-      message.error('请先登陆');
+      message.error(formatMessage({ id: 'proposal.detail.comments.login' }));
     }
   };
 
@@ -83,7 +88,7 @@ const List = props => {
 
       <div className={styles.actions}>
         <Button onClick={handleCreateProposal} type="primary">
-          创建提案
+          <FormattedMessage id="proposal.detail.create_proposal" />
         </Button>
       </div>
       <Spin spinning={fetchProposalListLoading}>

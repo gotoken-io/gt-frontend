@@ -1,6 +1,5 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import router from 'umi/router';
 import {
   createProposal,
   updateProposal,
@@ -27,9 +26,13 @@ import {
   verifyProposalClaim,
   submitProposalClaimResult,
   verifyProposalClaimResult,
+  addTeam,
+  deleteTeam,
 } from '@/services/proposal';
 
 import { showMsgReload, showMsgGoBack } from '@/utils/utils';
+import { VoteContract } from '../services/voteContract';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const ProposalModel = {
   namespace: 'proposal',
@@ -46,6 +49,7 @@ const ProposalModel = {
       total: 1,
     },
     detail: {},
+    voteDetail: {},
     logs: [],
     claims: [],
   },
@@ -66,7 +70,7 @@ const ProposalModel = {
     *createCategory({ payload }, { call, put }) {
       const response = yield call(createCategory, payload);
       if (response.status === 'success') {
-        message.success('创建提案分类成功');
+        message.success(formatMessage({ id: 'proposal.models.category_success' }));
         yield put({
           type: 'createCategoryList',
           payload: response.data,
@@ -81,7 +85,7 @@ const ProposalModel = {
     *updateCategory({ payload }, { call, put }) {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
-        message.success('修改提案分类成功');
+        message.success(formatMessage({ id: 'proposal.models.category_updated' }));
         yield put({
           type: 'updateCategoryList',
           payload,
@@ -96,7 +100,7 @@ const ProposalModel = {
     *deleteCategory({ payload }, { call, put }) {
       const response = yield call(deleteCategory, payload);
       if (response.status === 'success') {
-        message.success('删除提案分类成功');
+        message.success(formatMessage({ id: 'proposal.models.delete_category' }));
         yield put({
           type: 'deleteCategoryList',
           payload,
@@ -158,6 +162,9 @@ const ProposalModel = {
 
     *fetchProposal({ payload }, { call, put }) {
       const response = yield call(queryProposal, payload);
+      const detail = response.data;
+      const responseZone = yield call(queryProposalZone, { id: detail.zone_proposal_id });
+      detail.zone_detail = responseZone.data;
       yield put({
         type: 'saveProposal',
         payload: response.data,
@@ -186,7 +193,7 @@ const ProposalModel = {
     *createProposal({ payload }, { call, put }) {
       const response = yield call(createProposal, payload);
       if (response.status === 'success') {
-        message.success('提案创建成功');
+        message.success(formatMessage({ id: 'proposal.models.create_proposal_success' }));
         yield put(
           routerRedux.replace({
             pathname: '/',
@@ -202,14 +209,14 @@ const ProposalModel = {
     *updateProposal({ payload }, { call, put }) {
       const response = yield call(updateProposal, payload);
       if (response.status === 'success') {
-        showMsgGoBack('提案修改成功');
+        showMsgGoBack(formatMessage({ id: 'proposal.models.proposal_updated' }));
       }
     },
 
     *updateProposalStatus({ payload }, { call, _ }) {
       const response = yield call(updateProposalStatus, payload);
       if (response.status === 'success') {
-        showMsgReload('提案状态修改成功');
+        showMsgReload(formatMessage({ id: 'proposal.models.proposal_status_updated' }));
         return true;
       }
     },
@@ -217,7 +224,7 @@ const ProposalModel = {
     *deleteProposal({ payload }, { call, put }) {
       const response = yield call(deleteProposal, payload);
       if (response.status === 'success') {
-        message.success('提案删除成功');
+        message.success(formatMessage({ id: 'proposal.models.proposal_deleted' }));
         yield put(
           routerRedux.replace({
             pathname: '/',
@@ -231,7 +238,7 @@ const ProposalModel = {
     *deleteProposalZone({ payload }, { call, put }) {
       const response = yield call(deleteProposalZone, payload);
       if (response.status === 'success') {
-        message.success('提案专区删除成功');
+        message.success(formatMessage({ id: 'proposal.models.delete_proposal_zone_success' }));
         yield put(
           routerRedux.replace({
             pathname: '/',
@@ -246,12 +253,12 @@ const ProposalModel = {
     *createProposalZone({ payload }, { call, put }) {
       const response = yield call(createProposalZone, payload);
       if (response.status === 'success') {
-        showMsgGoBack('提案专区创建成功');
+        showMsgGoBack(formatMessage({ id: 'proposal.models.create_proposal_success' }));
       }
 
       if (response.status === 'fail') {
         if (response.code === 409) {
-          message.error('已存在同名专区');
+          message.error(formatMessage({ id: 'proposal.models.proposal_zone_duplicated' }));
         }
       }
     },
@@ -259,7 +266,7 @@ const ProposalModel = {
     *updateProposalZone({ payload }, { call, put }) {
       const response = yield call(updateProposalZone, payload);
       if (response.status === 'success') {
-        showMsgGoBack('提案专区修改成功');
+        showMsgGoBack(formatMessage({ id: 'proposal.models.edit_proposal_zone_success' }));
       }
     },
 
@@ -275,7 +282,7 @@ const ProposalModel = {
     *updateProposalProgress({ payload }, { call, put }) {
       const response = yield call(updateProposalProgress, payload);
       if (response.status === 'success') {
-        showMsgReload('提案进度更新成功');
+        showMsgReload(formatMessage({ id: 'proposal.models.proposal_progress_updated' }));
 
         return true;
       }
@@ -293,18 +300,62 @@ const ProposalModel = {
     },
 
     *claimProposal({ payload }, { call, put }) {
-      const response = yield call(claimProposal, payload);
-      if (response.status === 'success') {
-        showMsgReload('提案申领成功');
-
+      const response = yield call(claimProposal, {
+        reason: payload.reason,
+        payment_address: payload.payment_address,
+        plan: payload.plan,
+        proposal_id: payload.proposal_id,
+      });
+      if (response.status !== 'success') {
+        message.error(formatMessage({ id: 'proposal.models.claim_failed' }));
         return true;
       }
+      const addTeamResponse = yield call(addTeam, {
+        claim_id: response.data.claim_id,
+        user_id: payload.owner_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (addTeamResponse.status !== 'success') {
+        message.error(formatMessage({ id: 'proposal.models.claim_failed' }));
+        return true;
+      }
+      showMsgReload(formatMessage({ id: 'proposal.models.claim_created' }));
+      return true;
+    },
+    *addTeamMember({ payload }, { call, put }) {
+      const addTeamResponse = yield call(addTeam, {
+        claim_id: payload.claim_id,
+        user_id: payload.user_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (addTeamResponse.status !== 'success') {
+        message.error(formatMessage({ id: 'proposal.models.claim_failed' }));
+        return true;
+      }
+      showMsgReload(formatMessage({ id: 'proposal.models.claim_created' }));
+      return true;
+    },
+    *deleteTeamMember({ payload }, { call, put }) {
+      const result = yield call(deleteTeam, {
+        id: payload.id,
+        user_id: payload.user_id,
+        responsibility: payload.responsibility,
+      });
+
+      if (result.status !== 'success') {
+        message.error(formatMessage({ id: 'proposal.models.delete_team_member_failed' }));
+        return true;
+      }
+      showMsgReload(formatMessage({ id: 'proposal.models.team_member_deleted' }));
+      return true;
     },
 
     *cancelClaimProposal({ payload }, { call, put }) {
       const response = yield call(cancelClaimProposal, payload);
       if (response.status === 'success') {
-        showMsgReload('提案取消申领成功');
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_canceled' }));
 
         return true;
       }
@@ -313,7 +364,7 @@ const ProposalModel = {
     *verifyProposalClaim({ payload }, { call, put }) {
       const response = yield call(verifyProposalClaim, payload);
       if (response.status === 'success') {
-        showMsgReload('提案申领审核成功');
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_audited' }));
 
         return true;
       }
@@ -322,7 +373,7 @@ const ProposalModel = {
     *submitProposalClaimResult({ payload }, { call, put }) {
       const response = yield call(submitProposalClaimResult, payload);
       if (response.status === 'success') {
-        showMsgReload('提案结果提交成功');
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_submit_result' }));
 
         return true;
       }
@@ -331,9 +382,30 @@ const ProposalModel = {
     *verifyProposalClaimResult({ payload }, { call, put }) {
       const response = yield call(verifyProposalClaimResult, payload);
       if (response.status === 'success') {
-        showMsgReload('提案申领结果审核成功');
+        showMsgReload(formatMessage({ id: 'proposal.models.claim_result_verified' }));
         return true;
       }
+    },
+    *fetchVoteInformation({ payload }, { call, put }) {
+      const vote = VoteContract.get();
+      if (!vote) {
+        yield put({
+          type: 'saveVoteInfo',
+          payload: {
+            error: 'No Metamask',
+          },
+        });
+        return;
+      }
+      const signers = yield call(vote.getSigners, { zone: payload.zone });
+      const voteInfo = yield call(vote.getVoteInfo, { zone: payload.zone, hash: payload.hash });
+      yield put({
+        type: 'saveVoteInfo',
+        payload: {
+          signers,
+          ...voteInfo,
+        },
+      });
     },
   },
   reducers: {
@@ -369,6 +441,10 @@ const ProposalModel = {
     saveProposal(state, action) {
       return { ...state, detail: action.payload || {} };
     },
+    saveVoteInfo(state, action) {
+      return { ...state, voteDetail: action.payload || {} };
+    },
+
     saveProposalLogs(state, action) {
       return { ...state, logs: action.payload || [] };
     },

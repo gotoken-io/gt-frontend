@@ -1,4 +1,4 @@
-import { Avatar, Icon, Menu, Spin } from 'antd';
+import { Avatar, Icon, Menu, Dropdown } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
 import { connect } from 'dva';
@@ -10,9 +10,14 @@ import styles from './index.less';
 
 const LoginAndRegister = () => (
   <div>
-    <Link to="/login">登录</Link>
+    <Link to="/login">
+      <FormattedMessage id="user.sign_in" />
+    </Link>
     <em>|</em>
-    <Link to="/register">注册</Link>
+    <Link to="/login">
+      {' '}
+      <FormattedMessage id="user.sign_up" />
+    </Link>
   </div>
 );
 
@@ -49,7 +54,7 @@ class AvatarDropdown extends React.Component {
       >
         <Menu.Item key="account">
           <Icon type="user" />
-          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
+          <FormattedMessage id="app.menu.account" />
         </Menu.Item>
 
         <Menu.Item key="settings">
@@ -65,15 +70,19 @@ class AvatarDropdown extends React.Component {
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.username ? (
-      <HeaderDropdown overlay={menuHeaderDropdown}>
-        <span className={`${styles.action} ${styles.account}`}>
-          <UserAvatar {...currentUser} />
-          <span className={styles.name}>{currentUser.username}</span>
-        </span>
-      </HeaderDropdown>
-    ) : (
-      <LoginAndRegister />
+    return (
+      <>
+        {currentUser && currentUser.username ? (
+          <HeaderDropdown overlay={menuHeaderDropdown}>
+            <span className={`${styles.action} ${styles.account}`}>
+              <UserAvatar {...currentUser} />
+              <span className={styles.name}>{currentUser.username}</span>
+            </span>
+          </HeaderDropdown>
+        ) : (
+          <LoginAndRegister />
+        )}
+      </>
     );
   }
 }

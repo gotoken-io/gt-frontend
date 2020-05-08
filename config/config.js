@@ -43,6 +43,7 @@ const plugins = [
       //   exclude: ['@babel/runtime', 'netlify-lambda'],
       // },
     },
+    'umi-plugin-antd-icon-config',
   ],
   [
     'umi-plugin-pro-block',
@@ -54,7 +55,7 @@ const plugins = [
     },
   ],
 ]; // 针对 preview.pro.ant.design 的 GA 统计代码
-
+ 
 plugins.push([
   'umi-plugin-ga',
   {
@@ -120,7 +121,7 @@ export default {
   chainWebpack: webpackPlugin,
   proxy: {
     '/server/': {
-      // target: 'http://47.103.15.202:8000',
+      // target: "http://192.168.0.19:5000",
       target: 'http://127.0.0.1:5000',
       changeOrigin: true,
       pathRewrite: {

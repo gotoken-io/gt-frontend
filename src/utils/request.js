@@ -4,6 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification, message } from 'antd';
+import { formatMessage } from 'umi-plugin-react/locale';
 
 const codeMessage = {
   // 200: '服务器成功返回请求的数据。',
@@ -17,10 +18,10 @@ const codeMessage = {
   // 406: '请求的格式不可得。',
   // 410: '请求的资源被永久删除，且不会再得到的。',
   // 422: '当创建一个对象时，发生一个验证错误。',
-  500: '服务器发生错误，请检查服务器。',
-  502: '网关错误。',
-  503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
+  500: formatMessage({ id: 'app.error_500' }),
+  502: formatMessage({ id: 'app.error_502' }),
+  503: formatMessage({ id: 'app.error_503' }),
+  504: formatMessage({ id: 'app.error_504' }),
 };
 /**
  * 异常处理程序

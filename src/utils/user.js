@@ -34,5 +34,6 @@ export function isAdmin({ currentUser }) {
   if (!isEmpty(currentUser) && currentUser.admin === true) {
     return true;
   }
+
   return false;
 }

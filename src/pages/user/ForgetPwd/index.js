@@ -43,7 +43,9 @@ const ForgetPwd = props => {
 
   return (
     <div className={layoutStyles.userMain}>
-      <h3>重置密码</h3>
+      <h3>
+        <FormattedMessage id="user.reset_password" />
+      </h3>
 
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
@@ -52,13 +54,13 @@ const ForgetPwd = props => {
               {
                 required: true,
                 message: formatMessage({
-                  id: 'userandregister.email.required',
+                  id: 'user.email.required',
                 }),
               },
               {
                 type: 'email',
                 message: formatMessage({
-                  id: 'userandregister.email.wrong-format',
+                  id: 'user.email.wrong_format',
                 }),
               },
             ],
@@ -88,15 +90,15 @@ const ForgetPwd = props => {
             className="login-form-button"
             block
           >
-            发送重置密码邮件{count > 0 && `(${count})`}
+            <FormattedMessage id="user.reset_password.emails_sent" values={{ count }} />
+            <FormattedPlural value={count} zero="" other={`(${count})`} />
           </Button>
         </Form.Item>
         <Form.Item className={styles.center}>
           <Link to="/">
             <Button type="link">
               {formatMessage({
-                id: 'exception404.exception.back',
-                defaultMessage: 'Back Home',
+                id: 'app.back_home',
               })}
             </Button>
           </Link>

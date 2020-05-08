@@ -7,6 +7,10 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import logo from '../assets/gt-logo.png';
 import styles from './UserLayout.less';
 import Footer from './components/Footer';
+import { web3Connectors } from '@/services/web3';
+import Web3Provider from 'web3-react';
+import Web3 from 'web3';
+import { useEffect } from 'react';
 
 const UserLayout = props => {
   const {
@@ -28,6 +32,7 @@ const UserLayout = props => {
     formatMessage,
     ...props,
   });
+
   return (
     <>
       <Helmet>
@@ -46,7 +51,9 @@ const UserLayout = props => {
             </div>
             {/* <div className={styles.desc}>GoToken</div> */}
           </div>
-          {children}
+          <Web3Provider connectors={web3Connectors} libraryName={'web3.js'} web3Api={Web3}>
+            {children}
+          </Web3Provider>
         </div>
         <Footer />
       </div>

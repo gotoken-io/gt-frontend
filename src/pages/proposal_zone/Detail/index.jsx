@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Modal, Spin, Tag, Icon } from 'antd';
+import { Typography, Button, Modal, Spin, Tag, Icon, Progress } from 'antd';
 import Image from '@/components/Image';
 import { GridContent } from '@ant-design/pro-layout';
 import { Collapse } from 'react-collapse';
-
+import { getFielUrl } from '@/utils/upload';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import ProposalList from './components/ProposalList';
 import defaultCover from '@/assets/default_cover.png';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -22,7 +23,14 @@ const ZoneCover = ({ id, name, cover }) => {
   return (
     <div className={styles.cardCover}>
       <Link to={`/proposal/list/${id}`}>
-        <Image name={name} src={cardCoverSrc} size={200} />
+        <div
+          className={styles.image}
+          style={{
+            background: `url(${getFielUrl(cardCoverSrc)}) center no-repeat`,
+            backgroundSize: 'cover',
+          }}
+        ></div>
+        {/* <Image name={name} src={cardCoverSrc} size={200}/> */}
       </Link>
     </div>
   );
@@ -31,6 +39,7 @@ const ZoneCover = ({ id, name, cover }) => {
 const Detail = props => {
   // state
   const [collapse, setCollapse] = useState(true);
+  console.log(props);
 
   // props
   const { dispatch, zone_detail, match, currentUser } = props;
@@ -81,18 +90,23 @@ const Detail = props => {
     vote_addr_weight_json,
     currencies,
     theme_color,
+    total_proposals,
   } = zone_detail;
+
   const { fetchProposalZoneLoading, delProposalZoneLoading } = props;
 
+  console.log({ zone_detail });
   return (
     <GridContent>
       {currentUser.admin && (
         <div className={styles.actionBtn}>
           <Link to={`/proposal/zone/update/${id}`}>
-            <Button type="primary">编辑</Button>
+            <Button type="primary">
+              <FormattedMessage id="app.edit" />
+            </Button>
           </Link>
           <Button onClick={handleDelete} type="danger">
-            删除
+            <FormattedMessage id="app.delete" />
           </Button>
         </div>
       )}
@@ -102,49 +116,69 @@ const Detail = props => {
           <Typography>
             <div className={styles.summaryCard}>
               <ZoneCover {...zone_detail} />
-
-              <div className={styles.summaryContent}>
-                <Link to={`/proposal/list/${id}`}>
-                  <Title level={2}>{title}</Title>
-                </Link>
-
-                {/* <h3 className={styles.proposalTitle}>简称: {name}</h3> */}
-                {/* <h3 className={styles.proposalTitle}>Token: {token}</h3> */}
-                <div className={styles.currency}>
-                  {currencies &&
-                    currencies.length > 0 &&
-                    currencies.map(d => <Tag color={theme_color}> {d.unit}</Tag>)}
+              <div className={styles.content}>
+                <div className={styles.summaryContent}>
+                  <div>
+                    <Paragraph>{summary}</Paragraph>
+                  </div>
+                  <div className={styles.vote}>
+                    <div className={styles.toup}>
+                      <span className={styles.num}>{total_proposals?total_proposals:'0'}</span>
+                      <div>
+                        <FormattedMessage id="proposal_zone.numberOfProposals" />
+                      </div>
+                    </div>
+                    <span>|</span>
+                    <div className={styles.toul}>
+                      <span className={styles.num}>0</span>
+                      <div>
+                        <FormattedMessage id="proposal_zone.numberOfParticipants" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <div className={styles.collapse} onClick={() => setCollapse(!collapse)}>
+                  <span>
+                    <FormattedMessage
+                      id={!collapse ? 'proposal_zone.collapseAll' : 'proposal_zone.displayAll'}
+                    />
+                  </span>
+                  <Icon type={collapse ? 'down' : 'up'} />
+                </div>
+                {/* default is collapse */}
+                <Collapse isOpened={!collapse}>
+                  <Title level={3}>
+                    <FormattedMessage id="proposal_zone.introduce" />
+                  </Title>
+                  <div className={styles.detail}>
+                    <Paragraph>
+                      <div dangerouslySetInnerHTML={{ __html: detail }} />
+                    </Paragraph>
+                  </div>
 
-                <Paragraph>{summary}</Paragraph>
+                  <Title level={3}>
+                    <FormattedMessage id="proposal_zone.vote_rule" />
+                  </Title>
+                  <div>
+                    <div>
+                      <FormattedMessage id="proposal_zone.support%" />
+                      <Icon type="question-circle" />
+                    </div>
+                    <Progress type="line" percent="64" strokeColor="#29cc7a"></Progress>
+                    <div className={styles.tpl}>
+                      <div>
+                        <FormattedMessage id="proposal_zone.minimumVote%" />
+                        <Icon type="question-circle" />
+                      </div>
+                      <Progress type="line" percent="80" strokeColor="#29cc7a"></Progress>
+                    </div>
+                  </div>
+                </Collapse>
+                {/* <div className={styles.voters}>
+                  <Button size="small">加入专区</Button>
+                </div> */}
               </div>
             </div>
-
-            <div className={styles.collapse} onClick={() => setCollapse(!collapse)}>
-              <span>{!collapse ? '收起' : '展开'}</span>
-              <Icon type={collapse ? 'down' : 'up'} />
-            </div>
-
-            {/* default is collapse */}
-            <Collapse isOpened={!collapse}>
-              <Title level={3}>专区详情</Title>
-              <div className={styles.detail}>
-                <Paragraph>
-                  <div dangerouslySetInnerHTML={{ __html: detail }} />
-                </Paragraph>
-              </div>
-
-              <Title level={3}>投票规则</Title>
-              <div className={styles.detail}>
-                <Paragraph>{vote_rule}</Paragraph>
-              </div>
-
-              <Title level={3}>投票地址与权重</Title>
-              <div className={styles.detail}>
-                <Paragraph>{vote_addr_weight_json}</Paragraph>
-              </div>
-            </Collapse>
-
             {/* proposal list */}
             <ProposalList zone_id={id} match={match} />
           </Typography>
@@ -154,9 +188,12 @@ const Detail = props => {
   );
 };
 
-export default connect(({ user, proposal, loading }) => ({
-  currentUser: user.currentUser,
-  zone_detail: proposal.zone_detail,
-  fetchProposalZoneLoading: loading.effects['proposal/fetchProposalZone'],
-  delProposalZoneLoading: loading.effects['proposal/deleteProposalZone'],
-}))(Detail);
+export default connect(props => {
+  console.log(props);
+  return {
+    currentUser: props.user.currentUser,
+    zone_detail: props.proposal.zone_detail,
+    fetchProposalZoneLoading: props.loading.effects['proposal/fetchProposalZone'],
+    delProposalZoneLoading: props.loading.effects['proposal/deleteProposalZone'],
+  };
+})(Detail);

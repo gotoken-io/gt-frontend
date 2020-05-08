@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tag, Button, Modal, Spin, Tabs } from 'antd';
+import { Typography, Tag, Button, Modal, Spin, Tabs, Row, Col, Menu, Dropdown, Icon } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import Image from '@/components/Image';
 import { connect } from 'dva';
@@ -8,6 +8,8 @@ import { StickyContainer, Sticky } from 'react-sticky';
 import styles from './style.less';
 import defaultCover from '@/assets/default_cover.png';
 import UserAvatar from '@/components/User/UserAvatar';
+import Voting from './components/Voting';
+
 import Comments from './components/Comments';
 import moment from '@/utils/moment';
 import ChangeStatusModal from './components/ChangeStatusModal';
@@ -15,6 +17,8 @@ import Logs from './components/Logs';
 import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Claims from './components/Claims';
+import VoteQrCode from './components/VoteQrCode';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -71,10 +75,15 @@ const Detail = props => {
 
   function showDelConfirm() {
     confirm({
-      title: `确定删除提案 ${detail.zone.name} No.${detail.zone_proposal_id}?`,
-      content: '点击确定后，提案将删除',
-      okText: '确认',
-      cancelText: '取消',
+      title: (
+        <FormattedMessage
+          id="proposal.delete.title"
+          values={{ zone_name: detail.zone.name, zone_proposal_id: detail.zone_proposal_id }}
+        />
+      ),
+      content: <FormattedMessage id="proposal.detail.comments" />,
+      okText: <FormattedMessage id="app.confirm" />,
+      cancelText: <FormattedMessage id="app.cancel" />,
 
       onOk() {
         return new Promise((resolve, reject) => {
@@ -95,129 +104,186 @@ const Detail = props => {
   const { fetchDetailLoading } = props;
   const { creator, zone } = detail;
 
-  return (
-    <GridContent>
+  console.log('detail', detail);
+  console.log(props);
+
+  const menu = (
+    <Menu>
       {isCreatorOrAdmin({ currentUser, creator }) && (
-        <Link to={`/proposal/update/${id}`}>
-          <Button type="primary" className={styles.actionsBtn}>
-            修改提案
-          </Button>
-        </Link>
+        <Menu.Item key="1">
+          <Link to={`/proposal/update/${id}`}>
+            <Icon type="form" /> <FormattedMessage id="proposal.detail.update" />
+          </Link>
+        </Menu.Item>
       )}
 
       {isAdmin({ currentUser }) && (
-        <Button type="danger" className={styles.actionsBtn} onClick={showDelConfirm}>
-          删除提案
-        </Button>
+        <Menu.Item key="2" onClick={showDelConfirm}>
+          <Icon type="close-circle" /> <FormattedMessage id="proposal.detail.delete" />
+        </Menu.Item>
       )}
-
       {isAdmin({ currentUser }) && (
-        <>
-          <Button className={styles.actionsBtn} onClick={() => setChangeStatusModalShow(true)}>
-            修改提案状态
-          </Button>
+        <Menu.Item key="3" onClick={() => setChangeStatusModalShow(true)}>
+          <Icon type="undo" />
+          <FormattedMessage id="proposal.detail.modify" />
           <ChangeStatusModal
             {...detail}
             visible={changeStatusModalShow}
             onCancel={() => setChangeStatusModalShow(false)}
           />
-        </>
+        </Menu.Item>
       )}
+    </Menu>
+  );
 
+  console.log(detail);
+  return (
+    <GridContent>
       <div className={styles.container}>
         <Spin spinning={fetchDetailLoading}>
           <Typography>
-            <div className={styles.summaryCard}>
-              <ZoneCover {...zone} />
-
-              <div className={styles.summaryContent}>
-                <div className={styles.cardHead}>
-                  <div className={styles.left}>
-                    <Text>{zone && zone.name}</Text>
-                    &nbsp;&nbsp;
-                    {detail.zone_proposal_id && <Text>No.{detail.zone_proposal_id}</Text>}
-                  </div>
-                  <div className={styles.right}>
-                    {proposalAmount > 0 && (
-                      <span
-                        style={zone.theme_color && { backgroundColor: zone.theme_color }}
-                        className={styles.proposalAmount}
-                      >
-                        {proposalAmount.toLocaleString()}&nbsp;
-                        {detail.currency_unit && detail.currency_unit.unit}
-                      </span>
+            <div className="margin-l"></div>
+            <Row gutter={[16, 16]} type="flex" align="middle">
+              <Col lg={{ span: 16, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+                <div className={styles.userList}>
+                  <Row type="flex" justify="space-between">
+                    <Title level={2} className={styles.proposalTitle}>
+                      {detail.title}
+                    </Title>
+                    {isCreatorOrAdmin({ currentUser, creator }) && (
+                      <Dropdown overlay={menu}>
+                        <Button size="small" className={styles.shezhi}>
+                          <Icon type="setting" />
+                        </Button>
+                      </Dropdown>
                     )}
+                  </Row>
+
+                  <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
+
+                  <div className={styles.budget}>
+                    <Row gutter={[16, 16]}>
+                      <Col md={8} xs={24}>
+                        <div className={styles.user}>
+                          <UserAvatar {...detail.creator} size={48} />
+                          <div className="margin-sm"></div>
+                          <Row>
+                            <span className={styles.weight2}>
+                              {detail.creator && detail.creator.username}
+                            </span>
+                            <br />
+                            <FormattedMessage id="proposal.detail.submit_time" />:{' '}
+                            {moment.createTime(detail.created)}
+                          </Row>
+                        </div>
+                      </Col>
+                      {detail.amount && detail.currency_unit > 0 && (
+                        <Col md={4} xs={12}>
+                          <div>
+                            <div className={styles.weight}>
+                              {detail.amount} {detail.currency_unit.unit}
+                            </div>
+                            <div className={styles.zq}>
+                              <FormattedMessage id="proposal.detail.project_budget" />
+                            </div>
+                          </div>
+                        </Col>
+                      )}
+                      <Col md={6} xs={12}>
+                        <div>
+                          <div className={styles.weight2}>
+                            {(detail.estimated_hours / 24).toFixed(2)}{' '}
+                            <FormattedMessage id="app.day" />
+                          </div>
+                          <div className={styles.zq}>
+                            <FormattedMessage id="proposal.detail.max_lifecycle" />
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
                   </div>
                 </div>
-                <Title level={2} className={styles.proposalTitle}>
-                  {detail.title}
-                </Title>
+              </Col>
 
-                {detail.status_key && (
-                  <div className={styles.status}>
-                    <span className={styles[detail.status_key]}>
-                      {getStatusTextByKey(detail.status_key)}
-                    </span>
-                  </div>
-                )}
-
-                {detail.category && detail.category.id && (
-                  <span className={styles.category}>
-                    <Tag>{detail.category.name}</Tag>
-                  </span>
-                )}
-
-                <Paragraph className={styles.createtime}>
-                  创建时间: {moment.datetime(detail.created)}
-                </Paragraph>
-                <Paragraph className={styles.summaryText}>{detail.summary}</Paragraph>
-
-                <div>
-                  标签:&nbsp;
-                  <Tags tag={detail.tag} />
+              <Col lg={{ span: 8, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+                <div className={styles.userList}>
+                  {zone && zone.id == '2' ? (
+                    <Voting detail={detail} />
+                  ) : (
+                    <VoteQrCode detail={detail} />
+                  )}
                 </div>
-              </div>
-            </div>
+              </Col>
+            </Row>
+            <div className="margin-l"></div>
 
-            <div className={styles.userList}>
-              <div className={styles.user}>
-                <UserAvatar {...detail.creator} />
-                <div className={styles.userContent}>
-                  <Title level={3}>{detail.creator && detail.creator.username}</Title>
-                  <Text>创建人</Text>
-                </div>
-              </div>
-            </div>
+            <Row>
+              <Col lg={{ span: 24, offset: 0 }} xs={{ span: 22, offset: 1 }}>
+                <Tabs
+                  size="large"
+                  className={styles.tabs}
+                  animated={false}
+                  defaultActiveKey="detail"
+                  onChange={() => {}}
+                >
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.details_description" />}
+                    key="detail"
+                  >
+                    <div className={styles.detail}>
+                      <div className={styles.describe}>
+                        <FormattedMessage id="proposal.detail.submit_time" />
+                      </div>
+                      <div className={styles.details}>
+                        <div className={styles.content}>
+                          {/* {details.map((item, index) => {
+                            return ( */}
+                          <div>
+                            <div className={styles.title}>{detail.title}</div>
+                            <Paragraph>
+                              <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
+                            </Paragraph>
+                          </div>
+                          {/* );
+                          })} */}
+                        </div>
+                      </div>
+                    </div>
+                  </TabPane>
 
-            <Tabs size="large" animated={false} defaultActiveKey="detail" onChange={() => {}}>
-              <TabPane tab="提案详情" key="detail">
-                <div className={styles.detail}>
-                  <div className={styles.content}>
-                    <Paragraph>
-                      <div dangerouslySetInnerHTML={{ __html: detail.detail }} />
-                    </Paragraph>
-                  </div>
-                </div>
-              </TabPane>
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.claims_details" />}
+                    key="claims"
+                  >
+                    <Claims
+                      proposal_status_key={detail.status_key}
+                      id={id}
+                      proposal_creator={creator}
+                    />
+                  </TabPane>
 
-              <TabPane tab="提案日志" key="logs">
-                <div className={styles.logs}>
-                  <Logs id={id} proposal_creator={creator} />
-                </div>
-              </TabPane>
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.project_progress" />}
+                    key="logs"
+                  >
+                    <div className={styles.logs}>
+                      <Logs id={id} proposal_creator={creator} />
+                    </div>
+                  </TabPane>
 
-              <TabPane tab="申领" key="claims">
-                <Claims
-                  proposal_status_key={detail.status_key}
-                  id={id}
-                  proposal_creator={creator}
-                />
-              </TabPane>
+                  <TabPane
+                    tab={<FormattedMessage id="proposal.detail.collaboration_kanban" />}
+                    key="tasks"
+                  >
+                    <div className={styles.logs}></div>
+                  </TabPane>
 
-              <TabPane tab="评论" key="comments">
-                <div className={styles.comments}>{detail && <Comments id={id} />}</div>
-              </TabPane>
-            </Tabs>
+                  <TabPane tab={<FormattedMessage id="proposal.detail.comments" />} key="comments">
+                    <div className={styles.comments}>{detail && <Comments id={id} />}</div>
+                  </TabPane>
+                </Tabs>
+              </Col>
+            </Row>
           </Typography>
         </Spin>
       </div>

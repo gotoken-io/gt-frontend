@@ -1,44 +1,46 @@
+import { formatMessage } from 'umi-plugin-react/locale';
+
 // status
 export const proposalStatus = [
   {
     key: 'wait_to_vote',
     value: 100,
-    text: '待投票',
+    text: formatMessage({ id: 'proposal.status.wait_to_vote' }),
   },
   {
     key: 'set_up_voting',
     value: 200,
-    text: '立项投票中',
+    text: formatMessage({ id: 'proposal.status.set_up_voting' }),
   },
   {
     key: 'claiming',
     value: 300,
-    text: '申领中',
+    text: formatMessage({ id: 'proposal.status.claiming' }),
   },
   {
     key: 'set_up_vote_fail',
     value: 400,
-    text: '投票未通过',
+    text: formatMessage({ id: 'proposal.status.set_up_vote_fail' }),
   },
   {
     key: 'under_way',
     value: 500,
-    text: '进行中',
+    text: formatMessage({ id: 'proposal.status.under_way' }),
   },
   {
     key: 'checking',
     value: 600,
-    text: '验收中',
+    text: formatMessage({ id: 'proposal.status.checking' }),
   },
   {
     key: 'success',
     value: 700,
-    text: '已完成',
+    text: formatMessage({ id: 'proposal.status.success' }),
   },
   {
     key: 'fail',
     value: 800,
-    text: '失败',
+    text: formatMessage({ id: 'proposal.status.fail' }),
   },
 ];
 
@@ -58,91 +60,91 @@ export const proposalEvent = [
   {
     key: 'create',
     value: 1,
-    text: '创建提案',
+    text: formatMessage({ id: 'proposal.event.create' }),
     color: 'gray',
   },
   {
     key: 'update_info',
     value: 2,
-    text: '更新提案信息',
+    text: formatMessage({ id: 'proposal.event.update_info' }),
     color: 'gray',
   },
   {
     key: 'update_status',
     value: 3,
-    text: '更新提案状态',
+    text: formatMessage({ id: 'proposal.event.update_status' }),
     color: 'green',
   },
   {
     key: 'update_progress',
     value: 4,
-    text: '更新项目进度',
+    text: formatMessage({ id: 'proposal.event.update_progress' }),
     color: 'green',
   },
   {
     key: 'onchain_success',
     value: 5,
-    text: '提案上链成功',
+    text: formatMessage({ id: 'proposal.event.onchain_success' }),
     color: 'green',
   },
   {
     key: 'onchain_fail',
     value: 6,
-    text: '提案上链失败',
+    text: formatMessage({ id: 'proposal.event.onchain_fail' }),
     color: 'fail',
   },
   {
     key: 'vote',
     value: 7,
-    text: '给提案投票',
+    text: formatMessage({ id: 'proposal.event.vote' }),
     color: 'green',
   },
   {
     key: 'vote_result',
     value: 8,
-    text: '投票结果产生',
+    text: formatMessage({ id: 'proposal.event.vote_result' }),
     color: 'green',
   },
   {
     key: 'proposal_claim_claiming',
     value: 9,
-    text: '申领提案',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_claiming' }),
     color: 'gray',
   },
   {
     key: 'proposal_claim_cancel',
     value: 10,
-    text: '取消申领提案',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_cancel' }),
     color: 'gray',
   },
   {
     key: 'proposal_claim_passed',
     value: 11,
-    text: '提案申领:通过',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_passed' }),
     color: 'green',
   },
   {
     key: 'proposal_claim_fail',
     value: 12,
-    text: '提案申领:不通过',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_fail' }),
     color: 'red',
   },
   {
     key: 'proposal_claim_result_submit',
     value: 13,
-    text: '申领结果提交',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_result_submit' }),
     color: 'lime',
   },
   {
     key: 'proposal_claim_result_approve',
     value: 14,
-    text: '提交结果:通过',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_result_approve' }),
     color: 'green',
   },
   {
     key: 'proposal_claim_result_fail',
     value: 15,
-    text: '提交结果:不通过',
+    text: formatMessage({ id: 'proposal.event.proposal_claim_result_fail' }),
     color: 'red',
   },
 ];

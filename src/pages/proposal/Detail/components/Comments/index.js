@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tooltip, Comment, Spin, Modal } from 'antd';
+import { Tooltip, Comment, Spin, Modal, Row, Col } from 'antd';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import CommentForm from '../CommnetForm';
@@ -8,6 +8,8 @@ import moment from '@/utils/moment';
 import UserAvatar from '@/components/User/UserAvatar';
 import { isCreatorOrAdmin } from '@/utils/user';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+
 
 const { confirm } = Modal;
 
@@ -20,7 +22,7 @@ const CommentItem = ({ id, text, created, updated, creator }) => (
       content={<p>{text}</p>}
       datetime={
         <Tooltip title={moment.datetime(created)}>
-          <span>{moment.fromNow(created)}</span>
+          <span>{moment.createTime(created)}</span>
         </Tooltip>
       }
     ></Comment>
@@ -42,14 +44,14 @@ const CommentWrapper = props => {
         onClick={() => handleClickReply(id)}
         key="comment-nested-reply-to"
       >
-        回复
+        <FormattedMessage id="proposal.detail.comments.reply" />
       </span>,
     ];
 
     if (isCreatorOrAdmin({ currentUser, creator })) {
       actionList.push(
         <span onClick={() => props.onClickDelete(id, text)} key="comment-nested-delete">
-          删除
+          <FormattedMessage id="app.delete" />
         </span>,
       );
     }
@@ -67,7 +69,7 @@ const CommentWrapper = props => {
         content={<p>{text}</p>}
         datetime={
           <Tooltip title={moment.datetime(created)}>
-            <span>{moment.fromNow(created)}</span>
+            <span>{moment.createTime(created)}</span>
           </Tooltip>
         }
       >
@@ -102,11 +104,11 @@ const Comments = props => {
 
   function handleDelete(_id, commentText) {
     confirm({
-      title: '确定要删除这条评论吗?',
+      title: <FormattedMessage id="proposal.detail.comments.comments_cancel" />,
       content: commentText,
-      okText: '确定',
+      okText: <FormattedMessage id="app.confirm" />,
       okType: 'danger',
-      cancelText: '取消',
+      cancelText: <FormattedMessage id="app.cancel" />,
       onOk() {
         if (dispatch) {
           // TODO: 可以改进成 promise
@@ -128,18 +130,22 @@ const Comments = props => {
 
   return (
     <div className={styles.container}>
-      <CommentForm />
-      {loaddingCommentList && <Spin className={styles.loading} />}
-      {comment_list.map(comment => (
-        <CommentWrapper
-          key={comment.id}
-          data={comment}
-          currentUser={currentUser}
-          onClickReply={handleClickReply}
-          onClickDelete={handleDelete}
-          showReplyForm={isShowReplyForm(comment.id)}
-        />
-      ))}
+      <Row style={{}}>
+        <CommentForm />
+      </Row>
+      <Row>
+        {loaddingCommentList && <Spin className={styles.loading} />}
+        {comment_list.map(comment => (
+          <CommentWrapper
+            key={comment.id}
+            data={comment}
+            currentUser={currentUser}
+            onClickReply={handleClickReply}
+            onClickDelete={handleDelete}
+            showReplyForm={isShowReplyForm(comment.id)}
+          />
+        ))}
+      </Row>
     </div>
   );
 };

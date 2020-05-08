@@ -3,6 +3,7 @@ import { Form, Input, Select, Radio, Button, Spin, List, Typography } from 'antd
 import { connect } from 'dva';
 import EditAddressModal from './EditAddressModal';
 import styles from './style.less';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const Wallet = props => {
   // state
@@ -51,7 +52,9 @@ const Wallet = props => {
           zone =>
             zone.currencies.length > 0 && (
               <div className={styles.zone}>
-                <h4 className={styles.title}>{zone.name} 专区</h4>
+                <h4 className={styles.title}>
+                  {zone.name} <FormattedMessage id="user.zone" />
+                </h4>
                 <div className={styles.addresses}>
                   {zone.currencies.map(currency => (
                     <div className={styles.currency}>
@@ -74,11 +77,11 @@ const Wallet = props => {
                               )
                             }
                           >
-                            修改
+                            <FormattedMessage id="app.modify" />
                           </Button>
                         ) : (
                           <Button type="primary" onClick={() => onBtnClick('add', zone, currency)}>
-                            添加
+                            <FormattedMessage id="app.create" />
                           </Button>
                         )}
                       </div>

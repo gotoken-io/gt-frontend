@@ -17,6 +17,9 @@ import site_logo from '@/assets/gt_logo_transparent.png';
 import Footer from './components/Footer';
 import { getAuthority } from '@/utils/authority';
 import styles from './style.less';
+import { web3Connectors } from '@/services/web3';
+import Web3Provider from 'web3-react';
+import Web3 from 'web3';
 
 const noMatch = (
   <Result
@@ -38,11 +41,11 @@ const noMatch = (
 const menuData = [
   {
     path: '/proposal/zone/list',
-    name: '提案专区',
+    name: formatMessage({ id: 'app.menu.proposal_zone' }),
   },
   {
     path: '/proposal/list',
-    name: '提案列表',
+    name: formatMessage({ id: 'app.menu.proposal_list' }),
   },
 ];
 
@@ -102,6 +105,7 @@ const BasicLayout = props => {
   };
   return (
     <ProLayout
+      className={styles.contail}
       logo={logo}
       title="GoToken"
       menuHeaderRender={(logoDom, titleDom) => <Link to="/">{logoDom}</Link>}
@@ -133,13 +137,14 @@ const BasicLayout = props => {
       }}
       footerRender={footerRender}
       menuDataRender={() => menuData}
-      formatMessage={formatMessage}
       rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
       {...settings}
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>
-        {children}
+        <Web3Provider connectors={web3Connectors} libraryName={'web3.js'} web3Api={Web3}>
+          {children}
+        </Web3Provider>
       </Authorized>
     </ProLayout>
   );
