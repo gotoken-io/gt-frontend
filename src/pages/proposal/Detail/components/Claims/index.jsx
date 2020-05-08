@@ -161,7 +161,9 @@ const Claims = props => {
     <div className={styles.container}>
       <div className={styles.actions}>
         <div className="margin-l"></div>
-        {isClaimer(claims, currentUser) === false && proposal_status_key === 'claiming' && (
+        {(isClaimer(claims, currentUser) === false ||
+          isClaimerByStatus(claims, currentUser, ['cancel'])) &&
+          proposal_status_key === 'claiming' && (
           <>
             <Button type="primary" size="small" onClick={() => setClaimModalVisible(true)}>
             <FormattedMessage id="proposal.detail.claims.claims" />
