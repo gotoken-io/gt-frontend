@@ -30,4 +30,5 @@ export default {
   'proposal_zone.zone_color': '提案专区风格(css)',
   'proposal_zone.vote_duration': '投票持续时间(小时)',
   'proposal_zone.vote_addresses_weights': '可投票地址权重分配',
+  'proposal_zone.created_zone': '创建提案专区',
 };
