@@ -27,11 +27,13 @@ const List = props => {
   return (
     <GridContent>
       {currentUser.admin && (
-        <Link to="/proposal/zone/create">
-          <Button type="primary">
-            <FormattedMessage id="proposal_zone.created_zone" />
-          </Button>
-        </Link>
+        <div style={{ marginTop: '10px', marginLeft: '15px' }}>
+          <Link to="/proposal/zone/create">
+            <Button type="primary">
+              <FormattedMessage id="proposal_zone.created_zone" />
+            </Button>
+          </Link>
+        </div>
       )}
       <Spin spinning={fetchProposalZoneLoading}>
         <div className={styles.container}>

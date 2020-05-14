@@ -123,7 +123,7 @@ const Detail = props => {
                   </div>
                   <div className={styles.vote}>
                     <div className={styles.toup}>
-                      <span className={styles.num}>{total_proposals?total_proposals:'0'}</span>
+                      <span className={styles.num}>{total_proposals ? total_proposals : '0'}</span>
                       <div>
                         <FormattedMessage id="proposal_zone.numberOfProposals" />
                       </div>

@@ -30,4 +30,5 @@ export default {
   'proposal_zone.zone_color': 'Zone`s color(css)',
   'proposal_zone.vote_duration': 'Zone`s vote duration (hours)',
   'proposal_zone.vote_addresses_weights': 'Zone`s addresses and weights',
+  'proposal_zone.created_zone': 'Create a Zone',
 };

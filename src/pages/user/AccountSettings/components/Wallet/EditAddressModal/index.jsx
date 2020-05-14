@@ -3,7 +3,7 @@ import { Form, Input, Modal } from 'antd';
 
 import { connect } from 'dva';
 import styles from './style.less';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 const EditAddressModal = props => {
   // state
@@ -94,7 +94,7 @@ const EditAddressModal = props => {
                 message: <FormattedMessage id="user.wallet_address.required" />,
               },
             ],
-          })(<Input placeholder={<FormattedMessage id="user.wallet_address.placeholder" />} />)}
+          })(<Input placeholder={formatMessage({ id: 'user.wallet_address.placeholder' })} />)}
         </Form.Item>
       </Form>
     </Modal>

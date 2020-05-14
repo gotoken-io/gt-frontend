@@ -49,9 +49,9 @@ const Wallet = props => {
     <div>
       <Spin spinning={props.fetchAllProposalZone && props.fetchCurrentUserWallet}>
         {zone_list.map(
-          zone =>
+          (zone, index) =>
             zone.currencies.length > 0 && (
-              <div className={styles.zone}>
+              <div className={styles.zone} key={index}>
                 <h4 className={styles.title}>
                   {zone.name} <FormattedMessage id="user.zone" />
                 </h4>
