@@ -18,7 +18,7 @@ import { isCreatorOrAdmin, isAdmin } from '@/utils/user';
 import { getStatusTextByKey } from '@/utils/proposal';
 import Claims from './components/Claims';
 import VoteQrCode from './components/VoteQrCode';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 
 const { Title, Paragraph, Text } = Typography;
 const { confirm } = Modal;
@@ -75,15 +75,13 @@ const Detail = props => {
 
   function showDelConfirm() {
     confirm({
-      title: (
-        <FormattedMessage
-          id="proposal.delete.title"
-          values={{ zone_name: detail.zone.name, zone_proposal_id: detail.zone_proposal_id }}
-        />
+      title: formatMessage(
+        { id: 'proposal.delete.title' },
+        { zone_name: detail.zone.name, zone_proposal_id: detail.zone_proposal_id },
       ),
-      content: <FormattedMessage id="proposal.detail.comments" />,
-      okText: <FormattedMessage id="app.confirm" />,
-      cancelText: <FormattedMessage id="app.cancel" />,
+      content: formatMessage({ id: 'proposal.delete.message' }),
+      okText: formatMessage({ id: 'app.confirm' }),
+      cancelText: formatMessage({ id: 'app.cancel' }),
 
       onOk() {
         return new Promise((resolve, reject) => {
@@ -106,6 +104,7 @@ const Detail = props => {
 
   console.log('detail', detail);
   console.log(props);
+  console.log('changeStatusModalShow', changeStatusModalShow);
 
   const menu = (
     <Menu>
@@ -126,11 +125,6 @@ const Detail = props => {
         <Menu.Item key="3" onClick={() => setChangeStatusModalShow(true)}>
           <Icon type="undo" />
           <FormattedMessage id="proposal.detail.modify" />
-          <ChangeStatusModal
-            {...detail}
-            visible={changeStatusModalShow}
-            onCancel={() => setChangeStatusModalShow(false)}
-          />
         </Menu.Item>
       )}
     </Menu>
@@ -139,6 +133,16 @@ const Detail = props => {
   console.log(detail);
   return (
     <GridContent>
+      {isAdmin({ currentUser }) && (
+        <ChangeStatusModal
+          {...detail}
+          visible={changeStatusModalShow}
+          onCancel={() => {
+            console.log('click on cancel');
+            setChangeStatusModalShow(false);
+          }}
+        />
+      )}
       <div className={styles.container}>
         <Spin spinning={fetchDetailLoading}>
           <Typography>

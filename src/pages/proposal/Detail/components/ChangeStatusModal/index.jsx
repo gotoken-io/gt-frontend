@@ -54,7 +54,7 @@ const ChangeStatusModal = props => {
       visible={visible}
       onOk={handleOk}
       confirmLoading={submiting}
-      onCancel={props.onCancel}
+      onCancel={() => props.onCancel()}
     >
       <Form>
         <Form.Item label={<FormattedMessage id="proposal.detail.proposal_status" />}>
