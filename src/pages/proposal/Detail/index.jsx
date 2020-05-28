@@ -211,7 +211,7 @@ const Detail = props => {
 
               <Col lg={{ span: 8, offset: 0 }} xs={{ span: 22, offset: 1 }}>
                 <div className={styles.userList}>
-                  {zone && zone.id == '2' ? (
+                  {zone && zone.name == 'GT' ? (
                     <Voting detail={detail} />
                   ) : (
                     <VoteQrCode detail={detail} />
