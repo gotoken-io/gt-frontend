@@ -1,7 +1,7 @@
 import React from 'react';
 import { InputNumber } from 'antd';
 import styles from './style.less';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 
 const InputDayHour = props => {
   const { settings, values, disabled } = props;
