@@ -86,6 +86,7 @@ export class VoteContract {
       owner,
       announcement,
       value,
+      vote_id,
     ] = await PromiseCallback(cb => contract.vote_status.call(_hash, cb));
     const startBlock = await PromiseCallback(cb => myWeb3.eth.getBlock(start_height, cb));
 
@@ -97,8 +98,8 @@ export class VoteContract {
       end_height: new BigNumber(end_height).toNumber(),
       owner,
       currentBlock,
-      announcement: myWeb3.toAscii(announcement),
-      value: myWeb3.toAscii(value),
+      announcement: announcement,
+      value: value,
     };
   }
 

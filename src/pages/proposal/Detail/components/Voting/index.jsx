@@ -124,7 +124,6 @@ const Voting = props => {
           </span>
         </Row>
         <div className="margin" />
-        {voteDetail.value}
         {voteDetail.value === VoteValueEnum.agree && (
           <div className="column center">
             <Icon type="check-circle" theme="filled" style={{ color: 'green', fontSize: '48px' }} />
