@@ -32,6 +32,7 @@ import {
 
 import { showMsgReload, showMsgGoBack } from '@/utils/utils';
 import { VoteContract } from '../services/voteContract';
+import { HpbVoteContract } from '../services/hpbVoteContract';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 const ProposalModel = {
@@ -387,25 +388,41 @@ const ProposalModel = {
       }
     },
     *fetchVoteInformation({ payload }, { call, put }) {
-      const vote = VoteContract.get();
-      if (!vote) {
+      if (payload.zone.name === 'GT') {
+        const vote = VoteContract.get();
+        if (!vote) {
+          yield put({
+            type: 'saveVoteInfo',
+            payload: {
+              error: 'No Metamask',
+            },
+          });
+          return;
+        }
+        const signers = yield call(vote.getSigners, { zone: payload.zone });
+        const voteInfo = yield call(vote.getVoteInfo, { zone: payload.zone, hash: payload.hash });
         yield put({
           type: 'saveVoteInfo',
           payload: {
-            error: 'No Metamask',
+            signers,
+            ...voteInfo,
           },
         });
         return;
       }
-      const signers = yield call(vote.getSigners, { zone: payload.zone });
-      const voteInfo = yield call(vote.getVoteInfo, { zone: payload.zone, hash: payload.hash });
-      yield put({
-        type: 'saveVoteInfo',
-        payload: {
-          signers,
-          ...voteInfo,
-        },
-      });
+      if (payload.zone.name.substr(0,3) === 'HPB') {
+        const vote = HpbVoteContract.get();
+        const signers = [];
+        const voteInfo = yield call(vote.getHpbVoteInfo, { zone: payload.zone, hash: payload.hash });
+        console.log(voteInfo)
+        yield put({
+          type: 'saveVoteInfo',
+          payload: {
+            signers,
+            ...voteInfo,
+          },
+        });
+      }
     },
   },
   reducers: {

@@ -3,19 +3,30 @@ import { connect } from 'dva';
 import { Row, Col, Progress, Popover, Button, Icon } from 'antd';
 import QRCode from 'qrcode.react';
 import styles from './index.less';
+import { VoteValueEnum } from '../../../../../services/voteContract';
 import { isEmpty } from 'lodash';
 import { deleteUndefined, toQueryString } from '@/utils/utils';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 
 import moment from 'moment';
 const VoteQrCode = props => {
-  const { currentUser, detail, dispatch, wallet } = props;
+  const { currentUser, detail, voteDetail, dispatch, wallet } = props;
   useEffect(() => {
     if (!currentUser.id) {
       return;
     }
     // GENERATE QR CODE
   }, [currentUser.id]);
+
+  useEffect(() => {
+    if (!detail.id) {
+      return;
+    }
+    dispatch({
+      type: 'proposal/fetchVoteInformation',
+      payload: { zone: detail.zone, hash: detail.onchain_hash },
+    });
+  }, [detail.id, voteDetail.exists]);
 
   if (isEmpty(detail)) {
     return null;
@@ -32,6 +43,39 @@ const VoteQrCode = props => {
         <Row type="flex" justify="center">
           <span><FormattedMessage id="proposal.detail.voteqrcode.vote_not_configuration" /></span>
         </Row>
+      </>
+    );
+  }
+
+  if (voteDetail.determined) {
+    return (
+      <>
+        <Row type="flex" justify="center">
+          <span className={styles.votingTitle}>
+            <FormattedMessage id="proposal.detail.voting.vote_results" />
+          </span>
+        </Row>
+        <div className="margin" />
+        {voteDetail.value === VoteValueEnum.agree && (
+          <div className="column center">
+            <Icon type="check-circle" theme="filled" style={{ color: 'green', fontSize: '48px' }} />
+            <div className="margin-sm" />
+            <span>
+              <FormattedMessage id="proposal.detail.voting.approval" />
+            </span>
+          </div>
+        )}
+        {voteDetail.value === VoteValueEnum.disagree && (
+          <Row type="flex" justify="center">
+            <div className="column center">
+              <Icon type="close-circle" theme="filled" style={{ color: 'red', fontSize: '48px' }} />
+              <div className="margin-sm" />
+              <span>
+                <FormattedMessage id="proposal.detail.voting.refused" />
+              </span>
+            </div>
+          </Row>
+        )}
       </>
     );
   }
@@ -146,6 +190,7 @@ const VoteQrCode = props => {
 export default connect(data => {
   return {
     currentUser: data.user.currentUser,
+    voteDetail: data.proposal.voteDetail,
     wallet: isEmpty(data.proposal.detail)
       ? undefined
       : data.user.wallet.find(wallet => wallet.zone.id == data.proposal.detail.zone.id),
